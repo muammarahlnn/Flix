@@ -6,7 +6,7 @@
       "release_date" : "5 October 2018",
       "rating" : 7.5,
       "runtime" : 136,
-      "poster" : "@drawable/poster_a_star_is_born"
+      "poster" : "poster_a_star_is_born"
     },
     {
       "title" : "Alita: Battle Angel",
@@ -14,7 +14,7 @@
       "release_date" : "14 February 2019",
       "rating" : 7.2,
       "runtime" : 122,
-      "poster" : "@drawable/poster_alita"
+      "poster" : "poster_alita"
     },
     {
       "title" : "Aquaman",
@@ -22,7 +22,7 @@
       "release_date" : "26 December 2018",
       "rating" : 6.9,
       "runtime" : 143,
-      "poster" : "@drawable/poster_aquaman"
+      "poster" : "poster_aquaman"
     },
     {
       "title" : "Bohemian Rhapsody",
@@ -30,7 +30,7 @@
       "release_date" : "30 October 2018",
       "rating" : 8.0,
       "runtime" : 135,
-      "poster" : "@drawable/poster_bohemian"
+      "poster" : "poster_bohemian"
     },
     {
       "title" : "Cold Pursuit",
@@ -38,7 +38,7 @@
       "release_date" : "8 February 2019",
       "rating" : 5.7,
       "runtime" : 119,
-      "poster" : "@drawable/poster_cold_pursuit"
+      "poster" : "poster_cold_pursuit"
     },
     {
       "title" : "Creed II",
@@ -46,7 +46,7 @@
       "release_date" : "21 November 2018",
       "rating" : 6.9,
       "runtime" : 130,
-      "poster" : "@drawable/poster_creed"
+      "poster" : "poster_creed"
     },
     {
       "title" : "Fantastic Beasts: The Crimes of Grindelwald",
@@ -54,7 +54,7 @@
       "release_date" : "16 November 2018",
       "rating" : 6.9,
       "runtime" : 134,
-      "poster" : "@drawable/poster_crimes"
+      "poster" : "poster_crimes"
     },
     {
       "title" : "Glass",
@@ -62,7 +62,7 @@
       "release_date" : "18 January 2019",
       "rating" : 6.7,
       "runtime" : 129,
-      "poster" : "@drawable/poster_glass"
+      "poster" : "poster_glass"
     },
     {
       "title" : "How to Train Your Dragon: The Hidden World",
@@ -70,7 +70,7 @@
       "release_date" : "9 January 2019",
       "rating" : 7.8,
       "runtime" : 104,
-      "poster" : "@drawable/poster_how_to_train"
+      "poster" : "poster_how_to_train"
     },
     {
       "title" : "Avengers: Infinity War",
@@ -78,7 +78,7 @@
       "release_date" : "27 April 2018",
       "rating" : 8.3,
       "runtime" : 149,
-      "poster" : "@drawable/poster_infinity_war"
+      "poster" : "poster_infinity_war"
     },
     {
       "title" : "Mary Queen of Scots",
@@ -86,7 +86,7 @@
       "release_date" : "21 December 2018",
       "rating" : 6.6,
       "runtime" : 124,
-      "poster" : "@drawable/poster_mary_queen"
+      "poster" : "poster_mary_queen"
     },
     {
       "title" : "Master Z: Ip Man Legacy",
@@ -94,7 +94,7 @@
       "release_date" : "26 December 2018",
       "rating" : 6.2,
       "runtime" : 107,
-      "poster" : "@drawable/poster_master_z"
+      "poster" : "poster_master_z"
     },
     {
       "title" : "Mortal Engines",
@@ -102,7 +102,7 @@
       "release_date" : "14 December 2018",
       "rating" : 6.2,
       "runtime" : 129,
-      "poster" : "@drawable/poster_mortal_engines"
+      "poster" : "poster_mortal_engines"
     },
     {
       "title" : "Overlord",
@@ -110,7 +110,7 @@
       "release_date" : "9 November 2018",
       "rating" : 6.7,
       "runtime" : 110,
-      "poster" : "@drawable/poster_master_z"
+      "poster" : "poster_master_z"
     },
     {
       "title" : "Ralph Breaks The Internet",
@@ -118,7 +118,7 @@
       "release_date" : "21 November 2018",
       "rating" : 7.2,
       "runtime" : 112,
-      "poster" : "@drawable/poster_ralph"
+      "poster" : "poster_ralph"
     },
     {
       "title" : "Robin Hood",
@@ -126,7 +126,7 @@
       "release_date" : "21 November 2018",
       "rating" : 5.9,
       "runtime" : 116,
-      "poster" : "@drawable/poster_robin_hood"
+      "poster" : "poster_robin_hood"
     },
     {
       "title" : "Serenity",
@@ -134,7 +134,7 @@
       "release_date" : "25 January 2019",
       "rating" : 5.4,
       "runtime" : 102,
-      "poster" : "@drawable/poster_serenity"
+      "poster" : "poster_serenity"
     },
     {
       "title" : "Spider-Man: Into the Spider-Verse",
@@ -142,7 +142,7 @@
       "release_date" : "14 December 2018",
       "rating" : 8.4,
       "runtime" : 117,
-      "poster" : "@drawable/poster_spiderman"
+      "poster" : "poster_spiderman"
     }
   ]
 }
