@@ -1,14 +1,15 @@
-package com.ardnn.flix
+package com.ardnn.flix.ui.home
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ImageView
+import com.ardnn.flix.R
 import com.ardnn.flix.utils.FilmsData
 
-class MainActivity : AppCompatActivity() {
+class HomeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_home)
 
         // debug
         val filmsData = FilmsData(this)
