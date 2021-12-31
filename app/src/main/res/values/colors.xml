@@ -7,5 +7,8 @@
     <color name="white">#FFFFFFFF</color>
     <color name="white_smoke">#F5F5F5</color>
 
+    <color name="gray_primary">#9F9F9F</color>
+    <color name="gray_border">#424242</color>
+
     <color name="yellow_primary">#F3CE13</color>
 </resources>

@@ -3,39 +3,40 @@ package com.ardnn.flix.ui.home
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ImageView
+import androidx.annotation.StringRes
+import androidx.viewpager2.widget.ViewPager2
 import com.ardnn.flix.R
+import com.ardnn.flix.databinding.ActivityHomeBinding
+import com.ardnn.flix.ui.home.film.FilmPagerAdapter
 import com.ardnn.flix.utils.FilmsData
+import com.ardnn.flix.utils.Helper
+import com.google.android.material.tabs.TabLayoutMediator
 
 class HomeActivity : AppCompatActivity() {
+
+    companion object {
+        @StringRes
+        val TAB_TITLES = intArrayOf(
+            R.string.movies,
+            R.string.tv_shows
+        )
+    }
+
+    private lateinit var binding: ActivityHomeBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_home)
+        binding = ActivityHomeBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        // debug
-        val filmsData = FilmsData(this)
+        // set pager
+        val filmPagerAdapter = FilmPagerAdapter(this)
+        binding.vp2Film.adapter = filmPagerAdapter
 
-        val movies = filmsData.movies
-        for (movie in movies) {
-            println(movie.title)
-            println(movie.releaseDate)
-            println(movie.rating)
-            println(movie.runtime)
-            println(movie.poster)
-            println("")
-        }
-
-        val tvShows = filmsData.tvShows
-        for (tvShow in tvShows) {
-            println(tvShow.title)
-            println(tvShow.releaseDate)
-            println(tvShow.rating)
-            println(tvShow.runtime)
-            println(tvShow.poster)
-            println("")
-        }
-
-        val imageView = findViewById<ImageView>(R.id.ivTest)
-        imageView.setImageResource(movies[5].poster)
-
+        // set tab layout
+        TabLayoutMediator(binding.tlFilm, binding.vp2Film) { tab, pos ->
+            tab.text = getString(TAB_TITLES[pos])
+        }.attach()
+        Helper.equalingEachTabWidth(binding.tlFilm)
     }
 }
