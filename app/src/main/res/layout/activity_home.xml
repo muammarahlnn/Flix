@@ -21,7 +21,7 @@
         app:tabMaxWidth="0dp"
         app:tabSelectedTextColor="@color/white_smoke"
         app:tabTextAppearance="@style/TabLayoutText"
-        app:tabIndicatorColor="@color/gray_border"
+        app:tabIndicatorColor="@color/gray_primary"
         app:tabTextColor="@color/gray_primary" />
 
     <androidx.viewpager2.widget.ViewPager2
