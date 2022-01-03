@@ -10,6 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Flix">
         <activity
+            android:name=".ui.detail.DetailActivity"
+            android:exported="true" />
+        <activity
             android:name=".ui.splash.SplashActivity"
             android:exported="true"
             android:theme="@style/Theme.Splash">

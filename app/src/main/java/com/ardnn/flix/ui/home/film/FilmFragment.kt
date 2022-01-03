@@ -1,5 +1,6 @@
 package com.ardnn.flix.ui.home.film
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -11,6 +12,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ardnn.flix.data.FilmEntity
 import com.ardnn.flix.databinding.FragmentFilmBinding
+import com.ardnn.flix.ui.detail.DetailActivity
 import com.ardnn.flix.utils.ClickListener
 import com.ardnn.flix.utils.FilmsData
 
@@ -63,7 +65,9 @@ class FilmFragment : Fragment(), ClickListener<FilmEntity> {
     }
 
     override fun onClicked(item: FilmEntity) {
-        Toast.makeText(activity, item.title, Toast.LENGTH_SHORT).show()
+        val toDetail = Intent(activity, DetailActivity::class.java)
+        toDetail.putExtra(DetailActivity.EXTRA_FILM, item)
+        startActivity(toDetail)
     }
 
 }
