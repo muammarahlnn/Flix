@@ -1,4 +1,4 @@
-package com.ardnn.flix.ui.home.film
+package com.ardnn.flix.ui.film
 
 import android.content.Context
 import androidx.lifecycle.ViewModel

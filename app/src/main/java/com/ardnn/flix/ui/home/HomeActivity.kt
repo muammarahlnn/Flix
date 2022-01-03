@@ -2,13 +2,9 @@ package com.ardnn.flix.ui.home
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.ImageView
 import androidx.annotation.StringRes
-import androidx.viewpager2.widget.ViewPager2
 import com.ardnn.flix.R
 import com.ardnn.flix.databinding.ActivityHomeBinding
-import com.ardnn.flix.ui.home.film.FilmPagerAdapter
-import com.ardnn.flix.utils.FilmsData
 import com.ardnn.flix.utils.Helper
 import com.google.android.material.tabs.TabLayoutMediator
 

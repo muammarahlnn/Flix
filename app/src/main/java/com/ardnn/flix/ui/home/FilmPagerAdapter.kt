@@ -1,9 +1,9 @@
-package com.ardnn.flix.ui.home.film
+package com.ardnn.flix.ui.home
 
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.ardnn.flix.ui.home.HomeActivity
+import com.ardnn.flix.ui.film.FilmFragment
 
 class FilmPagerAdapter(activity: AppCompatActivity): FragmentStateAdapter(activity) {
 
