@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.ardnn.flix.data.FilmEntity
 import com.ardnn.flix.databinding.ItemFilmBinding
 import com.ardnn.flix.utils.ClickListener
+import com.ardnn.flix.utils.Helper
 
 class FilmAdapter(
     private val filmList: List<FilmEntity>,
@@ -31,10 +32,10 @@ class FilmAdapter(
 
         fun onBind(film: FilmEntity) {
             with (binding) {
+                Helper.setImageGlide(itemView.context, film.poster, ivPoster)
                 tvTitle.text = film.title
                 tvYear.text = film.releaseDate.substring(film.releaseDate.length - 4)
                 tvRating.text = film.rating.toString()
-                ivPoster.setImageResource(film.poster)
             }
 
             itemView.setOnClickListener {

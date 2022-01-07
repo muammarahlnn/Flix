@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.ardnn.flix.R
 import com.ardnn.flix.data.FilmEntity
 import com.ardnn.flix.databinding.ActivityDetailBinding
+import com.ardnn.flix.utils.Helper
 
 class DetailActivity : AppCompatActivity(), View.OnClickListener {
 
@@ -52,8 +53,8 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun setFilmDataToWidgets(film: FilmEntity) {
         with (binding) {
-            ivWallpaper.setImageResource(film.poster)
-            ivPoster.setImageResource(film.poster)
+            Helper.setImageGlide(this@DetailActivity, film.poster, ivWallpaper)
+            Helper.setImageGlide(this@DetailActivity, film.poster, ivPoster)
             tvTitle.text = film.title
             tvReleaseDate.text = film.releaseDate
             tvRuntime.text = resources.getString(R.string.minutes, film.runtime)
