@@ -53,13 +53,20 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun setFilmDataToWidgets(film: FilmEntity) {
         with (binding) {
-            Helper.setImageGlide(this@DetailActivity, film.poster, ivWallpaper)
-            Helper.setImageGlide(this@DetailActivity, film.poster, ivPoster)
-            tvTitle.text = film.title
-            tvReleaseDate.text = film.releaseDate
-            tvRuntime.text = resources.getString(R.string.minutes, film.runtime)
-            tvRating.text = film.rating.toString()
-            tvSynopsis.text = film.overview
+            if (film.poster != null) {
+                Helper.setImageGlide(this@DetailActivity, film.poster, ivWallpaper)
+                Helper.setImageGlide(this@DetailActivity, film.poster, ivPoster)
+            } else {
+                ivWallpaper.setImageResource(R.drawable.ic_error)
+                ivPoster.setImageResource(R.drawable.ic_error)
+            }
+            tvTitle.text = film.title ?: "-"
+            tvReleaseDate.text = film.releaseDate ?: "-"
+            tvRuntime.text =
+                if (film.runtime != null) resources.getString(R.string.minutes, film.runtime)
+                else "-"
+            tvRating.text = (film.rating ?: "-").toString()
+            tvSynopsis.text = film.overview ?: "-"
         }
     }
 

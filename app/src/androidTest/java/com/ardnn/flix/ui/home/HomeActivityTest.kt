@@ -72,4 +72,28 @@ class HomeActivityTest {
         onView(withId(R.id.btnBack)).perform(click())
 
     }
+
+    @Test
+    fun loadNullFilm() {
+        onView(withId(R.id.rvFilm)).perform(RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(1, click()))
+
+        onView(withId(R.id.tvTitle)).check(matches(isDisplayed()))
+        onView(withId(R.id.tvTitle)).check(matches(withText("-")))
+
+        onView(withId(R.id.tvReleaseDate)).check(matches(isDisplayed()))
+        onView(withId(R.id.tvReleaseDate)).check(matches(withText("-")))
+
+        onView(withId(R.id.tvRuntime)).check(matches(isDisplayed()))
+        onView(withId(R.id.tvRuntime)).check(matches(withText("-")))
+
+        onView(withId(R.id.tvRating)).check(matches(isDisplayed()))
+        onView(withId(R.id.tvRating)).check(matches(withText("-")))
+
+        onView(withId(R.id.tvSynopsis)).check(matches(isDisplayed()))
+        onView(withId(R.id.tvSynopsis)).check(matches(withText("-")))
+
+        onView(withId(R.id.clWrapperSynopsis)).perform(click()) // to extended synopsis text
+        onView(withId(R.id.clWrapperSynopsis)).perform(click()) // to shortened synopsis text
+        onView(withId(R.id.btnBack)).perform(click())
+    }
 }

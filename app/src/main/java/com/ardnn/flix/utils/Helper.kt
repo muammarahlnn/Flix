@@ -21,7 +21,7 @@ object Helper {
         }
     }
 
-    fun setImageGlide(context: Context, image: Int, imageView: ImageView) {
+    fun setImageGlide(context: Context, image: Int?, imageView: ImageView) {
         Glide.with(context)
             .load(image)
             .apply(RequestOptions.placeholderOf(R.drawable.ic_loading)

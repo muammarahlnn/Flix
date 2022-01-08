@@ -25,7 +25,7 @@ class FilmViewModelTest {
         val movies = movieViewModel.filmList.value
         assertNotNull(movies)
         if (movies != null) {
-            assertEquals(18, movies.size)
+            assertEquals(19, movies.size)
         }
     }
 

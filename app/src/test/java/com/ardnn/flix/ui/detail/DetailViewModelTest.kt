@@ -14,15 +14,19 @@ import org.robolectric.RuntimeEnvironment
 class DetailViewModelTest {
 
     private lateinit var detailViewModel: DetailViewModel
+    private lateinit var detailViewModelNull: DetailViewModel
     private lateinit var dummyFilm: FilmEntity
+    private lateinit var dummyFilmNull: FilmEntity
 
     @Before
     fun setUp() {
         val context = RuntimeEnvironment.getApplication()
         val filmsData = FilmsData(context)
         dummyFilm = filmsData.movies[0]
+        dummyFilmNull = filmsData.movies[1]
 
         detailViewModel = DetailViewModel(dummyFilm)
+        detailViewModelNull = DetailViewModel(dummyFilmNull)
     }
 
     @Test
@@ -33,9 +37,23 @@ class DetailViewModelTest {
             assertEquals(dummyFilm.title, film.title)
             assertEquals(dummyFilm.overview, film.overview)
             assertEquals(dummyFilm.releaseDate, film.releaseDate)
-            assertEquals(dummyFilm.rating, film.rating, 0.0001)
+            assertEquals(dummyFilm.rating as Double, film.rating as Double, 0.0001)
             assertEquals(dummyFilm.runtime, film.runtime)
             assertEquals(dummyFilm.poster, film.poster)
+        }
+    }
+
+    @Test
+    fun getFilmNull() {
+        val film = detailViewModelNull.film.value
+        assertNotNull(film)
+        if (film != null) {
+            assertEquals(dummyFilmNull.title, film.title)
+            assertEquals(dummyFilmNull.overview, film.overview)
+            assertEquals(dummyFilmNull.releaseDate, film.releaseDate)
+            assertEquals(dummyFilmNull.rating ?: 0.0, film.rating ?: 0.0, 0.001)
+            assertEquals(dummyFilmNull.runtime, film.runtime)
+            assertEquals(dummyFilmNull.poster, film.poster)
         }
     }
 

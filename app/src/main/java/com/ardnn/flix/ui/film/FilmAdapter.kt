@@ -3,6 +3,7 @@ package com.ardnn.flix.ui.film
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.ardnn.flix.R
 import com.ardnn.flix.data.FilmEntity
 import com.ardnn.flix.databinding.ItemFilmBinding
 import com.ardnn.flix.utils.ClickListener
@@ -32,15 +33,26 @@ class FilmAdapter(
 
         fun onBind(film: FilmEntity) {
             with (binding) {
-                Helper.setImageGlide(itemView.context, film.poster, ivPoster)
-                tvTitle.text = film.title
-                tvYear.text = film.releaseDate.substring(film.releaseDate.length - 4)
-                tvRating.text = film.rating.toString()
+                if (film.poster != null) {
+                    Helper.setImageGlide(itemView.context, film.poster, ivPoster)
+                } else {
+                    ivPoster.setImageResource(R.drawable.ic_error)
+                }
+
+                tvTitle.text = film.title ?: "-"
+                tvRating.text = (film.rating ?: "-").toString()
+                tvYear.text =
+                    if (film.releaseDate != null) getYearReleaseDate(film.releaseDate)
+                    else "-"
             }
 
             itemView.setOnClickListener {
                 clickListener.onClicked(film)
             }
+        }
+
+        private fun getYearReleaseDate(releaseDate: String?): String {
+            return releaseDate?.substring(releaseDate.length - 4).toString()
         }
     }
 }

@@ -18,15 +18,18 @@ class FilmsData(private val context: Context) {
         val tempList = ArrayList<FilmEntity>()
         for (i in 0 until filmArr.length()) {
             val data = filmArr.getJSONObject(i)
-            val poster = context.resources.getIdentifier(
-                data.getString("poster"), "drawable", context.packageName)
+            val poster =
+                if (!data.isNull("poster"))
+                    context.resources.getIdentifier(data.getString("poster"), "drawable", context.packageName)
+                else
+                    null
 
             val film = FilmEntity(
-                data.getString("title"),
-                data.getString("overview"),
-                data.getString("release_date"),
-                data.getDouble("rating"),
-                data.getInt("runtime"),
+                if (!data.isNull("title")) data.getString("title") else null,
+                if (!data.isNull("overview")) data.getString("overview") else null,
+                if (!data.isNull("release_date")) data.getString("release_date") else null,
+                if (!data.isNull("rating")) data.getDouble("rating") else null,
+                if (!data.isNull("runtime")) data.getInt("runtime") else null,
                 poster
             )
             tempList.add(film)
