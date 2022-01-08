@@ -55,10 +55,16 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener {
         with (binding) {
             if (film.poster != null) {
                 Helper.setImageGlide(this@DetailActivity, film.poster, ivWallpaper)
+                ivWallpaper.tag = film.poster
+
                 Helper.setImageGlide(this@DetailActivity, film.poster, ivPoster)
+                ivPoster.tag = film.poster
             } else {
                 ivWallpaper.setImageResource(R.drawable.ic_error)
+                ivWallpaper.tag = R.drawable.ic_error
+
                 ivPoster.setImageResource(R.drawable.ic_error)
+                ivPoster.tag = R.drawable.ic_error
             }
             tvTitle.text = film.title ?: "-"
             tvReleaseDate.text = film.releaseDate ?: "-"

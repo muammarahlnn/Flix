@@ -1,5 +1,6 @@
 package com.ardnn.flix.ui.film
 
+import com.ardnn.flix.data.FilmEntity
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
@@ -22,20 +23,16 @@ class FilmViewModelTest {
 
     @Test
     fun getMovies() {
-        val movies = movieViewModel.filmList.value
+        val movies = movieViewModel.filmList.value as List<FilmEntity>
         assertNotNull(movies)
-        if (movies != null) {
-            assertEquals(19, movies.size)
-        }
+        assertEquals(19, movies.size)
     }
 
     @Test
     fun getTvShows() {
-        val tvShows = tvShowViewModel.filmList.value
+        val tvShows = tvShowViewModel.filmList.value as List<FilmEntity>
         assertNotNull(tvShows)
-        if (tvShows != null) {
-            assertEquals(20, tvShows.size)
-        }
+        assertEquals(20, tvShows.size)
     }
 
 }

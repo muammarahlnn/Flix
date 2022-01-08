@@ -31,30 +31,26 @@ class DetailViewModelTest {
 
     @Test
     fun getFilm() {
-        val film = detailViewModel.film.value
+        val film = detailViewModel.film.value as FilmEntity
         assertNotNull(film)
-        if (film != null) {
-            assertEquals(dummyFilm.title, film.title)
-            assertEquals(dummyFilm.overview, film.overview)
-            assertEquals(dummyFilm.releaseDate, film.releaseDate)
-            assertEquals(dummyFilm.rating as Double, film.rating as Double, 0.0001)
-            assertEquals(dummyFilm.runtime, film.runtime)
-            assertEquals(dummyFilm.poster, film.poster)
-        }
+        assertEquals(dummyFilm.title, film.title)
+        assertEquals(dummyFilm.overview, film.overview)
+        assertEquals(dummyFilm.releaseDate, film.releaseDate)
+        assertEquals(dummyFilm.rating as Double, film.rating as Double, 0.0001)
+        assertEquals(dummyFilm.runtime, film.runtime)
+        assertEquals(dummyFilm.poster, film.poster)
     }
 
     @Test
     fun getFilmNull() {
-        val film = detailViewModelNull.film.value
+        val film = detailViewModelNull.film.value as FilmEntity
         assertNotNull(film)
-        if (film != null) {
-            assertEquals(dummyFilmNull.title, film.title)
-            assertEquals(dummyFilmNull.overview, film.overview)
-            assertEquals(dummyFilmNull.releaseDate, film.releaseDate)
-            assertEquals(dummyFilmNull.rating ?: 0.0, film.rating ?: 0.0, 0.001)
-            assertEquals(dummyFilmNull.runtime, film.runtime)
-            assertEquals(dummyFilmNull.poster, film.poster)
-        }
+        assertEquals(dummyFilmNull.title, film.title)
+        assertEquals(dummyFilmNull.overview, film.overview)
+        assertEquals(dummyFilmNull.releaseDate, film.releaseDate)
+        assertEquals(dummyFilmNull.rating ?: 0.0, film.rating ?: 0.0, 0.001)
+        assertEquals(dummyFilmNull.runtime, film.runtime)
+        assertEquals(dummyFilmNull.poster, film.poster)
     }
 
     @Test

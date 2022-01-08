@@ -12,6 +12,7 @@ import androidx.test.ext.junit.rules.ActivityScenarioRule
 import com.ardnn.flix.R
 import com.ardnn.flix.data.FilmEntity
 import com.ardnn.flix.utils.FilmsData
+import org.hamcrest.CoreMatchers
 
 import org.junit.Before
 import org.junit.Rule
@@ -52,6 +53,12 @@ class HomeActivityTest {
         onView(withId(R.id.rvFilm)).perform(RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(0, click()))
 
         val movie = movies[0]
+        onView(withId(R.id.ivWallpaper)).check(matches(isDisplayed()))
+        onView(withId(R.id.ivWallpaper)).check(matches(withTagValue(CoreMatchers.equalTo(movie.poster))))
+
+        onView(withId(R.id.ivPoster)).check(matches(isDisplayed()))
+        onView(withId(R.id.ivPoster)).check(matches(withTagValue(CoreMatchers.equalTo(movie.poster))))
+
         onView(withId(R.id.tvTitle)).check(matches(isDisplayed()))
         onView(withId(R.id.tvTitle)).check(matches(withText(movie.title)))
 
@@ -76,6 +83,12 @@ class HomeActivityTest {
     @Test
     fun loadNullFilm() {
         onView(withId(R.id.rvFilm)).perform(RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(1, click()))
+
+        onView(withId(R.id.ivWallpaper)).check(matches(isDisplayed()))
+        onView(withId(R.id.ivWallpaper)).check(matches(withTagValue(CoreMatchers.equalTo(R.drawable.ic_error))))
+
+        onView(withId(R.id.ivPoster)).check(matches(isDisplayed()))
+        onView(withId(R.id.ivPoster)).check(matches(withTagValue(CoreMatchers.equalTo(R.drawable.ic_error))))
 
         onView(withId(R.id.tvTitle)).check(matches(isDisplayed()))
         onView(withId(R.id.tvTitle)).check(matches(withText("-")))
