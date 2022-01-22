@@ -39,7 +39,7 @@ class MovieAdapter(
                 } else {
                     Helper.setImageGlide(
                         itemView.context,
-                        movie.getPosterUrl(ImageSize.W500),
+                        movie.getPosterUrl(ImageSize.W342),
                         ivPoster)
                 }
 

@@ -27,4 +27,26 @@ object Helper {
             .apply(RequestOptions.placeholderOf(R.drawable.ic_error))
             .into(imageView)
     }
+
+    fun convertToDate(date: String?): String {
+        if (date.isNullOrEmpty()) return "-"
+
+        val months = listOf("",
+            "January", "February", "March", "April",
+            "May", "June", "July", "August",
+            "September", "October", "November", "December"
+        )
+
+        val splittedDate = date.split("-") // [year, month, day]
+        val year = splittedDate[0]
+        val month = months[splittedDate[1].toInt()]
+        var day = splittedDate[2]
+
+        // remove leading zeros
+        if (day[0] == '0') {
+            day = day.substring(1)
+        }
+
+        return "$day $month, $year"
+    }
 }

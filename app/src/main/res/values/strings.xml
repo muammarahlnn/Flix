@@ -9,5 +9,9 @@
     <string name="synopsis">Synopsis</string>
     <string name="more">more</string>
     <string name="less">less</string>
+    <string name="episodes">episodes</string>
+    <string name="seasons">seasons</string>
+    <string name="first_airing">First Airing</string>
+    <string name="last_airing">Last Airing</string>
 
 </resources>
