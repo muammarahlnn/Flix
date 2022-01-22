@@ -83,17 +83,14 @@ class MovieDetailActivity : AppCompatActivity(), View.OnClickListener {
                 ivWallpaper)
 
             // set detail
-            tvTitle.text = movieDetail.title ?: "-"
-            tvReleaseDate.text =
-                if (!movieDetail.releaseDate.isNullOrEmpty())
-                    Helper.convertToDate(movieDetail.releaseDate)
-                else "-"
+            tvTitle.text = Helper.checkNullOrEmptyString(movieDetail.title)
+            tvReleaseDate.text = Helper.convertToDate(Helper.checkNullOrEmptyString(movieDetail.releaseDate))
             tvRuntime.text =
                 if (movieDetail.runtime != null)
                     getString(R.string.minutes, movieDetail.runtime)
                 else "-"
             tvRating.text = (movieDetail.rating ?: "-").toString()
-            tvSynopsis.text = movieDetail.overview ?: "-"
+            tvSynopsis.text = Helper.checkNullOrEmptyString(movieDetail.overview)
 
             // set recyclerview genre items
             val genreAdapter = GenreAdapter(movieDetail.genreList as List<GenreResponse>)

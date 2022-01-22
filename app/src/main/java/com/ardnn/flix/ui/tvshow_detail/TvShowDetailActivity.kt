@@ -84,7 +84,7 @@ class TvShowDetailActivity : AppCompatActivity(), View.OnClickListener {
                 ivWallpaper)
 
             // set detail
-            tvTitle.text = tvShowDetail.title ?: "-"
+            tvTitle.text = Helper.checkNullOrEmptyString(tvShowDetail.title)
             tvEpisodes.text = (tvShowDetail.numberOfEpisodes ?: "-").toString()
             tvSeasons.text = (tvShowDetail.numberOfSeasons ?: "-").toString()
             tvRuntime.text =
@@ -92,15 +92,9 @@ class TvShowDetailActivity : AppCompatActivity(), View.OnClickListener {
                     getString(R.string.minutes, tvShowDetail.runtimes[0])
                 else "-"
             tvRating.text = (tvShowDetail.rating ?: "-").toString()
-            tvFirstAiring.text =
-                if (!tvShowDetail.firstAirDate.isNullOrEmpty())
-                    Helper.convertToDate(tvShowDetail.firstAirDate)
-                else "-"
-            tvLastAiring.text =
-                if (!tvShowDetail.lastAirDate.isNullOrEmpty())
-                    Helper.convertToDate(tvShowDetail.lastAirDate)
-                else "-"
-            tvSynopsis.text = tvShowDetail.overview ?: "-"
+            tvFirstAiring.text = Helper.convertToDate(Helper.checkNullOrEmptyString(tvShowDetail.firstAirDate))
+            tvLastAiring.text = Helper.convertToDate(Helper.checkNullOrEmptyString(tvShowDetail.lastAirDate))
+            tvSynopsis.text = Helper.checkNullOrEmptyString(tvShowDetail.overview)
 
             // set recyclerview genre items
             val genreAdapter = GenreAdapter(tvShowDetail.genreList as List<GenreResponse>)

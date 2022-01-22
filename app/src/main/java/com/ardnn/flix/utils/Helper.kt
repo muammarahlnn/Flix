@@ -29,7 +29,7 @@ object Helper {
     }
 
     fun convertToDate(date: String?): String {
-        if (date.isNullOrEmpty()) return "-"
+        if (date.isNullOrEmpty() || date == "-") return "-"
 
         val months = listOf("",
             "January", "February", "March", "April",
@@ -48,5 +48,9 @@ object Helper {
         }
 
         return "$day $month, $year"
+    }
+
+    fun checkNullOrEmptyString(string: String?): String {
+        return if (string.isNullOrEmpty()) "-" else string
     }
 }
