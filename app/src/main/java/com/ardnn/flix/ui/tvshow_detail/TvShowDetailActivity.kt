@@ -64,6 +64,10 @@ class TvShowDetailActivity : AppCompatActivity(), View.OnClickListener {
                 }
             }
         })
+
+        viewModel.isLoading.observe(this, { isLoading ->
+            showLoading(isLoading)
+        })
     }
 
     private fun setTvShowDetailToWidgets(tvShowDetail: TvShowDetailResponse) {
@@ -102,6 +106,10 @@ class TvShowDetailActivity : AppCompatActivity(), View.OnClickListener {
             val genreAdapter = GenreAdapter(tvShowDetail.genreList as List<GenreResponse>)
             rvGenre.adapter = genreAdapter
         }
+    }
+
+    private fun showLoading(isLoading: Boolean) {
+        binding.progressBar.visibility =  if (isLoading) View.VISIBLE else View.GONE
     }
 
     override fun onClick(v: View) {

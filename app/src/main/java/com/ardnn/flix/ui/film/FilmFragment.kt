@@ -60,6 +60,10 @@ class FilmFragment : Fragment(), FilmClickListener {
 
     private fun subscribe(section: Int) {
         setFilmList(section)
+
+        viewModel.isLoading.observe(viewLifecycleOwner, { isLoading ->
+            showLoading(isLoading)
+        })
     }
 
     private fun setFilmList(section: Int) {
@@ -77,6 +81,10 @@ class FilmFragment : Fragment(), FilmClickListener {
                 })
             }
         }
+    }
+
+    private fun showLoading(isLoading: Boolean) {
+        binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.INVISIBLE
     }
 
     override fun onMovieClicked(movie: Movie) {
