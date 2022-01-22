@@ -64,6 +64,10 @@ class FilmFragment : Fragment(), FilmClickListener {
         viewModel.isLoading.observe(viewLifecycleOwner, { isLoading ->
             showLoading(isLoading)
         })
+
+        viewModel.isFailure.observe(viewLifecycleOwner, { isFailure ->
+            showAlert(isFailure)
+        })
     }
 
     private fun setFilmList(section: Int) {
@@ -85,6 +89,16 @@ class FilmFragment : Fragment(), FilmClickListener {
 
     private fun showLoading(isLoading: Boolean) {
         binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.INVISIBLE
+    }
+
+    private fun showAlert(isFailure: Boolean) {
+        with (binding) {
+            if (isFailure) {
+                tvAlert.visibility = View.VISIBLE
+            } else {
+                tvAlert.visibility = View.GONE
+            }
+        }
     }
 
     override fun onMovieClicked(movie: Movie) {

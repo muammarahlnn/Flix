@@ -31,6 +31,19 @@
             android:indeterminate="true"
             android:indeterminateTint="@color/yellow_primary"/>
 
+        <TextView
+            android:id="@+id/tvAlert"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_gravity="center"
+            android:text="@string/unable_to_retrieve_data"
+            android:textColor="@color/white_smoke"
+            android:textSize="21sp"
+            android:textAlignment="center"
+            android:fontFamily="@font/roboto_regular" />
+
     </FrameLayout>
 
 </androidx.core.widget.NestedScrollView>

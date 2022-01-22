@@ -16,11 +16,14 @@ class FilmViewModel(section: Int) : ViewModel() {
     private val _movieList = MutableLiveData<List<Movie>>()
     val movieList: LiveData<List<Movie>> = _movieList
 
+    private val _tvShowList = MutableLiveData<List<TvShow>>()
+    val tvShowList: LiveData<List<TvShow>> = _tvShowList
+
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
 
-    private val _tvShowList = MutableLiveData<List<TvShow>>()
-    val tvShowList: LiveData<List<TvShow>> = _tvShowList
+    private val _isFailure = MutableLiveData<Boolean>()
+    val isFailure: LiveData<Boolean> = _isFailure
 
     companion object {
         private const val TAG = "FilmViewModel"
@@ -46,12 +49,19 @@ class FilmViewModel(section: Int) : ViewModel() {
                 // hide progressbar
                 _isLoading.value = false
 
+                // success fetch data
+                _isFailure.value = false
+
+                // set movie list
                 _movieList.value = movies
             }
 
             override fun onFailure(message: String) {
                 // hide progressbar
                 _isLoading.value = false
+
+                // unable to fetch data
+                _isFailure.value = true
 
                 Log.d(TAG, message)
             }
@@ -67,12 +77,18 @@ class FilmViewModel(section: Int) : ViewModel() {
                 // hide progressbar
                 _isLoading.value = false
 
+                // success fetch data
+                _isFailure.value = false
+
                 _tvShowList.value = tvShows
             }
 
             override fun onFailure(message: String) {
                 // hide progressbar
                 _isLoading.value = false
+
+                // unable to fetch data
+                _isFailure.value = true
 
                 Log.d(TAG, message)
             }
