@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
+import com.ardnn.flix.R
 import com.ardnn.flix.api.response.Movie
 import com.ardnn.flix.api.response.TvShow
 import com.ardnn.flix.databinding.FragmentFilmBinding
@@ -16,11 +17,13 @@ import com.ardnn.flix.ui.movie_detail.MovieDetailActivity
 import com.ardnn.flix.ui.tvshow_detail.TvShowDetailActivity
 import com.ardnn.flix.utils.FilmClickListener
 
-class FilmFragment : Fragment(), FilmClickListener {
+class FilmFragment : Fragment(), FilmClickListener, View.OnClickListener {
 
     private lateinit var viewModel: FilmViewModel
     private var _binding: FragmentFilmBinding? = null
     private val binding get() = _binding!!
+
+    private var section = 0
 
     companion object {
         private const val ARG_SECTION = "section"
@@ -44,11 +47,14 @@ class FilmFragment : Fragment(), FilmClickListener {
         binding.rvFilm.layoutManager = GridLayoutManager(requireActivity(), 2)
 
         // get section and set it as parameter on view model
-        val section = arguments?.getInt(ARG_SECTION, 0) as Int
+        section = arguments?.getInt(ARG_SECTION, 0) as Int
         viewModel = ViewModelProvider(this, FilmViewModelFactory(section))[FilmViewModel::class.java]
 
         // subscribe view model
         subscribe(section)
+
+        // click listeners
+        binding.btnRefresh.setOnClickListener(this)
 
         return binding.root
     }
@@ -56,6 +62,14 @@ class FilmFragment : Fragment(), FilmClickListener {
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
+    }
+
+    override fun onClick(v: View) {
+        when (v.id) {
+            R.id.btnRefresh -> {
+                Toast.makeText(activity, "refresh", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
     private fun subscribe(section: Int) {
@@ -92,13 +106,7 @@ class FilmFragment : Fragment(), FilmClickListener {
     }
 
     private fun showAlert(isFailure: Boolean) {
-        with (binding) {
-            if (isFailure) {
-                tvAlert.visibility = View.VISIBLE
-            } else {
-                tvAlert.visibility = View.GONE
-            }
-        }
+        binding.llAlert.visibility = if (isFailure) View.VISIBLE else View.GONE
     }
 
     override fun onMovieClicked(movie: Movie) {
