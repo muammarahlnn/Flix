@@ -67,6 +67,10 @@ class MovieDetailActivity : AppCompatActivity(), View.OnClickListener {
         viewModel.isLoading.observe(this, { isLoading ->
             showLoading(isLoading)
         })
+
+        viewModel.isFailure.observe(this, { isFailure ->
+            showAlert(isFailure)
+        })
     }
 
     private fun setMovieDetailToWidgets(movieDetail: MovieDetailResponse) {
@@ -100,6 +104,10 @@ class MovieDetailActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun showLoading(isLoading: Boolean) {
         binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
+    }
+
+    private fun showAlert(isFailure: Boolean) {
+        binding.clAlert.visibility = if (isFailure) View.VISIBLE else View.GONE
     }
 
     override fun onClick(v: View) {

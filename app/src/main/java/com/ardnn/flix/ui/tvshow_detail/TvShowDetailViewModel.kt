@@ -16,6 +16,9 @@ class TvShowDetailViewModel(tvShowId: Int) : ViewModel() {
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
 
+    private val _isFailure = MutableLiveData<Boolean>()
+    val isFailure: LiveData<Boolean> = _isFailure
+
     private val _isSynopsisExtended = MutableLiveData(false)
     val isSynopsisExtended: LiveData<Boolean> = _isSynopsisExtended
 
@@ -36,12 +39,19 @@ class TvShowDetailViewModel(tvShowId: Int) : ViewModel() {
                 // hide progressbar
                 _isLoading.value = false
 
+                // success fetch data
+                _isFailure.value = false
+
+                // set tv show detail
                 _tvShowDetail.value = tvShowDetailResponse
             }
 
             override fun onFailure(message: String) {
                 // hide progressbar
                 _isLoading.value = false
+
+                // unable to fetch data
+                _isFailure.value = true
 
                 Log.d(TAG, message)
             }
