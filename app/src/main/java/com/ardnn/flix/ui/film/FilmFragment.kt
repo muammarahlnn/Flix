@@ -10,12 +10,13 @@ import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import com.ardnn.flix.R
-import com.ardnn.flix.api.response.Movie
-import com.ardnn.flix.api.response.TvShow
+import com.ardnn.flix.data.source.local.entity.MovieEntity
+import com.ardnn.flix.data.source.local.entity.TvShowEntity
 import com.ardnn.flix.databinding.FragmentFilmBinding
 import com.ardnn.flix.ui.movie_detail.MovieDetailActivity
 import com.ardnn.flix.ui.tvshow_detail.TvShowDetailActivity
 import com.ardnn.flix.utils.FilmClickListener
+import com.ardnn.flix.viewmodel.ViewModelFactory
 
 class FilmFragment : Fragment(), FilmClickListener, View.OnClickListener {
 
@@ -23,6 +24,7 @@ class FilmFragment : Fragment(), FilmClickListener, View.OnClickListener {
     private var _binding: FragmentFilmBinding? = null
     private val binding get() = _binding!!
 
+    private val page = 1 // default page to fetch movies and tv shows
     private var section = 0
 
     companion object {
@@ -46,9 +48,13 @@ class FilmFragment : Fragment(), FilmClickListener, View.OnClickListener {
         // set recyclerview
         binding.rvFilm.layoutManager = GridLayoutManager(requireActivity(), 2)
 
-        // get section and set it as parameter on view model
+        // initialize view model
+        val factory = ViewModelFactory.getInstance()
+        viewModel = ViewModelProvider(this, factory)[FilmViewModel::class.java]
+
+        // get section and set it on view model
         section = arguments?.getInt(ARG_SECTION, 0) as Int
-        viewModel = ViewModelProvider(this, FilmViewModelFactory(section))[FilmViewModel::class.java]
+        viewModel.setSection(section)
 
         // subscribe view model
         subscribe(section)
@@ -59,8 +65,8 @@ class FilmFragment : Fragment(), FilmClickListener, View.OnClickListener {
         return binding.root
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onDestroyView() {
+        super.onDestroyView()
         _binding = null
     }
 
@@ -75,25 +81,37 @@ class FilmFragment : Fragment(), FilmClickListener, View.OnClickListener {
     private fun subscribe(section: Int) {
         setFilmList(section)
 
-        viewModel.isLoading.observe(viewLifecycleOwner, { isLoading ->
-            showLoading(isLoading)
-        })
-
-        viewModel.isFailure.observe(viewLifecycleOwner, { isFailure ->
-            showAlert(isFailure)
-        })
+//        viewModel.isLoading.observe(viewLifecycleOwner, { isLoading ->
+//            showLoading(isLoading)
+//        })
+//
+//        viewModel.isFailure.observe(viewLifecycleOwner, { isFailure ->
+//            showAlert(isFailure)
+//        })
     }
 
     private fun setFilmList(section: Int) {
         when (section) {
             0 -> { // movies
-                viewModel.movieList.observe(viewLifecycleOwner, { movieList ->
+                // show progressbar
+                binding.progressBar.visibility = View.VISIBLE
+
+                viewModel.getMovies(page).observe(viewLifecycleOwner, { movieList ->
+                    // hide progressbar
+                    binding.progressBar.visibility = View.GONE
+
                     val adapter = MovieAdapter(movieList, this)
                     binding.rvFilm.adapter = adapter
                 })
             }
             1 -> { // tv shows
-                viewModel.tvShowList.observe(viewLifecycleOwner, { tvShowList ->
+                // show progressbar
+                binding.progressBar.visibility = View.VISIBLE
+
+                viewModel.getTvShows(page).observe(viewLifecycleOwner, { tvShowList ->
+                    // hide progressbar
+                    binding.progressBar.visibility = View.GONE
+
                     val adapter = TvShowAdapter(tvShowList, this)
                     binding.rvFilm.adapter = adapter
                 })
@@ -109,14 +127,14 @@ class FilmFragment : Fragment(), FilmClickListener, View.OnClickListener {
         binding.llAlert.visibility = if (isFailure) View.VISIBLE else View.GONE
     }
 
-    override fun onMovieClicked(movie: Movie) {
+    override fun onMovieClicked(movie: MovieEntity) {
         // to movie detail
         val toMovieDetail = Intent(activity, MovieDetailActivity::class.java)
         toMovieDetail.putExtra(MovieDetailActivity.EXTRA_MOVIE_ID, movie.id)
         startActivity(toMovieDetail)
     }
 
-    override fun onTvShowClicked(tvShow: TvShow) {
+    override fun onTvShowClicked(tvShow: TvShowEntity) {
         // to tv show detail
         val toTvShowDetail = Intent(activity, TvShowDetailActivity::class.java)
         toTvShowDetail.putExtra(TvShowDetailActivity.EXTRA_TV_SHOW_ID, tvShow.id)

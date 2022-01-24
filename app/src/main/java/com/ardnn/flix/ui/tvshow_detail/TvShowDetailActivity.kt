@@ -6,12 +6,15 @@ import android.view.View
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ardnn.flix.R
-import com.ardnn.flix.api.ImageSize
-import com.ardnn.flix.api.response.GenreResponse
-import com.ardnn.flix.api.response.TvShowDetailResponse
+import com.ardnn.flix.data.source.local.entity.GenreEntity
+import com.ardnn.flix.data.source.local.entity.TvShowDetailEntity
+import com.ardnn.flix.data.source.remote.ImageSize
+import com.ardnn.flix.data.source.remote.response.GenreResponse
+import com.ardnn.flix.data.source.remote.response.TvShowDetailResponse
 import com.ardnn.flix.databinding.ActivityTvShowDetailBinding
 import com.ardnn.flix.ui.movie_detail.GenreAdapter
 import com.ardnn.flix.utils.Helper
+import com.ardnn.flix.viewmodel.ViewModelFactory
 
 class TvShowDetailActivity : AppCompatActivity(), View.OnClickListener {
 
@@ -29,9 +32,13 @@ class TvShowDetailActivity : AppCompatActivity(), View.OnClickListener {
         binding = ActivityTvShowDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // initialize view model
+        val factory = ViewModelFactory.getInstance()
+        viewModel = ViewModelProvider(this, factory)[TvShowDetailViewModel::class.java]
+
         // get tv show id and set it into view model
         val tvShowId = intent.getIntExtra(EXTRA_TV_SHOW_ID, 0)
-        viewModel = ViewModelProvider(this, TvShowDetailViewModelFactory(tvShowId))[TvShowDetailViewModel::class.java]
+        viewModel.setTvShowId(tvShowId)
 
         // set recyclerview genre
         binding.rvGenre.layoutManager = LinearLayoutManager(
@@ -49,7 +56,9 @@ class TvShowDetailActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun subscribe() {
-        viewModel.tvShowDetail.observe(this, { tvShowDetail ->
+        binding.progressBar.visibility = View.VISIBLE
+        viewModel.getTvShowDetail().observe(this, { tvShowDetail ->
+            binding.progressBar.visibility = View.GONE
             setTvShowDetailToWidgets(tvShowDetail)
         })
 
@@ -65,16 +74,16 @@ class TvShowDetailActivity : AppCompatActivity(), View.OnClickListener {
             }
         })
 
-        viewModel.isLoading.observe(this, { isLoading ->
-            showLoading(isLoading)
-        })
-
-        viewModel.isFailure.observe(this, { isFailure ->
-            showAlert(isFailure)
-        })
+//        viewModel.isLoading.observe(this, { isLoading ->
+//            showLoading(isLoading)
+//        })
+//
+//        viewModel.isFailure.observe(this, { isFailure ->
+//            showAlert(isFailure)
+//        })
     }
 
-    private fun setTvShowDetailToWidgets(tvShowDetail: TvShowDetailResponse) {
+    private fun setTvShowDetailToWidgets(tvShowDetail: TvShowDetailEntity) {
         with (binding) {
             // set poster and wallpaper (images)
             Helper.setImageGlide(
@@ -101,7 +110,7 @@ class TvShowDetailActivity : AppCompatActivity(), View.OnClickListener {
             tvSynopsis.text = Helper.checkNullOrEmptyString(tvShowDetail.overview)
 
             // set recyclerview genre items
-            val genreAdapter = GenreAdapter(tvShowDetail.genreList as List<GenreResponse>)
+            val genreAdapter = GenreAdapter(tvShowDetail.genreList as List<GenreEntity>)
             rvGenre.adapter = genreAdapter
         }
     }

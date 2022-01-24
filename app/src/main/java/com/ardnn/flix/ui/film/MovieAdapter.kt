@@ -4,14 +4,14 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.ardnn.flix.R
-import com.ardnn.flix.api.ImageSize
-import com.ardnn.flix.api.response.Movie
+import com.ardnn.flix.data.source.local.entity.MovieEntity
+import com.ardnn.flix.data.source.remote.ImageSize
 import com.ardnn.flix.databinding.ItemFilmBinding
 import com.ardnn.flix.utils.FilmClickListener
 import com.ardnn.flix.utils.Helper
 
 class MovieAdapter(
-    private val movieList: List<Movie>,
+    private val movieList: List<MovieEntity>,
     private val filmClickListener: FilmClickListener
 ) : RecyclerView.Adapter<MovieAdapter.ViewHolder>() {
 
@@ -32,7 +32,7 @@ class MovieAdapter(
     inner class ViewHolder(private val binding: ItemFilmBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun onBind(movie: Movie) {
+        fun onBind(movie: MovieEntity) {
             with (binding) {
                 if (movie.posterUrl.isNullOrEmpty()) {
                     ivPoster.setImageResource(R.drawable.ic_error)

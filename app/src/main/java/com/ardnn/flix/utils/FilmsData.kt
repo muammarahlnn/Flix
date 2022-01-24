@@ -1,7 +1,7 @@
 package com.ardnn.flix.utils
 
 import android.content.Context
-import com.ardnn.flix.data.FilmEntity
+import com.ardnn.flix.data.source.local.entity.FilmEntity
 import org.json.JSONObject
 
 class FilmsData(private val context: Context) {

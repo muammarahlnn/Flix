@@ -1,6 +1,6 @@
 package com.ardnn.flix.ui.detail
 
-import com.ardnn.flix.data.FilmEntity
+import com.ardnn.flix.data.source.local.entity.FilmEntity
 import com.ardnn.flix.utils.FilmsData
 import org.junit.Assert.*
 

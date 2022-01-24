@@ -1,6 +1,6 @@
 package com.ardnn.flix.ui.film
 
-import com.ardnn.flix.data.FilmEntity
+import com.ardnn.flix.data.source.local.entity.FilmEntity
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test

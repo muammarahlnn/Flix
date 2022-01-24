@@ -3,11 +3,11 @@ package com.ardnn.flix.ui.movie_detail
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.ardnn.flix.api.response.GenreResponse
+import com.ardnn.flix.data.source.local.entity.GenreEntity
 import com.ardnn.flix.databinding.ItemGenreBinding
 
 class GenreAdapter(
-    private val genreList: List<GenreResponse>
+    private val genreList: List<GenreEntity>
 ) : RecyclerView.Adapter<GenreAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -27,7 +27,7 @@ class GenreAdapter(
     class ViewHolder(private val binding: ItemGenreBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun onBind(genre: GenreResponse) {
+        fun onBind(genre: GenreEntity) {
             with(binding) {
                 tvName.text = genre.name
             }

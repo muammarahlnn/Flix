@@ -5,9 +5,8 @@ import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.ViewModelProvider
 import com.ardnn.flix.R
-import com.ardnn.flix.data.FilmEntity
+import com.ardnn.flix.data.source.local.entity.FilmEntity
 import com.ardnn.flix.databinding.ActivityDetailBinding
-import com.ardnn.flix.utils.Helper
 
 class DetailActivity : AppCompatActivity(), View.OnClickListener {
 

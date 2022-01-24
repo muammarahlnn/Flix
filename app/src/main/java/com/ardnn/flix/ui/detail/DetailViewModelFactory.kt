@@ -2,7 +2,7 @@ package com.ardnn.flix.ui.detail
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.ardnn.flix.data.FilmEntity
+import com.ardnn.flix.data.source.local.entity.FilmEntity
 import java.lang.IllegalArgumentException
 
 class DetailViewModelFactory(

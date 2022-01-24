@@ -4,14 +4,14 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.ardnn.flix.R
-import com.ardnn.flix.api.ImageSize
-import com.ardnn.flix.api.response.TvShow
+import com.ardnn.flix.data.source.local.entity.TvShowEntity
+import com.ardnn.flix.data.source.remote.ImageSize
 import com.ardnn.flix.databinding.ItemFilmBinding
 import com.ardnn.flix.utils.FilmClickListener
 import com.ardnn.flix.utils.Helper
 
 class TvShowAdapter(
-    private val tvShowList: List<TvShow>,
+    private val tvShowList: List<TvShowEntity>,
     private val filmClickListener: FilmClickListener
 ) : RecyclerView.Adapter<TvShowAdapter.ViewHolder>() {
 
@@ -32,7 +32,7 @@ class TvShowAdapter(
     inner class ViewHolder(private val binding: ItemFilmBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun onBind(tvShow: TvShow) {
+        fun onBind(tvShow: TvShowEntity) {
             with (binding) {
                 if (tvShow.posterUrl.isNullOrEmpty()) {
                     ivPoster.setImageResource(R.drawable.ic_error)

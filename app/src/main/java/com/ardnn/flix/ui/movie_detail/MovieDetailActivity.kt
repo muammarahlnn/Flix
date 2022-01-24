@@ -6,11 +6,14 @@ import android.view.View
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ardnn.flix.R
-import com.ardnn.flix.api.ImageSize
-import com.ardnn.flix.api.response.GenreResponse
-import com.ardnn.flix.api.response.MovieDetailResponse
+import com.ardnn.flix.data.source.local.entity.GenreEntity
+import com.ardnn.flix.data.source.local.entity.MovieDetailEntity
+import com.ardnn.flix.data.source.remote.ImageSize
+import com.ardnn.flix.data.source.remote.response.GenreResponse
+import com.ardnn.flix.data.source.remote.response.MovieDetailResponse
 import com.ardnn.flix.databinding.ActivityMovieDetailBinding
 import com.ardnn.flix.utils.Helper
+import com.ardnn.flix.viewmodel.ViewModelFactory
 
 class MovieDetailActivity : AppCompatActivity(), View.OnClickListener {
 
@@ -28,9 +31,13 @@ class MovieDetailActivity : AppCompatActivity(), View.OnClickListener {
         binding = ActivityMovieDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // initialize view model
+        val factory = ViewModelFactory.getInstance()
+        viewModel = ViewModelProvider(this, factory)[MovieDetailViewModel::class.java]
+
         // get movie id and set it into view model
         val movieId = intent.getIntExtra(EXTRA_MOVIE_ID, 0)
-        viewModel = ViewModelProvider(this, MovieDetailViewModelFactory(movieId))[MovieDetailViewModel::class.java]
+        viewModel.setMovieId(movieId)
 
         // set recyclerview genre
         binding.rvGenre.layoutManager = LinearLayoutManager(
@@ -48,7 +55,9 @@ class MovieDetailActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun subscribe() {
-        viewModel.movieDetail.observe(this, { movieDetail ->
+        binding.progressBar.visibility = View.VISIBLE
+        viewModel.getMovieDetail().observe(this, { movieDetail ->
+            binding.progressBar.visibility = View.GONE
             setMovieDetailToWidgets(movieDetail)
         })
 
@@ -64,16 +73,16 @@ class MovieDetailActivity : AppCompatActivity(), View.OnClickListener {
             }
         })
 
-        viewModel.isLoading.observe(this, { isLoading ->
-            showLoading(isLoading)
-        })
-
-        viewModel.isFailure.observe(this, { isFailure ->
-            showAlert(isFailure)
-        })
+//        viewModel.isLoading.observe(this, { isLoading ->
+//            showLoading(isLoading)
+//        })
+//
+//        viewModel.isFailure.observe(this, { isFailure ->
+//            showAlert(isFailure)
+//        })
     }
 
-    private fun setMovieDetailToWidgets(movieDetail: MovieDetailResponse) {
+    private fun setMovieDetailToWidgets(movieDetail: MovieDetailEntity) {
         with (binding) {
             // set poster and wallpaper (images)
             Helper.setImageGlide(
@@ -97,7 +106,7 @@ class MovieDetailActivity : AppCompatActivity(), View.OnClickListener {
             tvSynopsis.text = Helper.checkNullOrEmptyString(movieDetail.overview)
 
             // set recyclerview genre items
-            val genreAdapter = GenreAdapter(movieDetail.genreList as List<GenreResponse>)
+            val genreAdapter = GenreAdapter(movieDetail.genreList as List<GenreEntity>)
             rvGenre.adapter = genreAdapter
         }
     }

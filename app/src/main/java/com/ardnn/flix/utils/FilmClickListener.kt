@@ -1,9 +1,9 @@
 package com.ardnn.flix.utils
 
-import com.ardnn.flix.api.response.Movie
-import com.ardnn.flix.api.response.TvShow
+import com.ardnn.flix.data.source.local.entity.MovieEntity
+import com.ardnn.flix.data.source.local.entity.TvShowEntity
 
 interface FilmClickListener {
-    fun onMovieClicked(movie: Movie)
-    fun onTvShowClicked(tvShow: TvShow)
+    fun onMovieClicked(movie: MovieEntity)
+    fun onTvShowClicked(tvShow: TvShowEntity)
 }
