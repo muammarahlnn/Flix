@@ -56,9 +56,7 @@ class TvShowDetailActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun subscribe() {
-        binding.progressBar.visibility = View.VISIBLE
         viewModel.getTvShowDetail().observe(this, { tvShowDetail ->
-            binding.progressBar.visibility = View.GONE
             setTvShowDetailToWidgets(tvShowDetail)
         })
 
@@ -74,13 +72,13 @@ class TvShowDetailActivity : AppCompatActivity(), View.OnClickListener {
             }
         })
 
-//        viewModel.isLoading.observe(this, { isLoading ->
-//            showLoading(isLoading)
-//        })
-//
-//        viewModel.isFailure.observe(this, { isFailure ->
-//            showAlert(isFailure)
-//        })
+        viewModel.getIsLoading().observe(this, { isLoading ->
+            showLoading(isLoading)
+        })
+
+        viewModel.getIsLoadFailure().observe(this, { isFailure ->
+            showAlert(isFailure)
+        })
     }
 
     private fun setTvShowDetailToWidgets(tvShowDetail: TvShowDetailEntity) {

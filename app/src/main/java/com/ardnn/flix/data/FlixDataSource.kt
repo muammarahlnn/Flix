@@ -11,4 +11,6 @@ interface FlixDataSource {
     fun getMovieDetail(movieId: Int): LiveData<MovieDetailEntity>
     fun getTvShows(page: Int): LiveData<List<TvShowEntity>>
     fun getTvShowDetail(tvShowId: Int): LiveData<TvShowDetailEntity>
+    fun getIsLoadFailure(): LiveData<Boolean>
+    fun getIsLoading(): LiveData<Boolean>
 }

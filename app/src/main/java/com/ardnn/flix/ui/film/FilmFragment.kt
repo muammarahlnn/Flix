@@ -2,6 +2,7 @@ package com.ardnn.flix.ui.film
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -79,39 +80,27 @@ class FilmFragment : Fragment(), FilmClickListener, View.OnClickListener {
     }
 
     private fun subscribe(section: Int) {
-        setFilmList(section)
+        viewModel.getIsLoading().observe(viewLifecycleOwner, { isLoading ->
+            showLoading(isLoading)
+        })
 
-//        viewModel.isLoading.observe(viewLifecycleOwner, { isLoading ->
-//            showLoading(isLoading)
-//        })
-//
-//        viewModel.isFailure.observe(viewLifecycleOwner, { isFailure ->
-//            showAlert(isFailure)
-//        })
+        viewModel.getIsLoadFailure().observe(viewLifecycleOwner, { isFailure ->
+            showAlert(isFailure)
+        })
+
+        setFilmList(section)
     }
 
     private fun setFilmList(section: Int) {
         when (section) {
             0 -> { // movies
-                // show progressbar
-                binding.progressBar.visibility = View.VISIBLE
-
                 viewModel.getMovies(page).observe(viewLifecycleOwner, { movieList ->
-                    // hide progressbar
-                    binding.progressBar.visibility = View.GONE
-
                     val adapter = MovieAdapter(movieList, this)
                     binding.rvFilm.adapter = adapter
                 })
             }
             1 -> { // tv shows
-                // show progressbar
-                binding.progressBar.visibility = View.VISIBLE
-
                 viewModel.getTvShows(page).observe(viewLifecycleOwner, { tvShowList ->
-                    // hide progressbar
-                    binding.progressBar.visibility = View.GONE
-
                     val adapter = TvShowAdapter(tvShowList, this)
                     binding.rvFilm.adapter = adapter
                 })

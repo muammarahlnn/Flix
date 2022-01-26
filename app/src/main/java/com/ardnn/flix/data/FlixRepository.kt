@@ -1,6 +1,7 @@
 package com.ardnn.flix.data
 
 import android.util.Log
+import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.ardnn.flix.data.source.local.entity.*
@@ -10,6 +11,9 @@ import com.ardnn.flix.data.source.remote.response.*
 class FlixRepository private constructor(
     private val remoteDataSource: RemoteDataSource
 ) : FlixDataSource{
+
+    private val _isLoadFailure = MutableLiveData<Boolean>()
+    private val _isLoading = MutableLiveData<Boolean>()
 
     companion object {
         private const val TAG = "FlixRepository"
@@ -26,9 +30,19 @@ class FlixRepository private constructor(
     }
 
     override fun getMovies(page: Int): LiveData<List<MovieEntity>> {
+        // show progressbar
+        _isLoading.postValue(true)
+
         val movieResults = MutableLiveData<List<MovieEntity>>()
         remoteDataSource.getNowPlayingMovies(page, object : RemoteDataSource.LoadMoviesCallback {
             override fun onSuccess(movies: List<MovieResponse>) {
+                // hide progressbar
+                _isLoading.postValue(false)
+
+                // success fetch data
+                _isLoadFailure.postValue(false)
+
+                // cast MovieResponse to MovieEntity
                 val movieList = ArrayList<MovieEntity>()
                 for (movie in movies) {
                     val tempMovie = MovieEntity(
@@ -44,6 +58,11 @@ class FlixRepository private constructor(
             }
 
             override fun onFailure(message: String) {
+                // hide progressbar
+                _isLoading.postValue(false)
+
+                // unable to fetch data
+                _isLoadFailure.postValue(true)
                 Log.d(TAG, message)
             }
         })
@@ -52,9 +71,19 @@ class FlixRepository private constructor(
     }
 
     override fun getMovieDetail(movieId: Int): LiveData<MovieDetailEntity> {
+        // show progressbar
+        _isLoading.postValue(true)
+
         val movieDetailResult = MutableLiveData<MovieDetailEntity>()
         remoteDataSource.getMovieDetail(movieId, object : RemoteDataSource.LoadMovieDetailCallback {
             override fun onSuccess(movieDetailResponse: MovieDetailResponse) {
+                // hide progressbar
+                _isLoading.postValue(false)
+
+                // success fetch data
+                _isLoadFailure.postValue(false)
+
+                // cast movieDetailResponse to MovieDetailEntity
                 val movieDetail = MovieDetailEntity(
                     movieDetailResponse.id,
                     movieDetailResponse.title,
@@ -70,6 +99,11 @@ class FlixRepository private constructor(
             }
 
             override fun onFailure(message: String) {
+                // hide progressbar
+                _isLoading.postValue(false)
+
+                // unable fetch data
+                _isLoadFailure.postValue(true)
                 Log.d(TAG, message)
             }
         })
@@ -78,9 +112,19 @@ class FlixRepository private constructor(
     }
 
     override fun getTvShows(page: Int): LiveData<List<TvShowEntity>> {
+        // show progressbar
+        _isLoading.postValue(true)
+
         val tvShowResults = MutableLiveData<List<TvShowEntity>>()
         remoteDataSource.getAiringTodayTvShows(page, object : RemoteDataSource.LoadTvShowsCallback {
             override fun onSuccess(tvShows: List<TvShowResponse>) {
+                // hide progressbar
+                _isLoading.postValue(false)
+
+                // success fetch data
+                _isLoadFailure.postValue(false)
+
+                // cast TvShowResponse to TvShowEntity
                 val tvShowList = ArrayList<TvShowEntity>()
                 for (tvShow in tvShows) {
                     val tempTvShow = TvShowEntity(
@@ -96,6 +140,11 @@ class FlixRepository private constructor(
             }
 
             override fun onFailure(message: String) {
+                // hide progressbar
+                _isLoading.postValue(false)
+
+                // unable fetch data
+                _isLoadFailure.postValue(true)
                 Log.d(TAG, message)
             }
         })
@@ -104,9 +153,19 @@ class FlixRepository private constructor(
     }
 
     override fun getTvShowDetail(tvShowId: Int): LiveData<TvShowDetailEntity> {
+        // show progressbar
+        _isLoading.postValue(true)
+
         val tvShowDetailResult = MutableLiveData<TvShowDetailEntity>()
         remoteDataSource.getTvShowDetail(tvShowId, object : RemoteDataSource.LoadTvShowDetailCallback {
             override fun onSuccess(tvShowDetailResponse: TvShowDetailResponse) {
+                // hide progressbar
+                _isLoading.postValue(false)
+
+                // success fetch data
+                _isLoadFailure.postValue(false)
+
+                // cast TvShowDetailResponse to TvShowDetailEntity
                 val tvShowDetail = TvShowDetailEntity(
                     tvShowDetailResponse.id,
                     tvShowDetailResponse.title,
@@ -125,12 +184,23 @@ class FlixRepository private constructor(
             }
 
             override fun onFailure(message: String) {
+                // hide progressbar
+                _isLoading.postValue(false)
+
+                // unable fetch data
+                _isLoadFailure.postValue(true)
                 Log.d(TAG, message)
             }
         })
 
         return tvShowDetailResult
     }
+
+    override fun getIsLoadFailure(): LiveData<Boolean> =
+        _isLoadFailure
+
+    override fun getIsLoading(): LiveData<Boolean> =
+        _isLoading
 
     private fun castGenreList(genreList: List<GenreResponse>?): List<GenreEntity> {
         val tempList = ArrayList<GenreEntity>()

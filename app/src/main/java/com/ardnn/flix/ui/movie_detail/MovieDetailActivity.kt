@@ -55,9 +55,7 @@ class MovieDetailActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun subscribe() {
-        binding.progressBar.visibility = View.VISIBLE
         viewModel.getMovieDetail().observe(this, { movieDetail ->
-            binding.progressBar.visibility = View.GONE
             setMovieDetailToWidgets(movieDetail)
         })
 
@@ -73,13 +71,13 @@ class MovieDetailActivity : AppCompatActivity(), View.OnClickListener {
             }
         })
 
-//        viewModel.isLoading.observe(this, { isLoading ->
-//            showLoading(isLoading)
-//        })
-//
-//        viewModel.isFailure.observe(this, { isFailure ->
-//            showAlert(isFailure)
-//        })
+        viewModel.getIsLoading().observe(this, { isLoading ->
+            showLoading(isLoading)
+        })
+
+        viewModel.getIsLoadFailure().observe(this, { isFailure ->
+            showAlert(isFailure)
+        })
     }
 
     private fun setMovieDetailToWidgets(movieDetail: MovieDetailEntity) {
