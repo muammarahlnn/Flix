@@ -1,6 +1,9 @@
 package com.ardnn.flix.ui.home
 
 import android.content.Context
+import android.content.Intent
+import android.net.wifi.WifiManager
+import android.provider.Settings
 import androidx.recyclerview.widget.RecyclerView
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso.onView
@@ -49,7 +52,7 @@ class HomeActivityTest {
     }
 
     @Test
-    fun loadFilms() {
+    fun loadMovies() {
         onView(withId(R.id.rvFilm)).check(matches(isDisplayed()))
         onView(withId(R.id.rvFilm)).perform(RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(dummyMovies.size))
     }
@@ -97,7 +100,14 @@ class HomeActivityTest {
 
     @Test
     fun loadTvShowDetail() {
+        /*
+            i don't know what happened,
+            but in my device it has to do the statement below twice,
+            to make the testing move to TV Shows tab
+         */
         onView(withText("TV Shows")).perform(click())
+        onView(withText("TV Shows")).perform(click())
+
         onView(withId(R.id.rvFilm)).perform(RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(0, click()))
 
         onView(withId(R.id.ivWallpaper)).check(matches(isDisplayed()))
@@ -139,6 +149,11 @@ class HomeActivityTest {
         onView(withId(R.id.clWrapperSynopsis)).perform(click()) // to shortened synopsis text
         onView(withId(R.id.btnBack)).perform(click())
     }
+
+//    @Test
+//    fun unableToLoadMovies() {
+//
+//    }
 
 //    @Test
 //    fun loadNullFilm() {
