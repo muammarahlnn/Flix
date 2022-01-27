@@ -74,6 +74,7 @@ class FilmFragment : Fragment(), FilmClickListener, View.OnClickListener {
     override fun onClick(v: View) {
         when (v.id) {
             R.id.btnRefresh -> {
+                // not fix yet
                 Toast.makeText(activity, "refresh", Toast.LENGTH_SHORT).show()
             }
         }
