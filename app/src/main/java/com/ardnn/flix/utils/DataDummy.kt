@@ -156,17 +156,17 @@ object DataDummy {
         // using 20 data dummy tv show to equalize tv shows response' size from API
         val tvShows = ArrayList<TvShowEntity>()
         tvShows.add(TvShowEntity(
-            115036,
-            "The Book of Boba Fett",
-            "2021-12-29",
-            "/gNbdjDi1HamTCrfvM9JeA94bNi2.jpg",
-            8f,))
+            85552,
+            "Euphoria",
+            "2019-06-16",
+            "/jtnfNzqZwN4E32FGGxx1YZaBWWf.jpg",
+            8.4f,))
         tvShows.add(TvShowEntity(
-            116416,
-            "Big Brother 7/7",
-            "2021-01-11",
-            "/iUYrQyv0p4UncFolsROm81VNbcB.jpg",
-            5.8f))
+            2,
+            "Dummy title",
+            "Dummy releaseDate",
+            "Dummy posterUrl",
+            0.0f))
         tvShows.add(TvShowEntity(
             3,
             "Dummy title",
@@ -282,23 +282,22 @@ object DataDummy {
 
     fun generateDummyTvShowDetail(tvShowId: Int): TvShowDetailEntity {
         val genreList = arrayListOf(
-            GenreEntity(10759, "Action & Adventure"),
-            GenreEntity(10765, "Sci-Fi & Fantasy"),
+            GenreEntity(18, "Drama")
         )
-        val runtimes = listOf(39, 53)
+        val runtimes = listOf(60)
 
         return TvShowDetailEntity(
             tvShowId,
-            "The Book of Boba Fett",
-            "Legendary bounty hunter Boba Fett and mercenary Fennec Shand must navigate the galaxy’s underworld when they return to the sands of Tatooine to stake their claim on the territory once ruled by Jabba the Hutt and his crime syndicate.",
-            "2021-12-29",
-            "2022-01-19",
+            "Euphoria",
+            "A group of high school students navigate love and friendships in a world of drugs, sex, trauma, and social media.",
+            "2019-06-16",
+            "2022-01-23",
             runtimes,
-            8.0f,
-            "/gNbdjDi1HamTCrfvM9JeA94bNi2.jpg",
-            "/sjx6zjQI2dLGtEL0HGWsnq6UyLU.jpg",
-            7,
-            1,
+            8.4f,
+            "/jtnfNzqZwN4E32FGGxx1YZaBWWf.jpg",
+            "/oKt4J3TFjWirVwBqoHyIvv5IImd.jpg",
+            14,
+            2,
             genreList
         )
     }
@@ -454,17 +453,17 @@ object DataDummy {
         // using 20 data dummy tv show to equalize tv shows response' size from API
         val tvShows = ArrayList<TvShowResponse>()
         tvShows.add(TvShowResponse(
-            115036,
-            "The Book of Boba Fett",
-            "2021-12-29",
-            "/gNbdjDi1HamTCrfvM9JeA94bNi2.jpg",
-            8f,))
+            85552,
+            "Euphoria",
+            "2019-06-16",
+            "/jtnfNzqZwN4E32FGGxx1YZaBWWf.jpg",
+            8.4f,))
         tvShows.add(TvShowResponse(
-            116416,
-            "Big Brother 7/7",
-            "2021-01-11",
-            "/iUYrQyv0p4UncFolsROm81VNbcB.jpg",
-            5.8f))
+            2,
+            "Dummy title",
+            "Dummy releaseDate",
+            "Dummy posterUrl",
+            0.0f))
         tvShows.add(TvShowResponse(
             3,
             "Dummy title",
@@ -580,23 +579,22 @@ object DataDummy {
 
     fun generateRemoteDummyTvShowDetail(tvShowId: Int): TvShowDetailResponse {
         val genreList = arrayListOf(
-            GenreResponse(10759, "Action & Adventure"),
-            GenreResponse(10765, "Sci-Fi & Fantasy"),
+            GenreResponse(18, "Drama")
         )
-        val runtimes = listOf(39, 53)
+        val runtimes = listOf(60)
 
         return TvShowDetailResponse(
             tvShowId,
-            "The Book of Boba Fett",
-            "Legendary bounty hunter Boba Fett and mercenary Fennec Shand must navigate the galaxy’s underworld when they return to the sands of Tatooine to stake their claim on the territory once ruled by Jabba the Hutt and his crime syndicate.",
-            "2021-12-29",
-            "2022-01-19",
+            "Euphoria",
+            "A group of high school students navigate love and friendships in a world of drugs, sex, trauma, and social media.",
+            "2019-06-16",
+            "2022-01-23",
             runtimes,
-            8.0f,
-            "/gNbdjDi1HamTCrfvM9JeA94bNi2.jpg",
-            "/sjx6zjQI2dLGtEL0HGWsnq6UyLU.jpg",
-            7,
-            1,
+            8.4f,
+            "/jtnfNzqZwN4E32FGGxx1YZaBWWf.jpg",
+            "/oKt4J3TFjWirVwBqoHyIvv5IImd.jpg",
+            14,
+            2,
             genreList
         )
     }

@@ -116,7 +116,7 @@ class FlixRepository private constructor(
         _isLoading.postValue(true)
 
         val tvShowResults = MutableLiveData<List<TvShowEntity>>()
-        remoteDataSource.getAiringTodayTvShows(page, object : RemoteDataSource.LoadTvShowsCallback {
+        remoteDataSource.getOnTheAirTvShows(page, object : RemoteDataSource.LoadTvShowsCallback {
             override fun onSuccess(tvShows: List<TvShowResponse>) {
                 // hide progressbar
                 _isLoading.postValue(false)

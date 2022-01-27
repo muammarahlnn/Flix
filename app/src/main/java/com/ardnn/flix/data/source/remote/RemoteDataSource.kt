@@ -134,10 +134,10 @@ class RemoteDataSource private constructor() {
             })
     }
 
-    // method to get airing today tv shows
-    fun getAiringTodayTvShows(page: Int, callback: LoadTvShowsCallback) {
+    // method to get on the air tv shows
+    fun getOnTheAirTvShows(page: Int, callback: LoadTvShowsCallback) {
         EspressoIdlingResource.increment()
-        TV_SHOW_SERVICE.getAiringTodayTvShows(Const.API_KEY, page)
+        TV_SHOW_SERVICE.getOnTheAirTvShows(Const.API_KEY, page)
             .enqueue(object : Callback<TvShowsResponse> {
                 override fun onResponse(
                     call: Call<TvShowsResponse>,
