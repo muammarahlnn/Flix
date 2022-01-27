@@ -87,11 +87,13 @@ class MovieDetailActivity : AppCompatActivity(), View.OnClickListener {
                 this@MovieDetailActivity,
                 movieDetail.getPosterUrl(ImageSize.W342),
                 ivPoster)
+            ivPoster.tag = movieDetail.posterUrl
 
             Helper.setImageGlide(
                 this@MovieDetailActivity,
                 movieDetail.getWallpaperUrl(ImageSize.W500),
                 ivWallpaper)
+            ivWallpaper.tag = movieDetail.wallpaperUrl
 
             // set detail
             tvTitle.text = Helper.checkNullOrEmptyString(movieDetail.title)

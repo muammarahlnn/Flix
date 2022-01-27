@@ -3,6 +3,7 @@ package com.ardnn.flix.data.source.remote
 import com.ardnn.flix.data.source.remote.response.*
 import com.ardnn.flix.data.source.remote.service.MovieApiService
 import com.ardnn.flix.data.source.remote.service.TvShowApiService
+import com.ardnn.flix.utils.EspressoIdlingResource
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -39,6 +40,7 @@ class RemoteDataSource private constructor() {
 
     // method to get movie detail
     fun getMovieDetail(movieId: Int, callback: LoadMovieDetailCallback) {
+        EspressoIdlingResource.increment()
         MOVIE_SERVICE.getMovieDetails(movieId, Const.API_KEY)
             .enqueue(object : Callback<MovieDetailResponse> {
                 override fun onResponse(
@@ -48,22 +50,27 @@ class RemoteDataSource private constructor() {
                     if (response.isSuccessful) {
                         if (response.body() != null) {
                             callback.onSuccess(response.body() as MovieDetailResponse)
+                            EspressoIdlingResource.decrement()
                         } else {
                             callback.onFailure("response.body() is null")
+                            EspressoIdlingResource.decrement()
                         }
                     } else {
                         callback.onFailure(response.message())
+                        EspressoIdlingResource.decrement()
                     }
                 }
 
                 override fun onFailure(call: Call<MovieDetailResponse>, t: Throwable) {
                     callback.onFailure("onFailure: ${t.localizedMessage}")
+                    EspressoIdlingResource.decrement()
                 }
             })
     }
 
     // method to get now playing movies
     fun getNowPlayingMovies(page: Int, callback: LoadMoviesCallback) {
+        EspressoIdlingResource.increment()
         MOVIE_SERVICE.getNowPlayingMovies(Const.API_KEY, page)
             .enqueue(object : Callback<MoviesResponse> {
                 override fun onResponse(
@@ -74,19 +81,24 @@ class RemoteDataSource private constructor() {
                         if (response.body() != null) {
                             if (response.body()?.movies != null) {
                                 callback.onSuccess(response.body()?.movies as List<MovieResponse>)
+                                EspressoIdlingResource.decrement()
                             } else {
                                 callback.onFailure("response.body().movies is null")
+                                EspressoIdlingResource.decrement()
                             }
                         } else {
                             callback.onFailure("response.body() is null")
+                            EspressoIdlingResource.decrement()
                         }
                     } else {
                         callback.onFailure(response.message())
+                        EspressoIdlingResource.decrement()
                     }
                 }
 
                 override fun onFailure(call: Call<MoviesResponse>, t: Throwable) {
                     callback.onFailure("onFailure: ${t.localizedMessage}")
+                    EspressoIdlingResource.decrement()
                 }
 
             })
@@ -94,6 +106,7 @@ class RemoteDataSource private constructor() {
 
     // method to get tv show detail
     fun getTvShowDetail(tvShowId: Int, callback: LoadTvShowDetailCallback) {
+        EspressoIdlingResource.increment()
         TV_SHOW_SERVICE.getTvShowDetails(tvShowId, Const.API_KEY)
             .enqueue(object : Callback<TvShowDetailResponse> {
                 override fun onResponse(
@@ -103,22 +116,27 @@ class RemoteDataSource private constructor() {
                     if (response.isSuccessful) {
                         if (response.body() != null) {
                             callback.onSuccess(response.body() as TvShowDetailResponse)
+                            EspressoIdlingResource.decrement()
                         } else {
                             callback.onFailure("response.body() is null")
+                            EspressoIdlingResource.decrement()
                         }
                     } else {
                         callback.onFailure(response.message())
+                        EspressoIdlingResource.decrement()
                     }
                 }
 
                 override fun onFailure(call: Call<TvShowDetailResponse>, t: Throwable) {
                     callback.onFailure("onFailure: ${t.localizedMessage}")
+                    EspressoIdlingResource.decrement()
                 }
             })
     }
 
     // method to get airing today tv shows
     fun getAiringTodayTvShows(page: Int, callback: LoadTvShowsCallback) {
+        EspressoIdlingResource.increment()
         TV_SHOW_SERVICE.getAiringTodayTvShows(Const.API_KEY, page)
             .enqueue(object : Callback<TvShowsResponse> {
                 override fun onResponse(
@@ -129,19 +147,24 @@ class RemoteDataSource private constructor() {
                         if (response.body() != null) {
                             if (response.body()?.tvShows != null) {
                                 callback.onSuccess(response.body()?.tvShows as List<TvShowResponse>)
+                                EspressoIdlingResource.decrement()
                             } else {
                                 callback.onFailure("response.body().tvShows is null")
+                                EspressoIdlingResource.decrement()
                             }
                         } else {
                             callback.onFailure("response.body() is null")
+                            EspressoIdlingResource.decrement()
                         }
                     } else {
                         callback.onFailure(response.message())
+                        EspressoIdlingResource.decrement()
                     }
                 }
 
                 override fun onFailure(call: Call<TvShowsResponse>, t: Throwable) {
                     callback.onFailure("onFailure: ${t.localizedMessage}")
+                    EspressoIdlingResource.decrement()
                 }
 
             })

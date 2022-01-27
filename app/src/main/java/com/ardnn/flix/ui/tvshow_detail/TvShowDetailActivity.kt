@@ -88,11 +88,13 @@ class TvShowDetailActivity : AppCompatActivity(), View.OnClickListener {
                 this@TvShowDetailActivity,
                 tvShowDetail.getPosterUrl(ImageSize.W342),
                 ivPoster)
+            ivPoster.tag = tvShowDetail.posterUrl
 
             Helper.setImageGlide(
                 this@TvShowDetailActivity,
                 tvShowDetail.getWallpaperUrl(ImageSize.W500),
                 ivWallpaper)
+            ivWallpaper.tag = tvShowDetail.wallpaperUrl
 
             // set detail
             tvTitle.text = Helper.checkNullOrEmptyString(tvShowDetail.title)
