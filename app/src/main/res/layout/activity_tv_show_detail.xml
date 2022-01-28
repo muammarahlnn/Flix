@@ -401,7 +401,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="24dp"
                 android:text="@string/unable_to_retrieve_data"
-                android:textColor="@color/white_smoke"
+                android:textColor="@color/gray_primary"
                 android:textSize="21sp"
                 android:textAlignment="center"
                 android:fontFamily="@font/roboto_regular"

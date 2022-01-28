@@ -2,14 +2,12 @@ package com.ardnn.flix.ui.film
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
-import com.ardnn.flix.R
 import com.ardnn.flix.data.source.local.entity.MovieEntity
 import com.ardnn.flix.data.source.local.entity.TvShowEntity
 import com.ardnn.flix.databinding.FragmentFilmBinding
@@ -18,7 +16,7 @@ import com.ardnn.flix.ui.tvshow_detail.TvShowDetailActivity
 import com.ardnn.flix.utils.FilmClickListener
 import com.ardnn.flix.viewmodel.ViewModelFactory
 
-class FilmFragment : Fragment(), FilmClickListener, View.OnClickListener {
+class FilmFragment : Fragment(), FilmClickListener {
 
     private lateinit var viewModel: FilmViewModel
     private var _binding: FragmentFilmBinding? = null
@@ -59,9 +57,6 @@ class FilmFragment : Fragment(), FilmClickListener, View.OnClickListener {
         // subscribe view model
         subscribe(section)
 
-        // click listeners
-        binding.btnRefresh.setOnClickListener(this)
-
         return binding.root
     }
 
@@ -70,17 +65,11 @@ class FilmFragment : Fragment(), FilmClickListener, View.OnClickListener {
         _binding = null
     }
 
-    override fun onClick(v: View) {
-        when (v.id) {
-            R.id.btnRefresh -> {
-                // not fix yet
-                Toast.makeText(activity, "refresh", Toast.LENGTH_SHORT).show()
-            }
-        }
-    }
-
     private fun subscribe(section: Int) {
+        setFilmList(section)
+
         viewModel.getIsLoading().observe(viewLifecycleOwner, { isLoading ->
+            showAlert(false)
             showLoading(isLoading)
         })
 
@@ -88,7 +77,6 @@ class FilmFragment : Fragment(), FilmClickListener, View.OnClickListener {
             showAlert(isFailure)
         })
 
-        setFilmList(section)
     }
 
     private fun setFilmList(section: Int) {
@@ -113,7 +101,7 @@ class FilmFragment : Fragment(), FilmClickListener, View.OnClickListener {
     }
 
     private fun showAlert(isFailure: Boolean) {
-        binding.llAlert.visibility = if (isFailure) View.VISIBLE else View.GONE
+        binding.tvAlert.visibility = if (isFailure) View.VISIBLE else View.INVISIBLE
     }
 
     override fun onMovieClicked(movie: MovieEntity) {

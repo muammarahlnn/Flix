@@ -31,43 +31,22 @@
             android:indeterminate="true"
             android:indeterminateTint="@color/yellow_primary"/>
 
-        <LinearLayout
-            android:id="@+id/llAlert"
+        <TextView
+            android:id="@+id/tvAlert"
             android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginHorizontal="24dp"
             android:layout_gravity="center"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/tvAlert"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="16dp"
-                android:text="@string/unable_to_retrieve_data"
-                android:textColor="@color/white_smoke"
-                android:textSize="21sp"
-                android:textAlignment="center"
-                android:fontFamily="@font/roboto_regular" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnRefresh"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_marginTop="12dp"
-                android:layout_gravity="center_horizontal"
-                android:insetTop="0dp"
-                android:insetBottom="0dp"
-                android:insetLeft="0dp"
-                android:insetRight="0dp"
-                app:cornerRadius="100dp"
-                app:icon="@drawable/ic_refresh"
-                app:iconTint="@color/black_background"
-                app:iconPadding="0dp"
-                app:iconGravity="textStart"
-                android:backgroundTint="@color/white_smoke" />
-
-        </LinearLayout>
+            android:text="@string/unable_to_retrieve_data"
+            android:textColor="@color/gray_primary"
+            android:textSize="21sp"
+            android:textAlignment="center"
+            android:fontFamily="@font/roboto_regular"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
     </FrameLayout>
 
