@@ -1,7 +1,6 @@
 package com.ardnn.flix.ui.film
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.ardnn.flix.data.FlixRepository
 import com.ardnn.flix.data.source.local.entity.MovieEntity

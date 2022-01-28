@@ -1,7 +1,5 @@
 package com.ardnn.flix.data.source.remote.response
 
-import com.ardnn.flix.data.source.remote.Const
-import com.ardnn.flix.data.source.remote.ImageSize
 import com.google.gson.annotations.SerializedName
 
 data class MoviesResponse(
@@ -24,8 +22,4 @@ data class MovieResponse(
 
     @field:SerializedName("vote_average")
     val rating: Float?,
-) {
-    fun getPosterUrl(size: ImageSize): String {
-        return "${Const.IMG_URL}${size.getValue()}$posterUrl"
-    }
-}
+)

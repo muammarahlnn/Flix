@@ -1,7 +1,6 @@
 package com.ardnn.flix.data
 
 import android.util.Log
-import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.ardnn.flix.data.source.local.entity.*

@@ -1,6 +1,5 @@
 package com.ardnn.flix.ui.tvshow_detail
 
-import android.content.Context
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
@@ -9,17 +8,15 @@ import com.ardnn.flix.data.source.local.entity.TvShowDetailEntity
 import com.ardnn.flix.data.source.local.entity.TvShowEntity
 import com.ardnn.flix.utils.DataDummy
 import com.nhaarman.mockitokotlin2.verify
-import org.junit.Assert.*
-
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNotNull
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.Mockito.`when`
-import org.mockito.Mockito.mock
 import org.mockito.junit.MockitoJUnit
-import org.mockito.junit.MockitoJUnitRunner
 import org.mockito.junit.MockitoRule
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.RuntimeEnvironment

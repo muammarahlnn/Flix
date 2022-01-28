@@ -1,7 +1,5 @@
 package com.ardnn.flix.data.source.remote.response
 
-import com.ardnn.flix.data.source.remote.Const
-import com.ardnn.flix.data.source.remote.ImageSize
 import com.google.gson.annotations.SerializedName
 
 data class TvShowDetailResponse(
@@ -40,12 +38,4 @@ data class TvShowDetailResponse(
 
     @field:SerializedName("genres")
     val genreList: List<GenreResponse>?,
-) {
-    fun getPosterUrl(size: ImageSize): String {
-        return "${Const.IMG_URL}${size.getValue()}$posterUrl"
-    }
-
-    fun getWallpaperUrl(size: ImageSize): String {
-        return "${Const.IMG_URL}${size.getValue()}$wallpaperUrl"
-    }
-}
+)

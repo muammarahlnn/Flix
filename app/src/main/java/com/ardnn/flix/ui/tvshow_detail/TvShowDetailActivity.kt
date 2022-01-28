@@ -1,16 +1,14 @@
 package com.ardnn.flix.ui.tvshow_detail
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ardnn.flix.R
 import com.ardnn.flix.data.source.local.entity.GenreEntity
 import com.ardnn.flix.data.source.local.entity.TvShowDetailEntity
 import com.ardnn.flix.data.source.remote.ImageSize
-import com.ardnn.flix.data.source.remote.response.GenreResponse
-import com.ardnn.flix.data.source.remote.response.TvShowDetailResponse
 import com.ardnn.flix.databinding.ActivityTvShowDetailBinding
 import com.ardnn.flix.ui.movie_detail.GenreAdapter
 import com.ardnn.flix.utils.Helper

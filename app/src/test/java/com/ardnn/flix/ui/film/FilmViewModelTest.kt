@@ -1,12 +1,9 @@
 package com.ardnn.flix.ui.film
 
-import android.content.Context
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
-import androidx.test.platform.app.InstrumentationRegistry
 import com.ardnn.flix.data.FlixRepository
-import com.ardnn.flix.data.source.local.entity.FilmEntity
 import com.ardnn.flix.data.source.local.entity.MovieEntity
 import com.ardnn.flix.data.source.local.entity.TvShowEntity
 import com.ardnn.flix.utils.DataDummy
@@ -18,10 +15,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.Mockito.`when`
-import org.mockito.Mockito.mock
-import org.mockito.MockitoAnnotations
 import org.mockito.junit.MockitoJUnit
-import org.mockito.junit.MockitoJUnitRunner
 import org.mockito.junit.MockitoRule
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.RuntimeEnvironment

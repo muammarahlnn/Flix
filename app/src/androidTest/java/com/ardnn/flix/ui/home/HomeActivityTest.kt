@@ -1,9 +1,6 @@
 package com.ardnn.flix.ui.home
 
 import android.content.Context
-import android.content.Intent
-import android.net.wifi.WifiManager
-import android.provider.Settings
 import androidx.recyclerview.widget.RecyclerView
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso.onView
@@ -17,7 +14,6 @@ import com.ardnn.flix.R
 import com.ardnn.flix.data.source.local.entity.*
 import com.ardnn.flix.utils.DataDummy
 import com.ardnn.flix.utils.EspressoIdlingResource
-import com.ardnn.flix.utils.FilmsData
 import com.ardnn.flix.utils.Helper
 import org.hamcrest.CoreMatchers
 import org.junit.After
