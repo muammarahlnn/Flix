@@ -72,10 +72,10 @@ class FlixRepositoryTest {
             (invocation.arguments[1] as RemoteDataSource.LoadTvShowsCallback)
                 .onSuccess(tvShowsResponse)
             null
-        }.`when`(remote).getAiringTodayTvShows(eq(page), any())
+        }.`when`(remote).getOnTheAirTvShows(eq(page), any())
 
         val tvShowsEntity = LiveDataTestUtil.getValue(flixRepository.getTvShows(page))
-        verify(remote).getAiringTodayTvShows(eq(page), any())
+        verify(remote).getOnTheAirTvShows(eq(page), any())
 
         assertNotNull(tvShowsEntity)
         assertEquals(tvShowsResponse.size.toLong(), tvShowsEntity.size.toLong())
