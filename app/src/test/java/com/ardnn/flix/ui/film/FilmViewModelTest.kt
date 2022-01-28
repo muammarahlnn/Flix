@@ -1,8 +1,10 @@
 package com.ardnn.flix.ui.film
 
+import android.content.Context
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
+import androidx.test.platform.app.InstrumentationRegistry
 import com.ardnn.flix.data.FlixRepository
 import com.ardnn.flix.data.source.local.entity.FilmEntity
 import com.ardnn.flix.data.source.local.entity.MovieEntity
@@ -16,17 +18,25 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.Mockito.`when`
+import org.mockito.Mockito.mock
+import org.mockito.MockitoAnnotations
+import org.mockito.junit.MockitoJUnit
 import org.mockito.junit.MockitoJUnitRunner
+import org.mockito.junit.MockitoRule
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.RuntimeEnvironment
 
-@RunWith(MockitoJUnitRunner::class)
+@RunWith(RobolectricTestRunner::class)
 class FilmViewModelTest {
 
     private lateinit var viewModel: FilmViewModel
+    private lateinit var dataDummy: DataDummy
 
     @get:Rule
     var instantTaskEnvironment = InstantTaskExecutorRule()
+
+    @get:Rule
+    var mockitoRule: MockitoRule = MockitoJUnit.rule()
 
     @Mock
     private lateinit var flixRepository: FlixRepository
@@ -47,13 +57,15 @@ class FilmViewModelTest {
 
     @Before
     fun setup() {
-//        val context = RuntimeEnvironment.getApplication()
         viewModel = FilmViewModel(flixRepository)
+
+        val context = RuntimeEnvironment.getApplication()
+        dataDummy = DataDummy(context)
     }
 
     @Test
     fun getMovies() {
-        val dummyMovies = DataDummy.generateDummyMovies()
+        val dummyMovies = dataDummy.generateDummyMovies()
         val movies = MutableLiveData<List<MovieEntity>>()
         movies.value = dummyMovies
 
@@ -72,7 +84,7 @@ class FilmViewModelTest {
 
     @Test
     fun getTvShows() {
-        val dummyTvShows = DataDummy.generateDummyTvShows()
+        val dummyTvShows = dataDummy.generateDummyTvShows()
         val tvShows = MutableLiveData<List<TvShowEntity>>()
         tvShows.value = dummyTvShows
 

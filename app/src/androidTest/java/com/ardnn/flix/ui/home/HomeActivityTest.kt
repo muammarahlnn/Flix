@@ -14,8 +14,7 @@ import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import com.ardnn.flix.R
-import com.ardnn.flix.data.source.local.entity.FilmEntity
-import com.ardnn.flix.data.source.local.entity.GenreEntity
+import com.ardnn.flix.data.source.local.entity.*
 import com.ardnn.flix.utils.DataDummy
 import com.ardnn.flix.utils.EspressoIdlingResource
 import com.ardnn.flix.utils.FilmsData
@@ -29,14 +28,13 @@ import org.junit.Test
 
 class HomeActivityTest {
 
-    private val dummyMovies = DataDummy.generateDummyMovies()
-    private val movieId = dummyMovies[0].id
-    private val dummyMovieDetail = DataDummy.generateDummyMovieDetail(movieId)
+    private var movieId: Int = 0
+    private lateinit var dummyMoviesEntity: List<MovieEntity>
+    private lateinit var dummyMovieDetailEntity: MovieDetailEntity
 
-    private val dummyTvShows = DataDummy.generateDummyTvShows()
-    private val tvShowId = dummyTvShows[0].id
-    private val dummyTvShowDetail = DataDummy.generateDummyTvShowDetail(tvShowId)
-
+    private var tvShowId: Int = 0
+    private lateinit var dummyTvShowsEntity: List<TvShowEntity>
+    private lateinit var dummyTvShowDetailEntity: TvShowDetailEntity
 
     @get:Rule
     var activityRule = ActivityScenarioRule(HomeActivity::class.java)
@@ -44,6 +42,17 @@ class HomeActivityTest {
     @Before
     fun setUp() {
         IdlingRegistry.getInstance().register(EspressoIdlingResource.idlingResource)
+
+        val context = ApplicationProvider.getApplicationContext<Context>()
+        val dataDummy = DataDummy(context)
+
+        dummyMoviesEntity = dataDummy.generateDummyMovies()
+        movieId = dummyMoviesEntity[0].id
+        dummyMovieDetailEntity = dataDummy.generateDummyMovieDetail()
+
+        dummyTvShowsEntity = dataDummy.generateDummyTvShows()
+        tvShowId = dummyTvShowsEntity[0].id
+        dummyTvShowDetailEntity = dataDummy.generateDummyTvShowDetail()
     }
 
     @After
@@ -54,14 +63,14 @@ class HomeActivityTest {
     @Test
     fun loadMovies() {
         onView(withId(R.id.rvFilm)).check(matches(isDisplayed()))
-        onView(withId(R.id.rvFilm)).perform(RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(dummyMovies.size))
+        onView(withId(R.id.rvFilm)).perform(RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(dummyMoviesEntity.size))
     }
 
     @Test
     fun loadTvShows() {
         onView(withText("TV Shows")).perform(click())
         onView(withId(R.id.rvFilm)).check(matches(isDisplayed()))
-        onView(withId(R.id.rvFilm)).perform(RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(dummyTvShows.size))
+        onView(withId(R.id.rvFilm)).perform(RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(dummyTvShowsEntity.size))
     }
 
     @Test
@@ -69,29 +78,29 @@ class HomeActivityTest {
         onView(withId(R.id.rvFilm)).perform(RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(0, click()))
 
         onView(withId(R.id.ivWallpaper)).check(matches(isDisplayed()))
-        onView(withId(R.id.ivWallpaper)).check(matches(withTagValue(CoreMatchers.equalTo(dummyMovieDetail.wallpaperUrl))))
+        onView(withId(R.id.ivWallpaper)).check(matches(withTagValue(CoreMatchers.equalTo(dummyMovieDetailEntity.wallpaperUrl))))
 
         onView(withId(R.id.ivPoster)).check(matches(isDisplayed()))
-        onView(withId(R.id.ivPoster)).check(matches(withTagValue(CoreMatchers.equalTo(dummyMovieDetail.posterUrl))))
+        onView(withId(R.id.ivPoster)).check(matches(withTagValue(CoreMatchers.equalTo(dummyMovieDetailEntity.posterUrl))))
 
         onView(withId(R.id.tvTitle)).check(matches(isDisplayed()))
-        onView(withId(R.id.tvTitle)).check(matches(withText(dummyMovieDetail.title)))
+        onView(withId(R.id.tvTitle)).check(matches(withText(dummyMovieDetailEntity.title)))
 
         onView(withId(R.id.tvReleaseDate)).check(matches(isDisplayed()))
-        onView(withId(R.id.tvReleaseDate)).check(matches(withText(Helper.convertToDate(dummyMovieDetail.releaseDate))))
+        onView(withId(R.id.tvReleaseDate)).check(matches(withText(Helper.convertToDate(dummyMovieDetailEntity.releaseDate))))
 
         onView(withId(R.id.tvRuntime)).check(matches(isDisplayed()))
-        onView(withId(R.id.tvRuntime)).check(matches(withText("${dummyMovieDetail.runtime} mins")))
+        onView(withId(R.id.tvRuntime)).check(matches(withText("${dummyMovieDetailEntity.runtime} mins")))
 
         onView(withId(R.id.tvRating)).check(matches(isDisplayed()))
-        onView(withId(R.id.tvRating)).check(matches(withText(dummyMovieDetail.rating.toString())))
+        onView(withId(R.id.tvRating)).check(matches(withText(dummyMovieDetailEntity.rating.toString())))
 
-        val genreList = dummyMovieDetail.genreList as List<GenreEntity>
+        val genreList = dummyMovieDetailEntity.genreList as List<GenreEntity>
         onView(withId(R.id.rvGenre)).check(matches(isDisplayed()))
         onView(withId(R.id.rvGenre)).perform(RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(genreList.size))
 
         onView(withId(R.id.tvSynopsis)).check(matches(isDisplayed()))
-        onView(withId(R.id.tvSynopsis)).check(matches(withText(dummyMovieDetail.overview)))
+        onView(withId(R.id.tvSynopsis)).check(matches(withText(dummyMovieDetailEntity.overview)))
 
         onView(withId(R.id.clWrapperSynopsis)).perform(click()) // to extended synopsis text
         onView(withId(R.id.clWrapperSynopsis)).perform(click()) // to shortened synopsis text
@@ -100,88 +109,48 @@ class HomeActivityTest {
 
     @Test
     fun loadTvShowDetail() {
-        /*
-            i don't know what happened,
-            but in my device it has to do the statement below twice,
-            to make the testing move to TV Shows tab
-         */
         onView(withText("TV Shows")).perform(click())
-        onView(withText("TV Shows")).perform(click())
-
-        onView(withId(R.id.rvFilm)).perform(RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(0, click()))
+        onView(withId(R.id.rvFilm)).perform(RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(1, click()))
 
         onView(withId(R.id.ivWallpaper)).check(matches(isDisplayed()))
-        onView(withId(R.id.ivWallpaper)).check(matches(withTagValue(CoreMatchers.equalTo(dummyTvShowDetail.wallpaperUrl))))
+        onView(withId(R.id.ivWallpaper)).check(matches(withTagValue(CoreMatchers.equalTo(dummyTvShowDetailEntity.wallpaperUrl))))
 
         onView(withId(R.id.ivPoster)).check(matches(isDisplayed()))
-        onView(withId(R.id.ivPoster)).check(matches(withTagValue(CoreMatchers.equalTo(dummyTvShowDetail.posterUrl))))
+        onView(withId(R.id.ivPoster)).check(matches(withTagValue(CoreMatchers.equalTo(dummyTvShowDetailEntity.posterUrl))))
 
         onView(withId(R.id.tvTitle)).check(matches(isDisplayed()))
-        onView(withId(R.id.tvTitle)).check(matches(withText(dummyTvShowDetail.title)))
+        onView(withId(R.id.tvTitle)).check(matches(withText(dummyTvShowDetailEntity.title)))
 
         onView(withId(R.id.tvEpisodes)).check(matches(isDisplayed()))
-        onView(withId(R.id.tvEpisodes)).check(matches(withText(dummyTvShowDetail.numberOfEpisodes.toString())))
+        onView(withId(R.id.tvEpisodes)).check(matches(withText(dummyTvShowDetailEntity.numberOfEpisodes.toString())))
 
         onView(withId(R.id.tvSeasons)).check(matches(isDisplayed()))
-        onView(withId(R.id.tvSeasons)).check(matches(withText(dummyTvShowDetail.numberOfSeasons.toString())))
+        onView(withId(R.id.tvSeasons)).check(matches(withText(dummyTvShowDetailEntity.numberOfSeasons.toString())))
 
-        val runtime = dummyTvShowDetail.runtimes?.get(0)
+        val runtime = dummyTvShowDetailEntity.runtimes?.get(0)
         onView(withId(R.id.tvRuntime)).check(matches(isDisplayed()))
         onView(withId(R.id.tvRuntime)).check(matches(withText("$runtime mins")))
 
         onView(withId(R.id.tvRating)).check(matches(isDisplayed()))
-        onView(withId(R.id.tvRating)).check(matches(withText(dummyTvShowDetail.rating.toString())))
+        onView(withId(R.id.tvRating)).check(matches(withText(dummyTvShowDetailEntity.rating.toString())))
 
-        val genreList = dummyTvShowDetail.genreList as List<GenreEntity>
+        val genreList = dummyTvShowDetailEntity.genreList as List<GenreEntity>
         onView(withId(R.id.rvGenre)).check(matches(isDisplayed()))
         onView(withId(R.id.rvGenre)).perform(RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(genreList.size))
 
         onView(withId(R.id.tvFirstAiring)).check(matches(isDisplayed()))
-        onView(withId(R.id.tvFirstAiring)).check(matches(withText(Helper.convertToDate(dummyTvShowDetail.firstAirDate))))
+        onView(withId(R.id.tvFirstAiring)).check(matches(withText(Helper.convertToDate(dummyTvShowDetailEntity.firstAirDate))))
 
         onView(withId(R.id.tvLastAiring)).check(matches(isDisplayed()))
-        onView(withId(R.id.tvLastAiring)).check(matches(withText(Helper.convertToDate(dummyTvShowDetail.lastAirDate))))
+        onView(withId(R.id.tvLastAiring)).check(matches(withText(Helper.convertToDate(dummyTvShowDetailEntity.lastAirDate))))
 
         onView(withId(R.id.tvSynopsis)).check(matches(isDisplayed()))
-        onView(withId(R.id.tvSynopsis)).check(matches(withText(dummyTvShowDetail.overview)))
+        onView(withId(R.id.tvSynopsis)).check(matches(withText(dummyTvShowDetailEntity.overview)))
 
         onView(withId(R.id.clWrapperSynopsis)).perform(click()) // to extended synopsis text
         onView(withId(R.id.clWrapperSynopsis)).perform(click()) // to shortened synopsis text
         onView(withId(R.id.btnBack)).perform(click())
     }
 
-//    @Test
-//    fun unableToLoadMovies() {
-//
-//    }
 
-//    @Test
-//    fun loadNullFilm() {
-//        onView(withId(R.id.rvFilm)).perform(RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(1, click()))
-//
-//        onView(withId(R.id.ivWallpaper)).check(matches(isDisplayed()))
-//        onView(withId(R.id.ivWallpaper)).check(matches(withTagValue(CoreMatchers.equalTo(R.drawable.ic_error))))
-//
-//        onView(withId(R.id.ivPoster)).check(matches(isDisplayed()))
-//        onView(withId(R.id.ivPoster)).check(matches(withTagValue(CoreMatchers.equalTo(R.drawable.ic_error))))
-//
-//        onView(withId(R.id.tvTitle)).check(matches(isDisplayed()))
-//        onView(withId(R.id.tvTitle)).check(matches(withText("-")))
-//
-//        onView(withId(R.id.tvReleaseDate)).check(matches(isDisplayed()))
-//        onView(withId(R.id.tvReleaseDate)).check(matches(withText("-")))
-//
-//        onView(withId(R.id.tvRuntime)).check(matches(isDisplayed()))
-//        onView(withId(R.id.tvRuntime)).check(matches(withText("-")))
-//
-//        onView(withId(R.id.tvRating)).check(matches(isDisplayed()))
-//        onView(withId(R.id.tvRating)).check(matches(withText("-")))
-//
-//        onView(withId(R.id.tvSynopsis)).check(matches(isDisplayed()))
-//        onView(withId(R.id.tvSynopsis)).check(matches(withText("-")))
-//
-//        onView(withId(R.id.clWrapperSynopsis)).perform(click()) // to extended synopsis text
-//        onView(withId(R.id.clWrapperSynopsis)).perform(click()) // to shortened synopsis text
-//        onView(withId(R.id.btnBack)).perform(click())
-//    }
 }

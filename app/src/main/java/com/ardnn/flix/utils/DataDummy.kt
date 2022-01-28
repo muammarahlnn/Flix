@@ -1,601 +1,230 @@
 package com.ardnn.flix.utils
 
+import android.content.Context
 import com.ardnn.flix.data.source.local.entity.*
 import com.ardnn.flix.data.source.remote.response.*
+import org.json.JSONArray
+import org.json.JSONObject
 
-object DataDummy {
+class DataDummy(private val context: Context) {
 
-    fun generateDummyMovies(): List<MovieEntity> {
-        // using 20 data dummy movie to equalize movies response' size from API
-        val movies = ArrayList<MovieEntity>()
-        movies.add(MovieEntity(
-            634649,
-            "Spider-Man: No Way Home",
-            "2021-12-15",
-            "/1g0dhYtq4irTY1GPXvft6k4YLjm.jpg",
-            8.5f))
-        movies.add(MovieEntity(
-            568124,
-            "Encanto",
-            "2021-11-24",
-            "/4j0PNHkMr5ax3IA8tjtxcmPU3QT.jpg",
-            7.8f))
-        movies.add(MovieEntity(
-            3,
-            "Dummy title",
-            "Dummy releaseDate",
-            "Dummy posterUrl",
-            0.0f))
-        movies.add(MovieEntity(
-            4,
-            "Dummy title",
-            "Dummy releaseDate",
-            "Dummy posterUrl",
-            0.0f))
-        movies.add(MovieEntity(
-            5,
-            "Dummy title",
-            "Dummy releaseDate",
-            "Dummy posterUrl",
-            0.0f))
-        movies.add(MovieEntity(
-            6,
-            "Dummy title",
-            "Dummy releaseDate",
-            "Dummy posterUrl",
-            0.0f))
-        movies.add(MovieEntity(
-            7,
-            "Dummy title",
-            "Dummy releaseDate",
-            "Dummy posterUrl",
-            0.0f))
-        movies.add(MovieEntity(
-            8,
-            "Dummy title",
-            "Dummy releaseDate",
-            "Dummy posterUrl",
-            0.0f))
-        movies.add(MovieEntity(
-            9,
-            "Dummy title",
-            "Dummy releaseDate",
-            "Dummy posterUrl",
-            0.0f))
-        movies.add(MovieEntity(
-            10,
-            "Dummy title",
-            "Dummy releaseDate",
-            "Dummy posterUrl",
-            0.0f))
-        movies.add(MovieEntity(
-            11,
-            "Dummy title",
-            "Dummy releaseDate",
-            "Dummy posterUrl",
-            0.0f))
-        movies.add(MovieEntity(
-            12,
-            "Dummy title",
-            "Dummy releaseDate",
-            "Dummy posterUrl",
-            0.0f))
-        movies.add(MovieEntity(
-            13,
-            "Dummy title",
-            "Dummy releaseDate",
-            "Dummy posterUrl",
-            0.0f))
-        movies.add(MovieEntity(
-            14,
-            "Dummy title",
-            "Dummy releaseDate",
-            "Dummy posterUrl",
-            0.0f))
-        movies.add(MovieEntity(
-            15,
-            "Dummy title",
-            "Dummy releaseDate",
-            "Dummy posterUrl",
-            0.0f))
-        movies.add(MovieEntity(
-            16,
-            "Dummy title",
-            "Dummy releaseDate",
-            "Dummy posterUrl",
-            0.0f))
-        movies.add(MovieEntity(
-            17,
-            "Dummy title",
-            "Dummy releaseDate",
-            "Dummy posterUrl",
-            0.0f))
-        movies.add(MovieEntity(
-            18,
-            "Dummy title",
-            "Dummy releaseDate",
-            "Dummy posterUrl",
-            0.0f))
-        movies.add(MovieEntity(
-            19,
-            "Dummy title",
-            "Dummy releaseDate",
-            "Dummy posterUrl",
-            0.0f))
-        movies.add(MovieEntity(
-            20,
-            "Dummy title",
-            "Dummy releaseDate",
-            "Dummy posterUrl",
-            0.0f))
-
-        return movies
+    private fun parsingFileToString(fileName: String): String {
+        return context.assets.open(fileName).bufferedReader().use {
+            it.readText()
+        }
     }
 
-    fun generateDummyMovieDetail(movieId: Int): MovieDetailEntity {
-        val genreList = arrayListOf(
-            GenreEntity(28, "Action"),
-            GenreEntity(12, "Adventure"),
-            GenreEntity(878, "Science Fiction"),
-        )
+    private fun parsingGenreEntityList(genreArr: JSONArray): List<GenreEntity> {
+        val genreList = ArrayList<GenreEntity>()
+        for (i in 0 until genreArr.length()) {
+            val genre = genreArr.getJSONObject(i)
+            val genreEntity = GenreEntity(
+                genre.getInt("id"),
+                genre.getString("name")
+            )
+
+            genreList.add(genreEntity)
+        }
+        return genreList
+    }
+
+    private fun parsingGenreResponseList(genreArr: JSONArray): List<GenreResponse> {
+        val genreList = ArrayList<GenreResponse>()
+        for (i in 0 until genreArr.length()) {
+            val genre = genreArr.getJSONObject(i)
+            val genreResponse = GenreResponse(
+                genre.getInt("id"),
+                genre.getString("name")
+            )
+
+            genreList.add(genreResponse)
+        }
+        return genreList
+    }
+
+    fun generateDummyMovies(): List<MovieEntity> {
+        val moviesData = parsingFileToString("movies.json")
+        val moviesArr = JSONObject(moviesData).getJSONArray("movies")
+
+        val list = ArrayList<MovieEntity>()
+        for (i in 0 until moviesArr.length()) {
+            val movie = moviesArr.getJSONObject(i)
+
+            val id = movie.getInt("id")
+            val title = movie.getString("title")
+            val releaseDate = movie.getString("release_date")
+            val posterUrl = movie.getString("poster_path")
+            val rating = movie.getDouble("vote_average").toFloat()
+
+            val movieEntity = MovieEntity(id, title, releaseDate, posterUrl, rating)
+            list.add(movieEntity)
+        }
+        return list
+    }
+
+    fun generateRemoteDummyMovies(): List<MovieResponse> {
+        val moviesData = parsingFileToString("movies.json")
+        val moviesArr = JSONObject(moviesData).getJSONArray("movies")
+
+        val list = ArrayList<MovieResponse>()
+        for (i in 0 until moviesArr.length()) {
+            val movie = moviesArr.getJSONObject(i)
+
+            val id = movie.getInt("id")
+            val title = movie.getString("title")
+            val releaseDate = movie.getString("release_date")
+            val posterUrl = movie.getString("poster_path")
+            val rating = movie.getDouble("vote_average").toFloat()
+
+            val movieResponse = MovieResponse(id, title, releaseDate, posterUrl, rating)
+            list.add(movieResponse)
+        }
+        return list
+    }
+
+    fun generateDummyMovieDetail(): MovieDetailEntity {
+        val movieDetailData = parsingFileToString("movie_detail.json")
+        val movieDetail = JSONObject(movieDetailData)
+
+        val id = movieDetail.getInt("id")
+        val title = movieDetail.getString("title")
+        val overview = movieDetail.getString("overview")
+        val releaseDate = movieDetail.getString("release_date")
+        val runtime = movieDetail.getInt("runtime")
+        val rating = movieDetail.getDouble("vote_average").toFloat()
+        val posterUrl = movieDetail.getString("poster_path")
+        val wallpaperUrl = movieDetail.getString("backdrop_path")
+
+        val genreArr = movieDetail.getJSONArray("genres")
+        val genreList = parsingGenreEntityList(genreArr)
 
         return MovieDetailEntity(
-            movieId,
-            "Spider-Man: No Way Home",
-            "Peter Parker is unmasked and no longer able to separate his normal life from the high-stakes of being a super-hero. When he asks for help from Doctor Strange the stakes become even more dangerous, forcing him to discover what it truly means to be Spider-Man.",
-            "2021-12-15",
-            148,
-            8.5f,
-            "/1g0dhYtq4irTY1GPXvft6k4YLjm.jpg",
-            "/1Rr5SrvHxMXHu5RjKpaMba8VTzi.jpg",
-            genreList
+            id, title, overview, releaseDate, runtime, rating,
+            posterUrl, wallpaperUrl, genreList
+        )
+    }
+
+    fun generateRemoteDummyMovieDetail(): MovieDetailResponse {
+        val movieDetailData = parsingFileToString("movie_detail.json")
+        val movieDetail = JSONObject(movieDetailData)
+
+        val id = movieDetail.getInt("id")
+        val title = movieDetail.getString("title")
+        val overview = movieDetail.getString("overview")
+        val releaseDate = movieDetail.getString("release_date")
+        val runtime = movieDetail.getInt("runtime")
+        val rating = movieDetail.getDouble("vote_average").toFloat()
+        val posterUrl = movieDetail.getString("poster_path")
+        val wallpaperUrl = movieDetail.getString("backdrop_path")
+
+        val genreArr = movieDetail.getJSONArray("genres")
+        val genreList = parsingGenreResponseList(genreArr)
+
+        return MovieDetailResponse(
+            id, title, overview, releaseDate, runtime, rating,
+            posterUrl, wallpaperUrl, genreList
         )
     }
 
     fun generateDummyTvShows(): List<TvShowEntity> {
-        // using 20 data dummy tv show to equalize tv shows response' size from API
-        val tvShows = ArrayList<TvShowEntity>()
-        tvShows.add(TvShowEntity(
-            85552,
-            "Euphoria",
-            "2019-06-16",
-            "/jtnfNzqZwN4E32FGGxx1YZaBWWf.jpg",
-            8.4f,))
-        tvShows.add(TvShowEntity(
-            2,
-            "Dummy title",
-            "Dummy releaseDate",
-            "Dummy posterUrl",
-            0.0f))
-        tvShows.add(TvShowEntity(
-            3,
-            "Dummy title",
-            "Dummy releaseDate",
-            "Dummy posterUrl",
-            0.0f))
-        tvShows.add(TvShowEntity(
-            4,
-            "Dummy title",
-            "Dummy releaseDate",
-            "Dummy posterUrl",
-            0.0f))
-        tvShows.add(TvShowEntity(
-            5,
-            "Dummy title",
-            "Dummy releaseDate",
-            "Dummy posterUrl",
-            0.0f))
-        tvShows.add(TvShowEntity(
-            6,
-            "Dummy title",
-            "Dummy releaseDate",
-            "Dummy posterUrl",
-            0.0f))
-        tvShows.add(TvShowEntity(
-            7,
-            "Dummy title",
-            "Dummy releaseDate",
-            "Dummy posterUrl",
-            0.0f))
-        tvShows.add(TvShowEntity(
-            8,
-            "Dummy title",
-            "Dummy releaseDate",
-            "Dummy posterUrl",
-            0.0f))
-        tvShows.add(TvShowEntity(
-            9,
-            "Dummy title",
-            "Dummy releaseDate",
-            "Dummy posterUrl",
-            0.0f))
-        tvShows.add(TvShowEntity(
-            10,
-            "Dummy title",
-            "Dummy releaseDate",
-            "Dummy posterUrl",
-            0.0f))
-        tvShows.add(TvShowEntity(
-            11,
-            "Dummy title",
-            "Dummy releaseDate",
-            "Dummy posterUrl",
-            0.0f))
-        tvShows.add(TvShowEntity(
-            12,
-            "Dummy title",
-            "Dummy releaseDate",
-            "Dummy posterUrl",
-            0.0f))
-        tvShows.add(TvShowEntity(
-            13,
-            "Dummy title",
-            "Dummy releaseDate",
-            "Dummy posterUrl",
-            0.0f))
-        tvShows.add(TvShowEntity(
-            14,
-            "Dummy title",
-            "Dummy releaseDate",
-            "Dummy posterUrl",
-            0.0f))
-        tvShows.add(TvShowEntity(
-            15,
-            "Dummy title",
-            "Dummy releaseDate",
-            "Dummy posterUrl",
-            0.0f))
-        tvShows.add(TvShowEntity(
-            16,
-            "Dummy title",
-            "Dummy releaseDate",
-            "Dummy posterUrl",
-            0.0f))
-        tvShows.add(TvShowEntity(
-            17,
-            "Dummy title",
-            "Dummy releaseDate",
-            "Dummy posterUrl",
-            0.0f))
-        tvShows.add(TvShowEntity(
-            18,
-            "Dummy title",
-            "Dummy releaseDate",
-            "Dummy posterUrl",
-            0.0f))
-        tvShows.add(TvShowEntity(
-            19,
-            "Dummy title",
-            "Dummy releaseDate",
-            "Dummy posterUrl",
-            0.0f))
-        tvShows.add(TvShowEntity(
-            20,
-            "Dummy title",
-            "Dummy releaseDate",
-            "Dummy posterUrl",
-            0.0f))
+        val tvShowsData = parsingFileToString("tv_shows.json")
+        val tvShowsArr = JSONObject(tvShowsData).getJSONArray("tv_shows")
 
+        val list = ArrayList<TvShowEntity>()
+        for (i in 0 until tvShowsArr.length()) {
+            val movie = tvShowsArr.getJSONObject(i)
 
-        return tvShows
-    }
+            val id = movie.getInt("id")
+            val title = movie.getString("name")
+            val firstAirDate = movie.getString("first_air_date")
+            val posterUrl = movie.getString("poster_path")
+            val rating = movie.getDouble("vote_average").toFloat()
 
-    fun generateDummyTvShowDetail(tvShowId: Int): TvShowDetailEntity {
-        val genreList = arrayListOf(
-            GenreEntity(18, "Drama")
-        )
-        val runtimes = listOf(60)
-
-        return TvShowDetailEntity(
-            tvShowId,
-            "Euphoria",
-            "A group of high school students navigate love and friendships in a world of drugs, sex, trauma, and social media.",
-            "2019-06-16",
-            "2022-01-23",
-            runtimes,
-            8.4f,
-            "/jtnfNzqZwN4E32FGGxx1YZaBWWf.jpg",
-            "/oKt4J3TFjWirVwBqoHyIvv5IImd.jpg",
-            14,
-            2,
-            genreList
-        )
-    }
-
-    fun generateRemoteDummyMovies(): List<MovieResponse> {
-        // using 20 data dummy movie to equalize movies response' size from API
-        val movies = ArrayList<MovieResponse>()
-        movies.add(MovieResponse(
-            634649,
-            "Spider-Man: No Way Home",
-            "2021-12-15",
-            "/1g0dhYtq4irTY1GPXvft6k4YLjm.jpg",
-            8.5f))
-        movies.add(MovieResponse(
-            568124,
-            "Encanto",
-            "2021-11-24",
-            "/4j0PNHkMr5ax3IA8tjtxcmPU3QT.jpg",
-            7.8f))
-        movies.add(MovieResponse(
-            3,
-            "Dummy title",
-            "Dummy releaseDate",
-            "Dummy posterUrl",
-            0.0f))
-        movies.add(MovieResponse(
-            4,
-            "Dummy title",
-            "Dummy releaseDate",
-            "Dummy posterUrl",
-            0.0f))
-        movies.add(MovieResponse(
-            5,
-            "Dummy title",
-            "Dummy releaseDate",
-            "Dummy posterUrl",
-            0.0f))
-        movies.add(MovieResponse(
-            6,
-            "Dummy title",
-            "Dummy releaseDate",
-            "Dummy posterUrl",
-            0.0f))
-        movies.add(MovieResponse(
-            7,
-            "Dummy title",
-            "Dummy releaseDate",
-            "Dummy posterUrl",
-            0.0f))
-        movies.add(MovieResponse(
-            8,
-            "Dummy title",
-            "Dummy releaseDate",
-            "Dummy posterUrl",
-            0.0f))
-        movies.add(MovieResponse(
-            9,
-            "Dummy title",
-            "Dummy releaseDate",
-            "Dummy posterUrl",
-            0.0f))
-        movies.add(MovieResponse(
-            10,
-            "Dummy title",
-            "Dummy releaseDate",
-            "Dummy posterUrl",
-            0.0f))
-        movies.add(MovieResponse(
-            11,
-            "Dummy title",
-            "Dummy releaseDate",
-            "Dummy posterUrl",
-            0.0f))
-        movies.add(MovieResponse(
-            12,
-            "Dummy title",
-            "Dummy releaseDate",
-            "Dummy posterUrl",
-            0.0f))
-        movies.add(MovieResponse(
-            13,
-            "Dummy title",
-            "Dummy releaseDate",
-            "Dummy posterUrl",
-            0.0f))
-        movies.add(MovieResponse(
-            14,
-            "Dummy title",
-            "Dummy releaseDate",
-            "Dummy posterUrl",
-            0.0f))
-        movies.add(MovieResponse(
-            15,
-            "Dummy title",
-            "Dummy releaseDate",
-            "Dummy posterUrl",
-            0.0f))
-        movies.add(MovieResponse(
-            16,
-            "Dummy title",
-            "Dummy releaseDate",
-            "Dummy posterUrl",
-            0.0f))
-        movies.add(MovieResponse(
-            17,
-            "Dummy title",
-            "Dummy releaseDate",
-            "Dummy posterUrl",
-            0.0f))
-        movies.add(MovieResponse(
-            18,
-            "Dummy title",
-            "Dummy releaseDate",
-            "Dummy posterUrl",
-            0.0f))
-        movies.add(MovieResponse(
-            19,
-            "Dummy title",
-            "Dummy releaseDate",
-            "Dummy posterUrl",
-            0.0f))
-        movies.add(MovieResponse(
-            20,
-            "Dummy title",
-            "Dummy releaseDate",
-            "Dummy posterUrl",
-            0.0f))
-
-        return movies
-    }
-
-    fun generateRemoteDummyMovieDetail(movieId: Int): MovieDetailResponse {
-        val genreList = arrayListOf(
-            GenreResponse(28, "Action"),
-            GenreResponse(12, "Adventure"),
-            GenreResponse(878, "Science Fiction"),
-        )
-
-        return MovieDetailResponse(
-            movieId,
-            "Spider-Man: No Way Home",
-            "Peter Parker is unmasked and no longer able to separate his normal life from the high-stakes of being a super-hero. When he asks for help from Doctor Strange the stakes become even more dangerous, forcing him to discover what it truly means to be Spider-Man.",
-            "2021-12-15",
-            148,
-            8.5f,
-            "/1g0dhYtq4irTY1GPXvft6k4YLjm.jpg",
-            "/1Rr5SrvHxMXHu5RjKpaMba8VTzi.jpg",
-            genreList
-        )
+            val tvShowEntity = TvShowEntity(id, title, firstAirDate, posterUrl, rating)
+            list.add(tvShowEntity)
+        }
+        return list
     }
 
     fun generateRemoteDummyTvShows(): List<TvShowResponse> {
-        // using 20 data dummy tv show to equalize tv shows response' size from API
-        val tvShows = ArrayList<TvShowResponse>()
-        tvShows.add(TvShowResponse(
-            85552,
-            "Euphoria",
-            "2019-06-16",
-            "/jtnfNzqZwN4E32FGGxx1YZaBWWf.jpg",
-            8.4f,))
-        tvShows.add(TvShowResponse(
-            2,
-            "Dummy title",
-            "Dummy releaseDate",
-            "Dummy posterUrl",
-            0.0f))
-        tvShows.add(TvShowResponse(
-            3,
-            "Dummy title",
-            "Dummy releaseDate",
-            "Dummy posterUrl",
-            0.0f))
-        tvShows.add(TvShowResponse(
-            4,
-            "Dummy title",
-            "Dummy releaseDate",
-            "Dummy posterUrl",
-            0.0f))
-        tvShows.add(TvShowResponse(
-            5,
-            "Dummy title",
-            "Dummy releaseDate",
-            "Dummy posterUrl",
-            0.0f))
-        tvShows.add(TvShowResponse(
-            6,
-            "Dummy title",
-            "Dummy releaseDate",
-            "Dummy posterUrl",
-            0.0f))
-        tvShows.add(TvShowResponse(
-            7,
-            "Dummy title",
-            "Dummy releaseDate",
-            "Dummy posterUrl",
-            0.0f))
-        tvShows.add(TvShowResponse(
-            8,
-            "Dummy title",
-            "Dummy releaseDate",
-            "Dummy posterUrl",
-            0.0f))
-        tvShows.add(TvShowResponse(
-            9,
-            "Dummy title",
-            "Dummy releaseDate",
-            "Dummy posterUrl",
-            0.0f))
-        tvShows.add(TvShowResponse(
-            10,
-            "Dummy title",
-            "Dummy releaseDate",
-            "Dummy posterUrl",
-            0.0f))
-        tvShows.add(TvShowResponse(
-            11,
-            "Dummy title",
-            "Dummy releaseDate",
-            "Dummy posterUrl",
-            0.0f))
-        tvShows.add(TvShowResponse(
-            12,
-            "Dummy title",
-            "Dummy releaseDate",
-            "Dummy posterUrl",
-            0.0f))
-        tvShows.add(TvShowResponse(
-            13,
-            "Dummy title",
-            "Dummy releaseDate",
-            "Dummy posterUrl",
-            0.0f))
-        tvShows.add(TvShowResponse(
-            14,
-            "Dummy title",
-            "Dummy releaseDate",
-            "Dummy posterUrl",
-            0.0f))
-        tvShows.add(TvShowResponse(
-            15,
-            "Dummy title",
-            "Dummy releaseDate",
-            "Dummy posterUrl",
-            0.0f))
-        tvShows.add(TvShowResponse(
-            16,
-            "Dummy title",
-            "Dummy releaseDate",
-            "Dummy posterUrl",
-            0.0f))
-        tvShows.add(TvShowResponse(
-            17,
-            "Dummy title",
-            "Dummy releaseDate",
-            "Dummy posterUrl",
-            0.0f))
-        tvShows.add(TvShowResponse(
-            18,
-            "Dummy title",
-            "Dummy releaseDate",
-            "Dummy posterUrl",
-            0.0f))
-        tvShows.add(TvShowResponse(
-            19,
-            "Dummy title",
-            "Dummy releaseDate",
-            "Dummy posterUrl",
-            0.0f))
-        tvShows.add(TvShowResponse(
-            20,
-            "Dummy title",
-            "Dummy releaseDate",
-            "Dummy posterUrl",
-            0.0f))
+        val tvShowsData = parsingFileToString("tv_shows.json")
+        val tvShowsArr = JSONObject(tvShowsData).getJSONArray("tv_shows")
 
+        val list = ArrayList<TvShowResponse>()
+        for (i in 0 until tvShowsArr.length()) {
+            val movie = tvShowsArr.getJSONObject(i)
 
-        return tvShows
+            val id = movie.getInt("id")
+            val title = movie.getString("name")
+            val firstAirDate = movie.getString("first_air_date")
+            val posterUrl = movie.getString("poster_path")
+            val rating = movie.getDouble("vote_average").toFloat()
+
+            val tvShowResponse = TvShowResponse(id, title, firstAirDate, posterUrl, rating)
+            list.add(tvShowResponse)
+        }
+        return list
     }
 
-    fun generateRemoteDummyTvShowDetail(tvShowId: Int): TvShowDetailResponse {
-        val genreList = arrayListOf(
-            GenreResponse(18, "Drama")
+    fun generateDummyTvShowDetail(): TvShowDetailEntity {
+        val tvShowDetailData = parsingFileToString("tv_show_detail.json")
+        val tvShowDetail = JSONObject(tvShowDetailData)
+
+        val id = tvShowDetail.getInt("id")
+        val title = tvShowDetail.getString("name")
+        val overview = tvShowDetail.getString("overview")
+        val firstAirDate = tvShowDetail.getString("first_air_date")
+        val lastAirDate = tvShowDetail.getString("last_air_date")
+        val rating = tvShowDetail.getDouble("vote_average").toFloat()
+        val posterUrl = tvShowDetail.getString("poster_path")
+        val wallpaperUrl = tvShowDetail.getString("backdrop_path")
+        val numberOfEpisodes = tvShowDetail.getInt("number_of_episodes")
+        val numberOfSeasons = tvShowDetail.getInt("number_of_seasons")
+
+        val runtimeArr = tvShowDetail.getJSONArray("episode_run_time")
+        val runtimeList = ArrayList<Int>()
+        for (i in 0 until runtimeArr.length()) {
+            val runtime = runtimeArr.getInt(i)
+            runtimeList.add(runtime)
+        }
+
+        val genreArr = tvShowDetail.getJSONArray("genres")
+        val genreList = parsingGenreEntityList(genreArr)
+
+        return TvShowDetailEntity(
+            id, title, overview, firstAirDate, lastAirDate, runtimeList, rating,
+            posterUrl, wallpaperUrl, numberOfEpisodes, numberOfSeasons, genreList
         )
-        val runtimes = listOf(60)
+    }
+
+    fun generateRemoteDummyTvShowDetail(): TvShowDetailResponse {
+        val tvShowDetailData = parsingFileToString("tv_show_detail.json")
+        val tvShowDetail = JSONObject(tvShowDetailData)
+
+        val id = tvShowDetail.getInt("id")
+        val title = tvShowDetail.getString("name")
+        val overview = tvShowDetail.getString("overview")
+        val firstAirDate = tvShowDetail.getString("first_air_date")
+        val lastAirDate = tvShowDetail.getString("last_air_date")
+        val rating = tvShowDetail.getDouble("vote_average").toFloat()
+        val posterUrl = tvShowDetail.getString("poster_path")
+        val wallpaperUrl = tvShowDetail.getString("backdrop_path")
+        val numberOfEpisodes = tvShowDetail.getInt("number_of_episodes")
+        val numberOfSeasons = tvShowDetail.getInt("number_of_seasons")
+
+        val runtimeArr = tvShowDetail.getJSONArray("episode_run_time")
+        val runtimeList = ArrayList<Int>()
+        for (i in 0 until runtimeArr.length()) {
+            val runtime = runtimeArr.getInt(i)
+            runtimeList.add(runtime)
+        }
+
+        val genreArr = tvShowDetail.getJSONArray("genres")
+        val genreList = parsingGenreResponseList(genreArr)
 
         return TvShowDetailResponse(
-            tvShowId,
-            "Euphoria",
-            "A group of high school students navigate love and friendships in a world of drugs, sex, trauma, and social media.",
-            "2019-06-16",
-            "2022-01-23",
-            runtimes,
-            8.4f,
-            "/jtnfNzqZwN4E32FGGxx1YZaBWWf.jpg",
-            "/oKt4J3TFjWirVwBqoHyIvv5IImd.jpg",
-            14,
-            2,
-            genreList
+            id, title, overview, firstAirDate, lastAirDate, runtimeList, rating,
+            posterUrl, wallpaperUrl, numberOfEpisodes, numberOfSeasons, genreList
         )
     }
 }

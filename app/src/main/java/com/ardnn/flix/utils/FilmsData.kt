@@ -6,7 +6,7 @@ import org.json.JSONObject
 
 class FilmsData(private val context: Context) {
     val movies: List<FilmEntity> = getFilmsData("movies.json", "movies")
-    val tvShows: List<FilmEntity> = getFilmsData("tvshows.json", "tv_shows")
+    val tvShows: List<FilmEntity> = getFilmsData("tv_shows.json", "tv_shows")
 
     private fun getFilmsData(fileName: String, key: String): List<FilmEntity> {
         val filmsData: String =

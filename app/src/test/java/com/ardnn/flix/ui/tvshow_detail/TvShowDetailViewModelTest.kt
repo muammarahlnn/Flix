@@ -1,10 +1,12 @@
 package com.ardnn.flix.ui.tvshow_detail
 
+import android.content.Context
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import com.ardnn.flix.data.FlixRepository
 import com.ardnn.flix.data.source.local.entity.TvShowDetailEntity
+import com.ardnn.flix.data.source.local.entity.TvShowEntity
 import com.ardnn.flix.utils.DataDummy
 import com.nhaarman.mockitokotlin2.verify
 import org.junit.Assert.*
@@ -15,18 +17,26 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.Mockito.`when`
+import org.mockito.Mockito.mock
+import org.mockito.junit.MockitoJUnit
 import org.mockito.junit.MockitoJUnitRunner
+import org.mockito.junit.MockitoRule
+import org.robolectric.RobolectricTestRunner
+import org.robolectric.RuntimeEnvironment
 
-@RunWith(MockitoJUnitRunner::class)
+@RunWith(RobolectricTestRunner::class)
 class TvShowDetailViewModelTest {
 
     private lateinit var viewModel: TvShowDetailViewModel
-    private val dummyTvShows = DataDummy.generateDummyTvShows()
-    private val tvShowId = dummyTvShows[0].id
-    private val dummyTvShowDetail = DataDummy.generateDummyTvShowDetail(tvShowId)
+    private var tvShowId = 0
+    private lateinit var dummyTvShows: List<TvShowEntity>
+    private lateinit var dummyTvShowDetail: TvShowDetailEntity
 
     @get:Rule
     var instantTaskExecutorRule = InstantTaskExecutorRule()
+
+    @get:Rule
+    var mockitoRule: MockitoRule = MockitoJUnit.rule()
 
     @Mock
     private lateinit var flixRepository: FlixRepository
@@ -45,6 +55,13 @@ class TvShowDetailViewModelTest {
 
     @Before
     fun setUp() {
+        val context = RuntimeEnvironment.getApplication()
+        val dataDummy = DataDummy(context)
+
+        dummyTvShows = dataDummy.generateDummyTvShows()
+        tvShowId = dummyTvShows[0].id
+        dummyTvShowDetail = dataDummy.generateDummyTvShowDetail()
+
         viewModel = TvShowDetailViewModel(flixRepository)
         viewModel.setTvShowId(tvShowId)
     }

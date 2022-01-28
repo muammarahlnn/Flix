@@ -2,6 +2,10 @@ package com.ardnn.flix.data
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.ardnn.flix.data.source.remote.RemoteDataSource
+import com.ardnn.flix.data.source.remote.response.MovieDetailResponse
+import com.ardnn.flix.data.source.remote.response.MovieResponse
+import com.ardnn.flix.data.source.remote.response.TvShowDetailResponse
+import com.ardnn.flix.data.source.remote.response.TvShowResponse
 import com.ardnn.flix.utils.DataDummy
 import com.ardnn.flix.utils.LiveDataTestUtil
 import com.nhaarman.mockitokotlin2.any
@@ -14,8 +18,12 @@ import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.junit.runner.RunWith
 import org.mockito.Mockito
+import org.robolectric.RobolectricTestRunner
+import org.robolectric.RuntimeEnvironment
 
+@RunWith(RobolectricTestRunner::class)
 class FlixRepositoryTest {
 
     @get:Rule
@@ -24,22 +32,35 @@ class FlixRepositoryTest {
     private val remote = Mockito.mock(RemoteDataSource::class.java)
     private val flixRepository = FakeFlixRepository(remote)
 
-    private val moviesResponse = DataDummy.generateRemoteDummyMovies()
-    private val movieId = moviesResponse[0].id
-    private val movieDetailResponse = DataDummy.generateRemoteDummyMovieDetail(movieId)
+    private var movieId: Int = 0
+    private lateinit var dummyMoviesResponse: List<MovieResponse>
+    private lateinit var dummyMovieDetailResponse: MovieDetailResponse
 
-    private val tvShowsResponse = DataDummy.generateRemoteDummyTvShows()
-    private val tvShowId = tvShowsResponse[0].id
-    private val tvShowDetailResponse = DataDummy.generateRemoteDummyTvShowDetail(tvShowId)
+    private var tvShowId: Int = 0
+    private lateinit var dummyTvShowsResponse: List<TvShowResponse>
+    private lateinit var dummyTvShowDetailResponse: TvShowDetailResponse
 
     private val page = 1 // default page to fetch movies and tv shows
 
+    @Before
+    fun setUp() {
+        val context = RuntimeEnvironment.getApplication()
+        val dataDummy = DataDummy(context)
+
+        dummyMoviesResponse = dataDummy.generateRemoteDummyMovies()
+        movieId = dummyMoviesResponse[0].id
+        dummyMovieDetailResponse = dataDummy.generateRemoteDummyMovieDetail()
+
+        dummyTvShowsResponse = dataDummy.generateRemoteDummyTvShows()
+        tvShowId = dummyTvShowsResponse[0].id
+        dummyTvShowDetailResponse = dataDummy.generateRemoteDummyTvShowDetail()
+    }
 
     @Test
     fun getMovies() {
         doAnswer { invocation ->
             (invocation.arguments[1] as RemoteDataSource.LoadMoviesCallback)
-                .onSuccess(moviesResponse)
+                .onSuccess(dummyMoviesResponse)
             null
         }.`when`(remote).getNowPlayingMovies(eq(page), any())
 
@@ -47,14 +68,14 @@ class FlixRepositoryTest {
         verify(remote).getNowPlayingMovies(eq(page), any())
 
         assertNotNull(moviesEntity)
-        assertEquals(moviesResponse.size.toLong(), moviesEntity.size.toLong())
+        assertEquals(dummyMoviesResponse.size.toLong(), moviesEntity.size.toLong())
     }
 
     @Test
     fun getMovieDetail() {
         doAnswer { invocation ->
             (invocation.arguments[1] as RemoteDataSource.LoadMovieDetailCallback)
-                .onSuccess(movieDetailResponse)
+                .onSuccess(dummyMovieDetailResponse)
             null
         }.`when`(remote).getMovieDetail(eq(movieId), any())
 
@@ -63,14 +84,14 @@ class FlixRepositoryTest {
 
         assertNotNull(movieDetailEntity)
         assertNotNull(movieDetailEntity.id)
-        assertEquals(movieDetailResponse.id, movieDetailEntity.id)
+        assertEquals(dummyMovieDetailResponse.id, movieDetailEntity.id)
     }
 
     @Test
     fun getTvShows() {
         doAnswer { invocation ->
             (invocation.arguments[1] as RemoteDataSource.LoadTvShowsCallback)
-                .onSuccess(tvShowsResponse)
+                .onSuccess(dummyTvShowsResponse)
             null
         }.`when`(remote).getOnTheAirTvShows(eq(page), any())
 
@@ -78,14 +99,14 @@ class FlixRepositoryTest {
         verify(remote).getOnTheAirTvShows(eq(page), any())
 
         assertNotNull(tvShowsEntity)
-        assertEquals(tvShowsResponse.size.toLong(), tvShowsEntity.size.toLong())
+        assertEquals(dummyTvShowsResponse.size.toLong(), tvShowsEntity.size.toLong())
     }
 
     @Test
     fun getTvShowDetail() {
         doAnswer { invocation ->
             (invocation.arguments[1] as RemoteDataSource.LoadTvShowDetailCallback)
-                .onSuccess(tvShowDetailResponse)
+                .onSuccess(dummyTvShowDetailResponse)
             null
         }.`when`(remote).getTvShowDetail(eq(tvShowId), any())
 
@@ -94,14 +115,14 @@ class FlixRepositoryTest {
 
         assertNotNull(tvShowDetailEntity)
         assertNotNull(tvShowDetailEntity.id)
-        assertEquals(tvShowDetailResponse.id, tvShowDetailEntity.id)
+        assertEquals(dummyTvShowDetailResponse.id, tvShowDetailEntity.id)
     }
 
     @Test
     fun getIsLoadFailure() {
         doAnswer { invocation ->
             (invocation.arguments[1] as RemoteDataSource.LoadMoviesCallback)
-                .onSuccess(moviesResponse)
+                .onSuccess(dummyMoviesResponse)
             null
         }.`when`(remote).getNowPlayingMovies(eq(page), any())
         LiveDataTestUtil.getValue(flixRepository.getMovies(page))
@@ -115,7 +136,7 @@ class FlixRepositoryTest {
     fun getIsLoading() {
         doAnswer { invocation ->
             (invocation.arguments[1] as RemoteDataSource.LoadMoviesCallback)
-                .onSuccess(moviesResponse)
+                .onSuccess(dummyMoviesResponse)
             null
         }.`when`(remote).getNowPlayingMovies(eq(page), any())
         LiveDataTestUtil.getValue(flixRepository.getMovies(page))

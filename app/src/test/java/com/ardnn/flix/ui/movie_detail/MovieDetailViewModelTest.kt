@@ -1,10 +1,12 @@
 package com.ardnn.flix.ui.movie_detail
 
+import android.content.Context
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import com.ardnn.flix.data.FlixRepository
 import com.ardnn.flix.data.source.local.entity.MovieDetailEntity
+import com.ardnn.flix.data.source.local.entity.MovieEntity
 import com.ardnn.flix.utils.DataDummy
 import com.nhaarman.mockitokotlin2.verify
 import org.junit.Assert.*
@@ -15,18 +17,26 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.Mockito.`when`
+import org.mockito.Mockito.mock
+import org.mockito.junit.MockitoJUnit
 import org.mockito.junit.MockitoJUnitRunner
+import org.mockito.junit.MockitoRule
+import org.robolectric.RobolectricTestRunner
+import org.robolectric.RuntimeEnvironment
 
-@RunWith(MockitoJUnitRunner::class)
+@RunWith(RobolectricTestRunner::class)
 class MovieDetailViewModelTest {
 
     private lateinit var viewModel: MovieDetailViewModel
-    private val dummyMovies = DataDummy.generateDummyMovies()
-    private val movieId = dummyMovies[0].id
-    private val dummyMovieDetail = DataDummy.generateDummyMovieDetail(movieId)
+    private var movieId = 0
+    private lateinit var dummyMovies: List<MovieEntity>
+    private lateinit var dummyMovieDetail: MovieDetailEntity
 
     @get:Rule
     var instantTaskExecutorRule = InstantTaskExecutorRule()
+
+    @get:Rule
+    var mockitoRule: MockitoRule = MockitoJUnit.rule()
 
     @Mock
     private lateinit var flixRepository: FlixRepository
@@ -45,6 +55,13 @@ class MovieDetailViewModelTest {
 
     @Before
     fun setUp() {
+        val context = RuntimeEnvironment.getApplication()
+        val dataDummy = DataDummy(context)
+
+        dummyMovies = dataDummy.generateDummyMovies()
+        movieId = dummyMovies[0].id
+        dummyMovieDetail = dataDummy.generateDummyMovieDetail()
+
         viewModel = MovieDetailViewModel(flixRepository)
         viewModel.setMovieId(movieId)
     }
