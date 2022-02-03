@@ -26,29 +26,29 @@
   "languages": [
     "en"
   ],
-  "last_air_date": "2022-01-23",
+  "last_air_date": "2022-01-30",
   "last_episode_to_air": {
-    "air_date": "2022-01-23",
-    "episode_number": 3,
-    "id": 3429680,
-    "name": "Ruminations: Big and Little Bullys",
-    "overview": "Rue pursues a new business venture, Cassie settles into a routine, and Cal finds a target.",
-    "production_code": "",
-    "season_number": 2,
-    "still_path": "/nibFSc6mQLHeFAkfKEifnObtYRR.jpg",
-    "vote_average": 4.5,
-    "vote_count": 2
-  },
-  "name": "Euphoria",
-  "next_episode_to_air": {
     "air_date": "2022-01-30",
     "episode_number": 4,
     "id": 3463605,
     "name": "You Who Cannot See, Think of Those Who Can",
-    "overview": "",
+    "overview": "At Maddy’s birthday party, relationships are celebrated and questioned. Meanwhile, Jules turns to Elliot for advice and Cal takes a trip down memory lane.",
     "production_code": "",
     "season_number": 2,
     "still_path": "/nuTsLlLNacklbITyQPRvKOAtXlg.jpg",
+    "vote_average": 0.0,
+    "vote_count": 0
+  },
+  "name": "Euphoria",
+  "next_episode_to_air": {
+    "air_date": "2022-02-06",
+    "episode_number": 5,
+    "id": 3464329,
+    "name": "Stand Still Like the Hummingbird",
+    "overview": "Fate has a way of catching up with those who try to outrun it.",
+    "production_code": "",
+    "season_number": 2,
+    "still_path": null,
     "vote_average": 0.0,
     "vote_count": 0
   },
@@ -60,7 +60,7 @@
       "origin_country": "US"
     }
   ],
-  "number_of_episodes": 14,
+  "number_of_episodes": 16,
   "number_of_seasons": 2,
   "origin_country": [
     "US"
@@ -68,7 +68,7 @@
   "original_language": "en",
   "original_name": "Euphoria",
   "overview": "A group of high school students navigate love and friendships in a world of drugs, sex, trauma, and social media.",
-  "popularity": 3585.423,
+  "popularity": 4875.054,
   "poster_path": "/jtnfNzqZwN4E32FGGxx1YZaBWWf.jpg",
   "production_companies": [
     {
@@ -123,7 +123,7 @@
     },
     {
       "air_date": "2022-01-09",
-      "episode_count": 6,
+      "episode_count": 8,
       "id": 220804,
       "name": "Season 2",
       "overview": "",
@@ -142,5 +142,5 @@
   "tagline": "Remember this feeling.",
   "type": "Scripted",
   "vote_average": 8.4,
-  "vote_count": 5868
+  "vote_count": 6020
 }

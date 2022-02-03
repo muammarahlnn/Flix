@@ -106,7 +106,7 @@ class HomeActivityTest {
     @Test
     fun loadTvShowDetail() {
         onView(withText("TV Shows")).perform(click())
-        onView(withId(R.id.rvFilm)).perform(RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(1, click()))
+        onView(withId(R.id.rvFilm)).perform(RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(0, click()))
 
         onView(withId(R.id.ivWallpaper)).check(matches(isDisplayed()))
         onView(withId(R.id.ivWallpaper)).check(matches(withTagValue(CoreMatchers.equalTo(dummyTvShowDetailEntity.wallpaperUrl))))
