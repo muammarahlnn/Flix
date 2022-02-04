@@ -19,4 +19,10 @@ interface MovieApiService {
         @Query("api_key") apiKey: String,
         @Query("page") page: Int
     ): Call<MoviesResponse>
+
+    @GET("top_rated")
+    fun getTopRatedMovies(
+        @Query("api_key") apiKey: String,
+        @Query("page") page: Int
+    ): Call<MoviesResponse>
 }

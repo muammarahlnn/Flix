@@ -68,13 +68,13 @@ class TvShowsFragment : Fragment(), SingleClickListener<TvShowEntity> {
     private fun setTvShows() {
         when (section) {
             0 -> { // on the air
-                viewModel.getTvShows(page).observe(viewLifecycleOwner, { tvShowList ->
+                viewModel.getOnTheAirTvShows(page).observe(viewLifecycleOwner, { tvShowList ->
                     val adapter = TvShowsAdapter(tvShowList, this)
                     binding?.recyclerView?.adapter = adapter
                 })
             }
             1 -> { // top rated
-                viewModel.getTvShows(page).observe(viewLifecycleOwner, { tvShowList ->
+                viewModel.getTopRatedTvShows(page).observe(viewLifecycleOwner, { tvShowList ->
                     val adapter = TvShowsAdapter(tvShowList, this)
                     binding?.recyclerView?.adapter = adapter
                 })

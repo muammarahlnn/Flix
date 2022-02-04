@@ -7,9 +7,11 @@ import com.ardnn.flix.data.source.local.entity.TvShowDetailEntity
 import com.ardnn.flix.data.source.local.entity.TvShowEntity
 
 interface FlixDataSource {
-    fun getMovies(page: Int): LiveData<List<MovieEntity>>
+    fun getNowPlayingMovies(page: Int): LiveData<List<MovieEntity>>
+    fun getTopRatedMovies(page: Int): LiveData<List<MovieEntity>>
     fun getMovieDetail(movieId: Int): LiveData<MovieDetailEntity>
-    fun getTvShows(page: Int): LiveData<List<TvShowEntity>>
+    fun getOnTheAirTvShows(page: Int): LiveData<List<TvShowEntity>>
+    fun getTopRatedTvShows(page: Int): LiveData<List<TvShowEntity>>
     fun getTvShowDetail(tvShowId: Int): LiveData<TvShowDetailEntity>
     fun getIsLoadFailure(): LiveData<Boolean>
     fun getIsLoading(): LiveData<Boolean>

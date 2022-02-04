@@ -104,6 +104,41 @@ class RemoteDataSource private constructor() {
             })
     }
 
+    // method to get top rated movies
+    fun getTopRatedMovies(page: Int, callback: LoadMoviesCallback) {
+        EspressoIdlingResource.increment()
+        MOVIE_SERVICE.getTopRatedMovies(Const.API_KEY, page)
+            .enqueue(object : Callback<MoviesResponse> {
+                override fun onResponse(
+                    call: Call<MoviesResponse>,
+                    response: Response<MoviesResponse>
+                ) {
+                    if (response.isSuccessful) {
+                        if (response.body() != null) {
+                            if (response.body()?.movies != null) {
+                                callback.onSuccess(response.body()?.movies as List<MovieResponse>)
+                            } else {
+                                callback.onFailure("response.body().movies is null")
+                                EspressoIdlingResource.decrement()
+                            }
+                        } else {
+                            callback.onFailure("response.body() is null")
+                            EspressoIdlingResource.decrement()
+                        }
+                    } else {
+                        callback.onFailure(response.message())
+                        EspressoIdlingResource.decrement()
+                    }
+                }
+
+                override fun onFailure(call: Call<MoviesResponse>, t: Throwable) {
+                    callback.onFailure("onFailure: ${t.localizedMessage}")
+                    EspressoIdlingResource.decrement()
+                }
+
+            })
+    }
+
     // method to get tv show detail
     fun getTvShowDetail(tvShowId: Int, callback: LoadTvShowDetailCallback) {
         EspressoIdlingResource.increment()
@@ -138,6 +173,42 @@ class RemoteDataSource private constructor() {
     fun getOnTheAirTvShows(page: Int, callback: LoadTvShowsCallback) {
         EspressoIdlingResource.increment()
         TV_SHOW_SERVICE.getOnTheAirTvShows(Const.API_KEY, page)
+            .enqueue(object : Callback<TvShowsResponse> {
+                override fun onResponse(
+                    call: Call<TvShowsResponse>,
+                    response: Response<TvShowsResponse>
+                ) {
+                    if (response.isSuccessful) {
+                        if (response.body() != null) {
+                            if (response.body()?.tvShows != null) {
+                                callback.onSuccess(response.body()?.tvShows as List<TvShowResponse>)
+                                EspressoIdlingResource.decrement()
+                            } else {
+                                callback.onFailure("response.body().tvShows is null")
+                                EspressoIdlingResource.decrement()
+                            }
+                        } else {
+                            callback.onFailure("response.body() is null")
+                            EspressoIdlingResource.decrement()
+                        }
+                    } else {
+                        callback.onFailure(response.message())
+                        EspressoIdlingResource.decrement()
+                    }
+                }
+
+                override fun onFailure(call: Call<TvShowsResponse>, t: Throwable) {
+                    callback.onFailure("onFailure: ${t.localizedMessage}")
+                    EspressoIdlingResource.decrement()
+                }
+
+            })
+    }
+
+    // method to get top rated tv shows
+    fun getTopRatedTvShows(page: Int, callback: LoadTvShowsCallback) {
+        EspressoIdlingResource.increment()
+        TV_SHOW_SERVICE.getTopRatedTvShows(Const.API_KEY, page)
             .enqueue(object : Callback<TvShowsResponse> {
                 override fun onResponse(
                     call: Call<TvShowsResponse>,

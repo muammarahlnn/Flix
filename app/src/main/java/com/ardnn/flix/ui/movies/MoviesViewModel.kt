@@ -9,8 +9,11 @@ class MoviesViewModel(private val flixRepository: FlixRepository) : ViewModel() 
 
     private var section = 0
 
-    fun getMovies(page: Int): LiveData<List<MovieEntity>> =
-        flixRepository.getMovies(page)
+    fun getNowPlayingMovies(page: Int): LiveData<List<MovieEntity>> =
+        flixRepository.getNowPlayingMovies(page)
+
+    fun getTopRatedMovies(page: Int): LiveData<List<MovieEntity>> =
+        flixRepository.getTopRatedMovies(page)
 
     fun getIsLoading(): LiveData<Boolean> =
         flixRepository.getIsLoading()

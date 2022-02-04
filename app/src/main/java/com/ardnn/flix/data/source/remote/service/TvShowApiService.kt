@@ -19,4 +19,10 @@ interface TvShowApiService {
         @Query("api_key") apiKey: String,
         @Query("page") page: Int
     ): Call<TvShowsResponse>
+
+    @GET("top_rated")
+    fun getTopRatedTvShows(
+        @Query("api_key") apiKey: String,
+        @Query("page") page: Int
+    ): Call<TvShowsResponse>
 }

@@ -9,8 +9,11 @@ class TvShowsViewModel(private val flixRepository: FlixRepository) : ViewModel()
 
     private var section = 0
 
-    fun getTvShows(page: Int): LiveData<List<TvShowEntity>> =
-        flixRepository.getTvShows(page)
+    fun getOnTheAirTvShows(page: Int): LiveData<List<TvShowEntity>> =
+        flixRepository.getOnTheAirTvShows(page)
+
+    fun getTopRatedTvShows(page: Int): LiveData<List<TvShowEntity>> =
+        flixRepository.getTopRatedTvShows(page)
 
     fun getIsLoading(): LiveData<Boolean> =
         flixRepository.getIsLoading()

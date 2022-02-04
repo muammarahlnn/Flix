@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.ardnn.flix.data.FlixRepository
 import com.ardnn.flix.data.source.remote.RemoteDataSource
-import com.ardnn.flix.ui.film.FilmViewModel
 import com.ardnn.flix.ui.movie_detail.MovieDetailViewModel
 import com.ardnn.flix.ui.movies.MoviesViewModel
 import com.ardnn.flix.ui.tvshow_detail.TvShowDetailViewModel
@@ -31,9 +30,6 @@ class ViewModelFactory private constructor(
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         return when {
-            modelClass.isAssignableFrom(FilmViewModel::class.java) -> {
-                FilmViewModel(flixRepository) as T
-            }
             modelClass.isAssignableFrom(MoviesViewModel::class.java) -> {
                 MoviesViewModel(flixRepository) as T
             }

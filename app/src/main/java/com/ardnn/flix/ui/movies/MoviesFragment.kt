@@ -68,13 +68,13 @@ class MoviesFragment : Fragment(), SingleClickListener<MovieEntity> {
     private fun setMovies() {
         when (section) {
             0 -> { // now playing
-                viewModel.getMovies(page).observe(viewLifecycleOwner, { movieList ->
+                viewModel.getNowPlayingMovies(page).observe(viewLifecycleOwner, { movieList ->
                     val adapter = MoviesAdapter(movieList, this)
                     binding?.recyclerView?.adapter = adapter
                 })
             }
             1 -> { // top rated
-                viewModel.getMovies(page).observe(viewLifecycleOwner, { movieList ->
+                viewModel.getTopRatedMovies(page).observe(viewLifecycleOwner, { movieList ->
                     val adapter = MoviesAdapter(movieList, this)
                     binding?.recyclerView?.adapter = adapter
                 })
