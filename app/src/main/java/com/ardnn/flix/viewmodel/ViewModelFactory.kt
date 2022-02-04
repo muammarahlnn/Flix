@@ -6,7 +6,9 @@ import com.ardnn.flix.data.FlixRepository
 import com.ardnn.flix.data.source.remote.RemoteDataSource
 import com.ardnn.flix.ui.film.FilmViewModel
 import com.ardnn.flix.ui.movie_detail.MovieDetailViewModel
+import com.ardnn.flix.ui.movies.MoviesViewModel
 import com.ardnn.flix.ui.tvshow_detail.TvShowDetailViewModel
+import com.ardnn.flix.ui.tvshows.TvShowsViewModel
 
 class ViewModelFactory private constructor(
     private val flixRepository: FlixRepository
@@ -31,6 +33,12 @@ class ViewModelFactory private constructor(
         return when {
             modelClass.isAssignableFrom(FilmViewModel::class.java) -> {
                 FilmViewModel(flixRepository) as T
+            }
+            modelClass.isAssignableFrom(MoviesViewModel::class.java) -> {
+                MoviesViewModel(flixRepository) as T
+            }
+            modelClass.isAssignableFrom(TvShowsViewModel::class.java) -> {
+                TvShowsViewModel(flixRepository) as T
             }
             modelClass.isAssignableFrom(MovieDetailViewModel::class.java) -> {
                 MovieDetailViewModel(flixRepository) as T

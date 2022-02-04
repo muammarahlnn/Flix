@@ -16,4 +16,12 @@
         Unable to retrieve data\n
         Please check your internet connection
     </string>
+    <string name="favorites">Favorites</string>
+    <string name="now_playing">Now Playing</string>
+    <string name="upcoming">Upcoming</string>
+    <string name="airing_today">Airing Today</string>
+    <string name="on_the_air">On The Air</string>
+    <string name="popular">Popular</string>
+    <string name="top_rated">Top Rated</string>
+
 </resources>

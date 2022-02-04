@@ -2,21 +2,16 @@ package com.ardnn.flix.ui.home
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.annotation.StringRes
+import android.view.MenuItem
+import androidx.fragment.app.Fragment
 import com.ardnn.flix.R
 import com.ardnn.flix.databinding.ActivityHomeBinding
-import com.ardnn.flix.utils.Helper
-import com.google.android.material.tabs.TabLayoutMediator
+import com.ardnn.flix.ui.favorites.FavoritesPagerFragment
+import com.ardnn.flix.ui.movies.MoviesPagerFragment
+import com.ardnn.flix.ui.tvshows.TvShowsPagerFragment
+import com.google.android.material.navigation.NavigationBarView
 
-class HomeActivity : AppCompatActivity() {
-
-    companion object {
-        @StringRes
-        val TAB_TITLES = intArrayOf(
-            R.string.movies,
-            R.string.tv_shows
-        )
-    }
+class HomeActivity : AppCompatActivity(), NavigationBarView.OnItemSelectedListener {
 
     private lateinit var binding: ActivityHomeBinding
 
@@ -25,14 +20,41 @@ class HomeActivity : AppCompatActivity() {
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // set pager
-        val filmPagerAdapter = FilmPagerAdapter(this)
-        binding.vp2Film.adapter = filmPagerAdapter
+        // set action bar
+        setSupportActionBar(binding.toolbar.root)
+        supportActionBar?.setDisplayShowTitleEnabled(false)
 
-        // set tab layout
-        TabLayoutMediator(binding.tlFilm, binding.vp2Film) { tab, pos ->
-            tab.text = getString(TAB_TITLES[pos])
-        }.attach()
-        Helper.equalingEachTabWidth(binding.tlFilm)
+        // set bottom navigation
+        binding.bnvHome.setOnItemSelectedListener(this)
+        binding.bnvHome.itemIconTintList = null
+        binding.bnvHome.selectedItemId = R.id.navigationMovies
+    }
+
+    override fun onNavigationItemSelected(item: MenuItem): Boolean {
+        var selectedFragment: Fragment? = null
+        when (item.itemId) {
+            R.id.navigationMovies -> {
+                selectedFragment = MoviesPagerFragment()
+                binding.toolbar.tvSection.text = getString(R.string.movies)
+            }
+            R.id.navigationTvShows -> {
+                selectedFragment = TvShowsPagerFragment()
+                binding.toolbar.tvSection.text = getString(R.string.tv_shows)
+            }
+            R.id.navigationFavorites -> {
+                selectedFragment = FavoritesPagerFragment()
+                binding.toolbar.tvSection.text = getString(R.string.favorites)
+            }
+        }
+
+        if (selectedFragment != null) {
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.frameContainer, selectedFragment)
+                .commit()
+
+            return true
+        }
+
+        return false
     }
 }
