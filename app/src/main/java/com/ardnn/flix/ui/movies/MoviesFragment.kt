@@ -14,7 +14,6 @@ import com.ardnn.flix.databinding.FragmentMoviesBinding
 import com.ardnn.flix.ui.movie_detail.MovieDetailActivity
 import com.ardnn.flix.utils.SingleClickListener
 import com.ardnn.flix.viewmodel.ViewModelFactory
-import com.ardnn.flix.vo.Resource
 import com.ardnn.flix.vo.Status
 
 class MoviesFragment : Fragment(), SingleClickListener<MovieEntity> {
@@ -60,44 +59,28 @@ class MoviesFragment : Fragment(), SingleClickListener<MovieEntity> {
     }
 
     private fun subscribe() {
-        // set movies depends on section
-        when (section) {
-            0 -> { // now playing
-                viewModel.getNowPlayingMovies(page).observe(viewLifecycleOwner, { moviesResource ->
-                    if (moviesResource != null) {
-                        setMovies(moviesResource)
+        viewModel.getMovies(page).observe(viewLifecycleOwner, { moviesResource ->
+            if (moviesResource != null) {
+                when (moviesResource.status) {
+                    Status.LOADING -> {
+                        showLoading(true)
                     }
-                })
-            }
-            1 -> { // top rated
-                viewModel.getTopRatedMovies(page).observe(viewLifecycleOwner, { moviesResource ->
-                    if (moviesResource != null) {
-                        setMovies(moviesResource)
+                    Status.SUCCESS -> {
+                        if (moviesResource.data != null) {
+                            showLoading(false)
+
+                            val adapter = MoviesAdapter(moviesResource.data, this)
+                            binding?.recyclerView?.adapter = adapter
+                        }
                     }
-                })
-            }
-        }
-    }
-
-    private fun setMovies(moviesResource: Resource<List<MovieEntity>>) {
-        when (moviesResource.status) {
-            Status.LOADING -> {
-                showLoading(true)
-            }
-            Status.SUCCESS -> {
-                if (moviesResource.data != null) {
-                    showLoading(false)
-
-                    val adapter = MoviesAdapter(moviesResource.data, this)
-                    binding?.recyclerView?.adapter = adapter
+                    Status.ERROR -> {
+                        showLoading(false)
+                        Toast.makeText(context, "An error occurred", Toast.LENGTH_SHORT)
+                            .show()
+                    }
                 }
             }
-            Status.ERROR -> {
-                showLoading(false)
-                Toast.makeText(context, "An error occurred", Toast.LENGTH_SHORT)
-                    .show()
-            }
-        }
+        })
     }
 
     private fun showLoading(isLoading: Boolean) {

@@ -18,12 +18,6 @@ class FlixRepository private constructor(
 ) : FlixDataSource{
 
     companion object {
-        private const val SECTION_NOW_PLAYING_MOVIES = 0
-        private const val SECTION_TOP_RATED_MOVIES = 1
-
-        private const val SECTION_ON_THE_AIR_TV_SHOWS = 0
-        private const val SECTION_TOP_RATED_TV_SHOWS = 1
-
         @Volatile
         private var instance: FlixRepository? = null
 
@@ -39,38 +33,30 @@ class FlixRepository private constructor(
             }
     }
 
-    override fun getNowPlayingMovies(page: Int): LiveData<Resource<List<MovieEntity>>> {
+    override fun getMovies(page: Int, section: Int): LiveData<Resource<List<MovieEntity>>> {
         return object : NetworkBoundResource<List<MovieEntity>, List<MovieResponse>>(appExecutors) {
             override fun loadFromDB(): LiveData<List<MovieEntity>> =
-                localDataSource.getMovies(SECTION_NOW_PLAYING_MOVIES)
+                localDataSource.getMovies(section)
 
             override fun shouldFetch(moviesEntity: List<MovieEntity>?): Boolean =
                 moviesEntity == null || moviesEntity.isEmpty()
 
-            override fun createCall(): LiveData<ApiResponse<List<MovieResponse>>> =
-                remoteDataSource.getNowPlayingMovies(page)
-
-            override fun saveCallResult(moviesResponse: List<MovieResponse>) {
-                val moviesEntity = castMovieList(moviesResponse, SECTION_NOW_PLAYING_MOVIES)
-                localDataSource.insertMovies(moviesEntity)
+            override fun createCall(): LiveData<ApiResponse<List<MovieResponse>>> {
+                return when (section) {
+                    0 -> { // now playing
+                        remoteDataSource.getNowPlayingMovies(page)
+                    }
+                    1 -> { // top rated
+                        remoteDataSource.getTopRatedMovies(page)
+                    }
+                    else -> { // default
+                        remoteDataSource.getNowPlayingMovies(page)
+                    }
+                }
             }
 
-        }.asLiveData()
-    }
-
-    override fun getTopRatedMovies(page: Int): LiveData<Resource<List<MovieEntity>>> {
-        return object : NetworkBoundResource<List<MovieEntity>, List<MovieResponse>>(appExecutors) {
-            override fun loadFromDB(): LiveData<List<MovieEntity>> =
-                localDataSource.getMovies(SECTION_TOP_RATED_MOVIES)
-
-            override fun shouldFetch(moviesEntity: List<MovieEntity>?): Boolean =
-                moviesEntity == null || moviesEntity.isEmpty()
-
-            override fun createCall(): LiveData<ApiResponse<List<MovieResponse>>> =
-                remoteDataSource.getTopRatedMovies(page)
-
             override fun saveCallResult(moviesResponse: List<MovieResponse>) {
-                val moviesEntity = castMovieList(moviesResponse, SECTION_TOP_RATED_MOVIES)
+                val moviesEntity = castMovieList(moviesResponse, section)
                 localDataSource.insertMovies(moviesEntity)
             }
 
@@ -107,38 +93,30 @@ class FlixRepository private constructor(
         }.asLiveData()
     }
 
-    override fun getOnTheAirTvShows(page: Int): LiveData<Resource<List<TvShowEntity>>> {
+    override fun getTvShows(page: Int, section: Int): LiveData<Resource<List<TvShowEntity>>> {
         return object : NetworkBoundResource<List<TvShowEntity>, List<TvShowResponse>>(appExecutors) {
             override fun loadFromDB(): LiveData<List<TvShowEntity>> =
-                localDataSource.getTvShows(SECTION_ON_THE_AIR_TV_SHOWS)
+                localDataSource.getTvShows(section)
 
             override fun shouldFetch(tvShowsEntity: List<TvShowEntity>?): Boolean =
                 tvShowsEntity == null || tvShowsEntity.isEmpty()
 
-            override fun createCall(): LiveData<ApiResponse<List<TvShowResponse>>> =
-                remoteDataSource.getOnTheAirTvShows(page)
-
-            override fun saveCallResult(tvShowsResponse: List<TvShowResponse>) {
-                val tvShowsEntity = castTvShowList(tvShowsResponse, SECTION_ON_THE_AIR_TV_SHOWS)
-                localDataSource.insertTvShows(tvShowsEntity)
+            override fun createCall(): LiveData<ApiResponse<List<TvShowResponse>>> {
+                return when (section) {
+                    0 -> { // on the air
+                        remoteDataSource.getOnTheAirTvShows(page)
+                    }
+                    1 -> { // top rated
+                        remoteDataSource.getTopRatedTvShows(page)
+                    }
+                    else -> { // default
+                        remoteDataSource.getOnTheAirTvShows(page)
+                    }
+                }
             }
 
-        }.asLiveData()
-    }
-
-    override fun getTopRatedTvShows(page: Int): LiveData<Resource<List<TvShowEntity>>> {
-        return object : NetworkBoundResource<List<TvShowEntity>, List<TvShowResponse>>(appExecutors) {
-            override fun loadFromDB(): LiveData<List<TvShowEntity>> =
-                localDataSource.getTvShows(SECTION_TOP_RATED_TV_SHOWS)
-
-            override fun shouldFetch(tvShowsEntity: List<TvShowEntity>?): Boolean =
-                tvShowsEntity == null || tvShowsEntity.isEmpty()
-
-            override fun createCall(): LiveData<ApiResponse<List<TvShowResponse>>> =
-                remoteDataSource.getTopRatedTvShows(page)
-
             override fun saveCallResult(tvShowsResponse: List<TvShowResponse>) {
-                val tvShowsEntity = castTvShowList(tvShowsResponse, SECTION_TOP_RATED_TV_SHOWS)
+                val tvShowsEntity = castTvShowList(tvShowsResponse, section)
                 localDataSource.insertTvShows(tvShowsEntity)
             }
 

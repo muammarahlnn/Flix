@@ -2,6 +2,7 @@ package com.ardnn.flix.data.source.remote
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.ardnn.flix.BuildConfig
 import com.ardnn.flix.data.source.remote.response.*
 import com.ardnn.flix.data.source.remote.service.MovieApiService
 import com.ardnn.flix.data.source.remote.service.TvShowApiService
@@ -15,6 +16,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 class RemoteDataSource private constructor() {
 
     companion object {
+        private const val API_KEY = BuildConfig.API_KEY
         private val MOVIE_SERVICE: MovieApiService =
             Retrofit.Builder()
                 .baseUrl(Const.BASE_URL_MOVIE)
@@ -45,7 +47,7 @@ class RemoteDataSource private constructor() {
         EspressoIdlingResource.increment()
 
         val resultMovieDetail = MutableLiveData<ApiResponse<MovieDetailResponse>>()
-        MOVIE_SERVICE.getMovieDetails(movieId, Const.API_KEY)
+        MOVIE_SERVICE.getMovieDetails(movieId, API_KEY)
             .enqueue(object : Callback<MovieDetailResponse> {
                 override fun onResponse(
                     call: Call<MovieDetailResponse>,
@@ -76,7 +78,7 @@ class RemoteDataSource private constructor() {
         EspressoIdlingResource.increment()
 
         val resultMovies = MutableLiveData<ApiResponse<List<MovieResponse>>>()
-        MOVIE_SERVICE.getNowPlayingMovies(Const.API_KEY, page)
+        MOVIE_SERVICE.getNowPlayingMovies(API_KEY, page)
             .enqueue(object : Callback<MoviesResponse> {
                 override fun onResponse(
                     call: Call<MoviesResponse>,
@@ -112,7 +114,7 @@ class RemoteDataSource private constructor() {
         EspressoIdlingResource.increment()
 
         val resultMovies = MutableLiveData<ApiResponse<List<MovieResponse>>>()
-        MOVIE_SERVICE.getTopRatedMovies(Const.API_KEY, page)
+        MOVIE_SERVICE.getTopRatedMovies(API_KEY, page)
             .enqueue(object : Callback<MoviesResponse> {
                 override fun onResponse(
                     call: Call<MoviesResponse>,
@@ -148,7 +150,7 @@ class RemoteDataSource private constructor() {
         EspressoIdlingResource.increment()
 
         val resultTvShowDetail = MutableLiveData<ApiResponse<TvShowDetailResponse>>()
-        TV_SHOW_SERVICE.getTvShowDetails(tvShowId, Const.API_KEY)
+        TV_SHOW_SERVICE.getTvShowDetails(tvShowId, API_KEY)
             .enqueue(object : Callback<TvShowDetailResponse> {
                 override fun onResponse(
                     call: Call<TvShowDetailResponse>,
@@ -179,7 +181,7 @@ class RemoteDataSource private constructor() {
         EspressoIdlingResource.increment()
 
         val resultTvShows = MutableLiveData<ApiResponse<List<TvShowResponse>>>()
-        TV_SHOW_SERVICE.getOnTheAirTvShows(Const.API_KEY, page)
+        TV_SHOW_SERVICE.getOnTheAirTvShows(API_KEY, page)
             .enqueue(object : Callback<TvShowsResponse> {
                 override fun onResponse(
                     call: Call<TvShowsResponse>,
@@ -214,7 +216,7 @@ class RemoteDataSource private constructor() {
         EspressoIdlingResource.increment()
 
         val resultTvShows = MutableLiveData<ApiResponse<List<TvShowResponse>>>()
-        TV_SHOW_SERVICE.getTopRatedTvShows(Const.API_KEY, page)
+        TV_SHOW_SERVICE.getTopRatedTvShows(API_KEY, page)
             .enqueue(object : Callback<TvShowsResponse> {
                 override fun onResponse(
                     call: Call<TvShowsResponse>,

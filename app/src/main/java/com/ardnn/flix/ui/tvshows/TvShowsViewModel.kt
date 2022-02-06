@@ -1,6 +1,8 @@
 package com.ardnn.flix.ui.tvshows
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import com.ardnn.flix.data.FlixRepository
 import com.ardnn.flix.data.source.local.entity.TvShowEntity
@@ -8,15 +10,14 @@ import com.ardnn.flix.vo.Resource
 
 class TvShowsViewModel(private val flixRepository: FlixRepository) : ViewModel() {
 
-    private var section = 0
+    val section = MutableLiveData<Int>()
 
-    fun getOnTheAirTvShows(page: Int): LiveData<Resource<List<TvShowEntity>>> =
-        flixRepository.getOnTheAirTvShows(page)
-
-    fun getTopRatedTvShows(page: Int): LiveData<Resource<List<TvShowEntity>>> =
-        flixRepository.getTopRatedTvShows(page)
+    fun getTvShows(page: Int): LiveData<Resource<List<TvShowEntity>>> =
+        Transformations.switchMap(section) { mSection ->
+            flixRepository.getTvShows(page, mSection)
+        }
 
     fun setSection(section: Int) {
-        this.section = section
+        this.section.value = section
     }
 }

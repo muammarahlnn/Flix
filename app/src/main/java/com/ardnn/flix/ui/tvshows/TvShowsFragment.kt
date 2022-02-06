@@ -9,13 +9,11 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
-import com.ardnn.flix.R
 import com.ardnn.flix.data.source.local.entity.TvShowEntity
 import com.ardnn.flix.databinding.FragmentTvShowsBinding
 import com.ardnn.flix.ui.tvshow_detail.TvShowDetailActivity
 import com.ardnn.flix.utils.SingleClickListener
 import com.ardnn.flix.viewmodel.ViewModelFactory
-import com.ardnn.flix.vo.Resource
 import com.ardnn.flix.vo.Status
 
 class TvShowsFragment : Fragment(), SingleClickListener<TvShowEntity> {
@@ -61,43 +59,27 @@ class TvShowsFragment : Fragment(), SingleClickListener<TvShowEntity> {
     }
 
     private fun subscribe() {
-        // set tv shows depends on section
-        when (section) {
-            0 -> { // on the air
-                viewModel.getOnTheAirTvShows(page).observe(viewLifecycleOwner, { tvShowsResource ->
-                    if (tvShowsResource != null) {
-                        setTvShows(tvShowsResource)
+        viewModel.getTvShows(page).observe(viewLifecycleOwner, { tvShowsResource ->
+            if (tvShowsResource != null) {
+                when (tvShowsResource.status) {
+                    Status.LOADING -> {
+                        showLoading(true)
                     }
-                })
-            }
-            1 -> { // top rated
-                viewModel.getTopRatedTvShows(page).observe(viewLifecycleOwner, { tvShowsResource ->
-                    if (tvShowsResource != null) {
-                        setTvShows(tvShowsResource)
+                    Status.SUCCESS -> {
+                        if (tvShowsResource.data != null) {
+                            showLoading(false)
+
+                            val adapter = TvShowsAdapter(tvShowsResource.data, this)
+                            binding?.recyclerView?.adapter = adapter
+                        }
                     }
-                })
-            }
-        }
-    }
-
-    private fun setTvShows(tvShowsResource: Resource<List<TvShowEntity>>) {
-        when (tvShowsResource.status) {
-            Status.LOADING -> {
-                showLoading(true)
-            }
-            Status.SUCCESS -> {
-                if (tvShowsResource.data != null) {
-                    showLoading(false)
-
-                    val adapter = TvShowsAdapter(tvShowsResource.data, this)
-                    binding?.recyclerView?.adapter = adapter
+                    Status.ERROR -> {
+                        showLoading(false)
+                        Toast.makeText(context, "An error occurred", Toast.LENGTH_SHORT).show()
+                    }
                 }
             }
-            Status.ERROR -> {
-                showLoading(false)
-                Toast.makeText(context, "An error occurred", Toast.LENGTH_SHORT).show()
-            }
-        }
+        })
     }
 
     private fun showLoading(isLoading: Boolean) {
