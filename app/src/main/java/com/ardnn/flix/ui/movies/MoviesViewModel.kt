@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
+import androidx.paging.PagedList
 import com.ardnn.flix.data.FlixRepository
 import com.ardnn.flix.data.source.local.entity.MovieEntity
 import com.ardnn.flix.vo.Resource
@@ -12,7 +13,7 @@ class MoviesViewModel(private val flixRepository: FlixRepository) : ViewModel() 
 
     val section = MutableLiveData<Int>()
 
-    fun getMovies(page: Int): LiveData<Resource<List<MovieEntity>>> =
+    fun getMovies(page: Int): LiveData<Resource<PagedList<MovieEntity>>> =
         Transformations.switchMap(section) { mSection ->
             flixRepository.getMovies(page, mSection)
         }

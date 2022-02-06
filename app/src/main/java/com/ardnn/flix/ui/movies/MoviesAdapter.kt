@@ -2,6 +2,8 @@ package com.ardnn.flix.ui.movies
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.paging.PagedListAdapter
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.ardnn.flix.R
 import com.ardnn.flix.data.source.local.entity.MovieEntity
@@ -11,9 +13,21 @@ import com.ardnn.flix.utils.Helper
 import com.ardnn.flix.utils.SingleClickListener
 
 class MoviesAdapter(
-    private val movieList: List<MovieEntity>,
     private val clickListener: SingleClickListener<MovieEntity>
-) : RecyclerView.Adapter<MoviesAdapter.MovieViewHolder>() {
+) : PagedListAdapter<MovieEntity, MoviesAdapter.MovieViewHolder>(DIFF_CALLBACK) {
+
+    companion object {
+        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<MovieEntity>() {
+            override fun areItemsTheSame(oldItem: MovieEntity, newItem: MovieEntity): Boolean {
+                return oldItem.id == newItem.id
+            }
+
+            override fun areContentsTheSame(oldItem: MovieEntity, newItem: MovieEntity): Boolean {
+                return oldItem == newItem
+            }
+
+        }
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
         val binding = ItemFilmBinding
@@ -22,11 +36,10 @@ class MoviesAdapter(
     }
 
     override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
-        holder.onBind(movieList[position])
-    }
-
-    override fun getItemCount(): Int {
-        return movieList.size
+        val movie = getItem(position)
+        if (movie != null) {
+            holder.onBind(movie)
+        }
     }
 
     inner class MovieViewHolder(private val binding: ItemFilmBinding) :

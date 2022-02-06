@@ -69,7 +69,8 @@ class MoviesFragment : Fragment(), SingleClickListener<MovieEntity> {
                         if (moviesResource.data != null) {
                             showLoading(false)
 
-                            val adapter = MoviesAdapter(moviesResource.data, this)
+                            val adapter = MoviesAdapter(this)
+                            adapter.submitList(moviesResource.data)
                             binding?.recyclerView?.adapter = adapter
                         }
                     }

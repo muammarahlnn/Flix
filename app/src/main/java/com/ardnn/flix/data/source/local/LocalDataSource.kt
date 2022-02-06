@@ -1,6 +1,7 @@
 package com.ardnn.flix.data.source.local
 
 import androidx.lifecycle.LiveData
+import androidx.paging.DataSource
 import com.ardnn.flix.data.source.local.entity.MovieDetailEntity
 import com.ardnn.flix.data.source.local.entity.MovieEntity
 import com.ardnn.flix.data.source.local.entity.TvShowDetailEntity
@@ -16,10 +17,10 @@ class LocalDataSource private constructor(private val flixDao: FlixDao) {
             INSTANCE ?: LocalDataSource(flixDao)
     }
 
-    fun getMovies(section: Int): LiveData<List<MovieEntity>> =
+    fun getMovies(section: Int): DataSource.Factory<Int, MovieEntity> =
         flixDao.getMovies(section)
 
-    fun getTvShows(section: Int): LiveData<List<TvShowEntity>> =
+    fun getTvShows(section: Int): DataSource.Factory<Int, TvShowEntity> =
         flixDao.getTvShows(section)
 
     fun getMovieDetail(id: Int): LiveData<MovieDetailEntity> =

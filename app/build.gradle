@@ -73,6 +73,10 @@ dependencies {
     testImplementation "androidx.arch.core:core-testing:2.1.0"
     testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0"
 
+    // room
     implementation "androidx.room:room-runtime:2.4.1"
     kapt "androidx.room:room-compiler:2.4.1"
+
+    // paging
+    implementation "androidx.paging:paging-runtime-ktx:3.1.0"
 }

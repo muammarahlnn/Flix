@@ -69,7 +69,8 @@ class TvShowsFragment : Fragment(), SingleClickListener<TvShowEntity> {
                         if (tvShowsResource.data != null) {
                             showLoading(false)
 
-                            val adapter = TvShowsAdapter(tvShowsResource.data, this)
+                            val adapter = TvShowsAdapter(this)
+                            adapter.submitList(tvShowsResource.data)
                             binding?.recyclerView?.adapter = adapter
                         }
                     }

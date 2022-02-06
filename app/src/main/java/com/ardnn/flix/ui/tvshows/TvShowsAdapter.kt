@@ -2,6 +2,8 @@ package com.ardnn.flix.ui.tvshows
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.paging.PagedListAdapter
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.ardnn.flix.R
 import com.ardnn.flix.data.source.local.entity.TvShowEntity
@@ -11,9 +13,21 @@ import com.ardnn.flix.utils.Helper
 import com.ardnn.flix.utils.SingleClickListener
 
 class TvShowsAdapter(
-    private val tvShowList: List<TvShowEntity>,
     private val clickListener: SingleClickListener<TvShowEntity>
-) : RecyclerView.Adapter<TvShowsAdapter.TvShowViewHolder>() {
+) : PagedListAdapter<TvShowEntity, TvShowsAdapter.TvShowViewHolder>(DIFF_CALLBACK) {
+
+    companion object {
+        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<TvShowEntity>() {
+            override fun areItemsTheSame(oldItem: TvShowEntity, newItem: TvShowEntity): Boolean {
+                return oldItem.id == newItem.id
+            }
+
+            override fun areContentsTheSame(oldItem: TvShowEntity, newItem: TvShowEntity): Boolean {
+                return oldItem == newItem
+            }
+
+        }
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TvShowViewHolder {
         val binding = ItemFilmBinding
@@ -22,11 +36,10 @@ class TvShowsAdapter(
     }
 
     override fun onBindViewHolder(holder: TvShowViewHolder, position: Int) {
-        holder.onBind(tvShowList[position])
-    }
-
-    override fun getItemCount(): Int {
-        return tvShowList.size
+        val tvShow = getItem(position)
+        if (tvShow != null) {
+            holder.onBind(tvShow)
+        }
     }
 
     inner class TvShowViewHolder(private val binding: ItemFilmBinding) :
