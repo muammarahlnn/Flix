@@ -1,9 +1,11 @@
 package com.ardnn.flix.viewmodel
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.ardnn.flix.data.FlixRepository
 import com.ardnn.flix.data.source.remote.RemoteDataSource
+import com.ardnn.flix.di.Injection
 import com.ardnn.flix.ui.movie_detail.MovieDetailViewModel
 import com.ardnn.flix.ui.movies.MoviesViewModel
 import com.ardnn.flix.ui.tvshow_detail.TvShowDetailViewModel
@@ -14,14 +16,12 @@ class ViewModelFactory private constructor(
 ) : ViewModelProvider.NewInstanceFactory() {
 
     companion object {
-        private val flixRepository = FlixRepository.getInstance(RemoteDataSource.getInstance())
-
         @Volatile
         private var instance: ViewModelFactory? = null
 
-        fun getInstance(): ViewModelFactory =
+        fun getInstance(context: Context): ViewModelFactory =
             instance ?: synchronized(this) {
-                instance ?: ViewModelFactory(flixRepository).apply {
+                ViewModelFactory(Injection.provideRepository(context)).apply {
                     instance = this
                 }
             }

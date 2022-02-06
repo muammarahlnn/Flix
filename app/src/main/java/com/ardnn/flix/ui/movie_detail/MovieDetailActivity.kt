@@ -2,6 +2,7 @@ package com.ardnn.flix.ui.movie_detail
 
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -12,6 +13,7 @@ import com.ardnn.flix.data.source.remote.ImageSize
 import com.ardnn.flix.databinding.ActivityMovieDetailBinding
 import com.ardnn.flix.utils.Helper
 import com.ardnn.flix.viewmodel.ViewModelFactory
+import com.ardnn.flix.vo.Status
 
 class MovieDetailActivity : AppCompatActivity(), View.OnClickListener {
 
@@ -30,7 +32,7 @@ class MovieDetailActivity : AppCompatActivity(), View.OnClickListener {
         setContentView(binding.root)
 
         // initialize view model
-        val factory = ViewModelFactory.getInstance()
+        val factory = ViewModelFactory.getInstance(this)
         viewModel = ViewModelProvider(this, factory)[MovieDetailViewModel::class.java]
 
         // get movie id and set it into view model
@@ -53,8 +55,24 @@ class MovieDetailActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun subscribe() {
-        viewModel.getMovieDetail().observe(this, { movieDetail ->
-            setMovieDetailToWidgets(movieDetail)
+        viewModel.movieDetail.observe(this, { movieDetailResource ->
+            if (movieDetailResource != null) {
+                when (movieDetailResource.status) {
+                    Status.LOADING -> {
+                        showLoading(true)
+                    }
+                    Status.SUCCESS -> {
+                        if (movieDetailResource.data != null) {
+                            showLoading(false)
+                            setMovieDetailToWidgets(movieDetailResource.data)
+                        }
+                    }
+                    Status.ERROR -> {
+                        showLoading(false)
+                        Toast.makeText(applicationContext, "An error occurred", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
         })
 
         viewModel.isSynopsisExtended.observe(this, { isExtended ->
@@ -69,13 +87,6 @@ class MovieDetailActivity : AppCompatActivity(), View.OnClickListener {
             }
         })
 
-        viewModel.getIsLoading().observe(this, { isLoading ->
-            showLoading(isLoading)
-        })
-
-        viewModel.getIsLoadFailure().observe(this, { isFailure ->
-            showAlert(isFailure)
-        })
     }
 
     private fun setMovieDetailToWidgets(movieDetail: MovieDetailEntity) {
@@ -111,10 +122,6 @@ class MovieDetailActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun showLoading(isLoading: Boolean) {
         binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
-    }
-
-    private fun showAlert(isFailure: Boolean) {
-        binding.clAlert.visibility = if (isFailure) View.VISIBLE else View.GONE
     }
 
     override fun onClick(v: View) {

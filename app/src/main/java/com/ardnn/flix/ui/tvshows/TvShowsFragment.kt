@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import com.ardnn.flix.R
@@ -14,6 +15,8 @@ import com.ardnn.flix.databinding.FragmentTvShowsBinding
 import com.ardnn.flix.ui.tvshow_detail.TvShowDetailActivity
 import com.ardnn.flix.utils.SingleClickListener
 import com.ardnn.flix.viewmodel.ViewModelFactory
+import com.ardnn.flix.vo.Resource
+import com.ardnn.flix.vo.Status
 
 class TvShowsFragment : Fragment(), SingleClickListener<TvShowEntity> {
 
@@ -37,7 +40,7 @@ class TvShowsFragment : Fragment(), SingleClickListener<TvShowEntity> {
         super.onViewCreated(view, savedInstanceState)
         if (activity != null) {
             // initialize view model
-            val factory = ViewModelFactory.getInstance()
+            val factory = ViewModelFactory.getInstance(requireActivity())
             viewModel = ViewModelProvider(this, factory)[TvShowsViewModel::class.java]
 
             // get section and set it on view model
@@ -58,26 +61,41 @@ class TvShowsFragment : Fragment(), SingleClickListener<TvShowEntity> {
     }
 
     private fun subscribe() {
-        setTvShows()
-
-        viewModel.getIsLoading().observe(viewLifecycleOwner, { isLoading ->
-            showLoading(isLoading)
-        })
-    }
-
-    private fun setTvShows() {
+        // set tv shows depends on section
         when (section) {
             0 -> { // on the air
-                viewModel.getOnTheAirTvShows(page).observe(viewLifecycleOwner, { tvShowList ->
-                    val adapter = TvShowsAdapter(tvShowList, this)
-                    binding?.recyclerView?.adapter = adapter
+                viewModel.getOnTheAirTvShows(page).observe(viewLifecycleOwner, { tvShowsResource ->
+                    if (tvShowsResource != null) {
+                        setTvShows(tvShowsResource)
+                    }
                 })
             }
             1 -> { // top rated
-                viewModel.getTopRatedTvShows(page).observe(viewLifecycleOwner, { tvShowList ->
-                    val adapter = TvShowsAdapter(tvShowList, this)
-                    binding?.recyclerView?.adapter = adapter
+                viewModel.getTopRatedTvShows(page).observe(viewLifecycleOwner, { tvShowsResource ->
+                    if (tvShowsResource != null) {
+                        setTvShows(tvShowsResource)
+                    }
                 })
+            }
+        }
+    }
+
+    private fun setTvShows(tvShowsResource: Resource<List<TvShowEntity>>) {
+        when (tvShowsResource.status) {
+            Status.LOADING -> {
+                showLoading(true)
+            }
+            Status.SUCCESS -> {
+                if (tvShowsResource.data != null) {
+                    showLoading(false)
+
+                    val adapter = TvShowsAdapter(tvShowsResource.data, this)
+                    binding?.recyclerView?.adapter = adapter
+                }
+            }
+            Status.ERROR -> {
+                showLoading(false)
+                Toast.makeText(context, "An error occurred", Toast.LENGTH_SHORT).show()
             }
         }
     }

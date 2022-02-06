@@ -192,7 +192,7 @@ class DataDummy(private val context: Context) {
         val genreList = parsingGenreEntityList(genreArr)
 
         return TvShowDetailEntity(
-            id, title, overview, firstAirDate, lastAirDate, runtimeList, rating,
+            id, title, overview, firstAirDate, lastAirDate, runtimeList[0], rating,
             posterUrl, wallpaperUrl, numberOfEpisodes, numberOfSeasons, genreList
         )
     }

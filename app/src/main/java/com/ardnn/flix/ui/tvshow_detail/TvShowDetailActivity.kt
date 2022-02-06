@@ -2,6 +2,7 @@ package com.ardnn.flix.ui.tvshow_detail
 
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -13,6 +14,7 @@ import com.ardnn.flix.databinding.ActivityTvShowDetailBinding
 import com.ardnn.flix.ui.movie_detail.GenreAdapter
 import com.ardnn.flix.utils.Helper
 import com.ardnn.flix.viewmodel.ViewModelFactory
+import com.ardnn.flix.vo.Status
 
 class TvShowDetailActivity : AppCompatActivity(), View.OnClickListener {
 
@@ -21,17 +23,13 @@ class TvShowDetailActivity : AppCompatActivity(), View.OnClickListener {
 
     private var isSynopsisExtended = false
 
-    companion object {
-        const val EXTRA_TV_SHOW_ID = "extra_tv_show_id"
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityTvShowDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         // initialize view model
-        val factory = ViewModelFactory.getInstance()
+        val factory = ViewModelFactory.getInstance(this)
         viewModel = ViewModelProvider(this, factory)[TvShowDetailViewModel::class.java]
 
         // get tv show id and set it into view model
@@ -54,8 +52,25 @@ class TvShowDetailActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun subscribe() {
-        viewModel.getTvShowDetail().observe(this, { tvShowDetail ->
-            setTvShowDetailToWidgets(tvShowDetail)
+        viewModel.tvShowDetail.observe(this, { tvShowDetailResource ->
+            if (tvShowDetailResource != null) {
+                when (tvShowDetailResource.status) {
+                    Status.LOADING -> {
+                        showLoading(true)
+                    }
+                    Status.SUCCESS -> {
+                        if (tvShowDetailResource.data != null) {
+                            showLoading(false)
+                            setTvShowDetailToWidgets(tvShowDetailResource.data)
+                        }
+                    }
+                    Status.ERROR -> {
+                        showLoading(false)
+                        Toast.makeText(applicationContext, "An error occurred", Toast.LENGTH_SHORT)
+                            .show()
+                    }
+                }
+            }
         })
 
         viewModel.isSynopsisExtended.observe(this, { isExtended ->
@@ -68,14 +83,6 @@ class TvShowDetailActivity : AppCompatActivity(), View.OnClickListener {
                     tvMore.text = getString(R.string.more)
                 }
             }
-        })
-
-        viewModel.getIsLoading().observe(this, { isLoading ->
-            showLoading(isLoading)
-        })
-
-        viewModel.getIsLoadFailure().observe(this, { isFailure ->
-            showAlert(isFailure)
         })
     }
 
@@ -99,8 +106,8 @@ class TvShowDetailActivity : AppCompatActivity(), View.OnClickListener {
             tvEpisodes.text = (tvShowDetail.numberOfEpisodes ?: "-").toString()
             tvSeasons.text = (tvShowDetail.numberOfSeasons ?: "-").toString()
             tvRuntime.text =
-                if (!tvShowDetail.runtimes.isNullOrEmpty())
-                    getString(R.string.minutes, tvShowDetail.runtimes[0])
+                if (tvShowDetail.runtime != null)
+                    getString(R.string.minutes, tvShowDetail.runtime)
                 else "-"
             tvRating.text = (tvShowDetail.rating ?: "-").toString()
             tvFirstAiring.text = Helper.convertToDate(Helper.checkNullOrEmptyString(tvShowDetail.firstAirDate))
@@ -133,4 +140,7 @@ class TvShowDetailActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
+    companion object {
+        const val EXTRA_TV_SHOW_ID = "extra_tv_show_id"
+    }
 }
