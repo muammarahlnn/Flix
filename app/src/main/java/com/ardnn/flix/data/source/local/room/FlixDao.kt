@@ -13,6 +13,9 @@ interface FlixDao {
     @Query("SELECT * FROM movie_entities WHERE section = :section")
     fun getMovies(section: Int): DataSource.Factory<Int, MovieEntity>
 
+    @Query("SELECT * FROM movie_detail_entities WHERE is_favorite = 1")
+    fun getFavoriteMovies(): DataSource.Factory<Int, MovieDetailEntity>
+
     @Query("SELECT * FROM movie_detail_entities WHERE id = :id")
     fun getMovieDetail(id: Int): LiveData<MovieDetailEntity>
 
@@ -27,6 +30,9 @@ interface FlixDao {
 
     @Query("SELECT * FROM tv_show_entities WHERE section = :section")
     fun getTvShows(section: Int): DataSource.Factory<Int, TvShowEntity>
+
+    @Query("SELECT * FROM tv_show_detail_entities WHERE is_favorite = 1")
+    fun getFavoriteTvShows(): DataSource.Factory<Int, TvShowDetailEntity>
 
     @Query("SELECT * FROM tv_show_detail_entities WHERE id = :id")
     fun getTvShowDetail(id: Int): LiveData<TvShowDetailEntity>

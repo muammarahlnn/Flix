@@ -58,7 +58,7 @@ class MoviesAdapter(
 
                 tvTitle.text = movie.title ?: "-"
                 tvYear.text =
-                    if (movie.posterUrl.isNullOrEmpty()) "-"
+                    if (movie.releaseDate.isNullOrEmpty()) "-"
                     else movie.releaseDate.toString().substring(0, 4)
                 tvRating.text = (movie.rating ?: "-").toString()
             }

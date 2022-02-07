@@ -17,7 +17,7 @@ class FlixRepository private constructor(
     private val remoteDataSource: RemoteDataSource,
     private val localDataSource: LocalDataSource,
     private val appExecutors: AppExecutors
-) : FlixDataSource{
+) : FlixDataSource {
 
     companion object {
         @Volatile
@@ -69,6 +69,15 @@ class FlixRepository private constructor(
             }
 
         }.asLiveData()
+    }
+
+    override fun getFavoriteMovies(): LiveData<PagedList<MovieDetailEntity>> {
+        val config = PagedList.Config.Builder()
+            .setEnablePlaceholders(false)
+            .setInitialLoadSizeHint(4)
+            .setPageSize(4)
+            .build()
+        return LivePagedListBuilder(localDataSource.getFavoriteMovies(), config).build()
     }
 
     override fun getMovieDetail(movieId: Int): LiveData<Resource<MovieDetailEntity>> {
@@ -135,6 +144,15 @@ class FlixRepository private constructor(
             }
 
         }.asLiveData()
+    }
+
+    override fun getFavoriteTvShows(): LiveData<PagedList<TvShowDetailEntity>> {
+        val config = PagedList.Config.Builder()
+            .setEnablePlaceholders(false)
+            .setInitialLoadSizeHint(4)
+            .setPageSize(4)
+            .build()
+        return LivePagedListBuilder(localDataSource.getFavoriteTvShows(), config).build()
     }
 
     override fun getTvShowDetail(tvShowId: Int): LiveData<Resource<TvShowDetailEntity>> {

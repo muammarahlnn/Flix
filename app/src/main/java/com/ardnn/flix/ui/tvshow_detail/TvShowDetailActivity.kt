@@ -20,6 +20,7 @@ class TvShowDetailActivity : AppCompatActivity(), View.OnClickListener {
 
     private lateinit var viewModel: TvShowDetailViewModel
     private lateinit var binding: ActivityTvShowDetailBinding
+    private lateinit var tvShowDetail: TvShowDetailEntity
 
     private var isSynopsisExtended = false
 
@@ -48,6 +49,7 @@ class TvShowDetailActivity : AppCompatActivity(), View.OnClickListener {
 
         // click listener
         binding.btnBack.setOnClickListener(this)
+        binding.btnFavorite.setOnClickListener(this)
         binding.clWrapperSynopsis.setOnClickListener(this)
     }
 
@@ -61,7 +63,8 @@ class TvShowDetailActivity : AppCompatActivity(), View.OnClickListener {
                     Status.SUCCESS -> {
                         if (tvShowDetailResource.data != null) {
                             showLoading(false)
-                            setTvShowDetailToWidgets(tvShowDetailResource.data)
+                            tvShowDetail = tvShowDetailResource.data
+                            setTvShowDetailToWidgets()
                         }
                     }
                     Status.ERROR -> {
@@ -86,9 +89,9 @@ class TvShowDetailActivity : AppCompatActivity(), View.OnClickListener {
         })
     }
 
-    private fun setTvShowDetailToWidgets(tvShowDetail: TvShowDetailEntity) {
+    private fun setTvShowDetailToWidgets() {
         with (binding) {
-            // set poster and wallpaper (images)
+            // set images
             Helper.setImageGlide(
                 this@TvShowDetailActivity,
                 tvShowDetail.getPosterUrl(ImageSize.W342),
@@ -100,6 +103,12 @@ class TvShowDetailActivity : AppCompatActivity(), View.OnClickListener {
                 tvShowDetail.getWallpaperUrl(ImageSize.W500),
                 ivWallpaper)
             ivWallpaper.tag = tvShowDetail.wallpaperUrl
+
+            val isFavorite = tvShowDetail.isFavorite
+            binding.btnFavorite.setImageResource(
+                if (isFavorite) R.drawable.ic_favorite
+                else R.drawable.ic_favorite_border_yellow
+            )
 
             // set detail
             tvTitle.text = Helper.checkNullOrEmptyString(tvShowDetail.title)
@@ -132,6 +141,22 @@ class TvShowDetailActivity : AppCompatActivity(), View.OnClickListener {
         when (v.id) {
             R.id.btnBack -> {
                 finish()
+            }
+            R.id.btnFavorite -> {
+                viewModel.setIsFavorite()
+                if (!tvShowDetail.isFavorite) {
+                    Toast.makeText(
+                        this,
+                        "${tvShowDetail.title} has added to favorites",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                } else {
+                    Toast.makeText(
+                        this,
+                        "${tvShowDetail.title} has removed from favorites",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
             }
             R.id.clWrapperSynopsis -> {
                 isSynopsisExtended = !isSynopsisExtended

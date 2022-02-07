@@ -23,6 +23,12 @@ class LocalDataSource private constructor(private val flixDao: FlixDao) {
     fun getTvShows(section: Int): DataSource.Factory<Int, TvShowEntity> =
         flixDao.getTvShows(section)
 
+    fun getFavoriteMovies(): DataSource.Factory<Int, MovieDetailEntity> =
+        flixDao.getFavoriteMovies()
+
+    fun getFavoriteTvShows(): DataSource.Factory<Int, TvShowDetailEntity> =
+        flixDao.getFavoriteTvShows()
+
     fun getMovieDetail(id: Int): LiveData<MovieDetailEntity> =
         flixDao.getMovieDetail(id)
 

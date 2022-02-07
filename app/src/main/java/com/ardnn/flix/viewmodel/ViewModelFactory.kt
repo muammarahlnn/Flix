@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.ardnn.flix.data.FlixRepository
 import com.ardnn.flix.data.source.remote.RemoteDataSource
 import com.ardnn.flix.di.Injection
+import com.ardnn.flix.ui.favorites.FavoritesViewModel
 import com.ardnn.flix.ui.movie_detail.MovieDetailViewModel
 import com.ardnn.flix.ui.movies.MoviesViewModel
 import com.ardnn.flix.ui.tvshow_detail.TvShowDetailViewModel
@@ -41,6 +42,9 @@ class ViewModelFactory private constructor(
             }
             modelClass.isAssignableFrom(TvShowDetailViewModel::class.java) -> {
                 TvShowDetailViewModel(flixRepository) as T
+            }
+            modelClass.isAssignableFrom(FavoritesViewModel::class.java) -> {
+                FavoritesViewModel(flixRepository) as T
             }
             else -> {
                 throw Throwable("Unknown ViewModel class: ${modelClass.name}")

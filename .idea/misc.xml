@@ -3,8 +3,15 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/coding/github/Flix/app/src/main/res/drawable-v24/ic_favorite_border_yellow.xml" value="0.2755208333333333" />
+        <entry key="..\:/coding/github/Flix/app/src/main/res/drawable/bg_item_favorite.xml" value="0.2755208333333333" />
         <entry key="..\:/coding/github/Flix/app/src/main/res/drawable/bg_item_genre.xml" value="0.2755208333333333" />
+        <entry key="..\:/coding/github/Flix/app/src/main/res/drawable/bg_vote_item_favorited.xml" value="0.2755208333333333" />
         <entry key="..\:/coding/github/Flix/app/src/main/res/drawable/ic_error.xml" value="0.2755208333333333" />
+        <entry key="..\:/coding/github/Flix/app/src/main/res/drawable/ic_favorite.xml" value="0.2755208333333333" />
+        <entry key="..\:/coding/github/Flix/app/src/main/res/drawable/ic_favorite_border.xml" value="0.2755208333333333" />
+        <entry key="..\:/coding/github/Flix/app/src/main/res/drawable/ic_favorite_border_gray.xml" value="0.2755208333333333" />
+        <entry key="..\:/coding/github/Flix/app/src/main/res/drawable/ic_favorite_border_yellow.xml" value="0.2755208333333333" />
         <entry key="..\:/coding/github/Flix/app/src/main/res/drawable/ic_loading.xml" value="0.2755208333333333" />
         <entry key="..\:/coding/github/Flix/app/src/main/res/drawable/ic_refresh.xml" value="0.2755208333333333" />
         <entry key="..\:/coding/github/Flix/app/src/main/res/drawable/selector_item_favorites.xml" value="0.2755208333333333" />
@@ -12,16 +19,17 @@
         <entry key="..\:/coding/github/Flix/app/src/main/res/drawable/selector_item_tv_shows.xml" value="0.2755208333333333" />
         <entry key="..\:/coding/github/Flix/app/src/main/res/layout/activity_detail.xml" value="0.264" />
         <entry key="..\:/coding/github/Flix/app/src/main/res/layout/activity_home.xml" value="0.259375" />
-        <entry key="..\:/coding/github/Flix/app/src/main/res/layout/activity_movie_detail.xml" value="0.264" />
+        <entry key="..\:/coding/github/Flix/app/src/main/res/layout/activity_movie_detail.xml" value="0.4" />
         <entry key="..\:/coding/github/Flix/app/src/main/res/layout/activity_splash.xml" value="0.259375" />
-        <entry key="..\:/coding/github/Flix/app/src/main/res/layout/activity_tv_show_detail.xml" value="0.264" />
-        <entry key="..\:/coding/github/Flix/app/src/main/res/layout/fragment_favorites.xml" value="0.1" />
+        <entry key="..\:/coding/github/Flix/app/src/main/res/layout/activity_tv_show_detail.xml" value="0.4" />
+        <entry key="..\:/coding/github/Flix/app/src/main/res/layout/fragment_favorites.xml" value="0.264" />
         <entry key="..\:/coding/github/Flix/app/src/main/res/layout/fragment_favorites_pager.xml" value="0.259375" />
         <entry key="..\:/coding/github/Flix/app/src/main/res/layout/fragment_film.xml" value="0.259375" />
         <entry key="..\:/coding/github/Flix/app/src/main/res/layout/fragment_movies.xml" value="0.259375" />
         <entry key="..\:/coding/github/Flix/app/src/main/res/layout/fragment_movies_pager.xml" value="0.259375" />
         <entry key="..\:/coding/github/Flix/app/src/main/res/layout/fragment_tv_shows.xml" value="0.259375" />
         <entry key="..\:/coding/github/Flix/app/src/main/res/layout/fragment_tv_shows_pager.xml" value="0.2453125" />
+        <entry key="..\:/coding/github/Flix/app/src/main/res/layout/item_favorite.xml" value="0.4" />
         <entry key="..\:/coding/github/Flix/app/src/main/res/layout/item_film.xml" value="0.259375" />
         <entry key="..\:/coding/github/Flix/app/src/main/res/layout/item_genre.xml" value="0.259375" />
         <entry key="..\:/coding/github/Flix/app/src/main/res/layout/temp_activity_home.xml" value="0.259375" />

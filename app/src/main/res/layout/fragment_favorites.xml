@@ -4,12 +4,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/black_background"
+    android:paddingHorizontal="16dp"
     tools:context=".ui.favorites.FavoritesFragment">
 
-    <TextView
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:textColor="@color/white_smoke"
-        android:text="@string/favorites" />
+        android:layout_marginTop="24dp"
+        tools:itemCount="3"
+        tools:listitem="@layout/item_favorite" />
 
 </FrameLayout>

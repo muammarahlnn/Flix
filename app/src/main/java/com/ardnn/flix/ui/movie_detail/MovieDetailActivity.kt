@@ -19,8 +19,10 @@ class MovieDetailActivity : AppCompatActivity(), View.OnClickListener {
 
     private lateinit var viewModel: MovieDetailViewModel
     private lateinit var binding: ActivityMovieDetailBinding
+    private lateinit var movieDetail: MovieDetailEntity
 
     private var isSynopsisExtended = false
+    private var isFavorite = false
 
     companion object {
         const val EXTRA_MOVIE_ID = "extra_movie_id"
@@ -51,6 +53,7 @@ class MovieDetailActivity : AppCompatActivity(), View.OnClickListener {
 
         // click listener
         binding.btnBack.setOnClickListener(this)
+        binding.btnFavorite.setOnClickListener(this)
         binding.clWrapperSynopsis.setOnClickListener(this)
     }
 
@@ -64,7 +67,9 @@ class MovieDetailActivity : AppCompatActivity(), View.OnClickListener {
                     Status.SUCCESS -> {
                         if (movieDetailResource.data != null) {
                             showLoading(false)
-                            setMovieDetailToWidgets(movieDetailResource.data)
+                            movieDetail = movieDetailResource.data
+                            isFavorite = movieDetail.isFavorite
+                            setMovieDetailToWidgets()
                         }
                     }
                     Status.ERROR -> {
@@ -89,9 +94,9 @@ class MovieDetailActivity : AppCompatActivity(), View.OnClickListener {
 
     }
 
-    private fun setMovieDetailToWidgets(movieDetail: MovieDetailEntity) {
+    private fun setMovieDetailToWidgets() {
         with (binding) {
-            // set poster and wallpaper (images)
+            // set images
             Helper.setImageGlide(
                 this@MovieDetailActivity,
                 movieDetail.getPosterUrl(ImageSize.W342),
@@ -103,6 +108,12 @@ class MovieDetailActivity : AppCompatActivity(), View.OnClickListener {
                 movieDetail.getWallpaperUrl(ImageSize.W500),
                 ivWallpaper)
             ivWallpaper.tag = movieDetail.wallpaperUrl
+
+            val isFavorite = movieDetail.isFavorite
+            binding.btnFavorite.setImageResource(
+                if (isFavorite) R.drawable.ic_favorite
+                else R.drawable.ic_favorite_border_yellow
+            )
 
             // set detail
             tvTitle.text = Helper.checkNullOrEmptyString(movieDetail.title)
@@ -128,6 +139,22 @@ class MovieDetailActivity : AppCompatActivity(), View.OnClickListener {
         when (v.id) {
             R.id.btnBack -> {
                 finish()
+            }
+            R.id.btnFavorite -> {
+                viewModel.setIsFavorite()
+                if (!movieDetail.isFavorite) {
+                    Toast.makeText(
+                        this,
+                        "${movieDetail.title} has added to favorites",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                } else {
+                    Toast.makeText(
+                        this,
+                        "${movieDetail.title} has removed from favorites",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
             }
             R.id.clWrapperSynopsis -> {
                 isSynopsisExtended = !isSynopsisExtended
