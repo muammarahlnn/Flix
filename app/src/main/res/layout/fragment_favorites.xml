@@ -15,4 +15,15 @@
         tools:itemCount="3"
         tools:listitem="@layout/item_favorite" />
 
+    <TextView
+        android:id="@+id/tvAlert"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:textSize="20sp"
+        android:textColor="@color/gray_primary"
+        android:textAlignment="center"
+        android:fontFamily="@font/roboto_medium" />
+
 </FrameLayout>

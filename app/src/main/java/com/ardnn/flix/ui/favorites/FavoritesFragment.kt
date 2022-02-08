@@ -63,19 +63,35 @@ class FavoritesFragment : Fragment() {
         when (section) {
             0 -> { // movies
                 viewModel.getFavoriteMovies().observe(viewLifecycleOwner, { favoriteMovies ->
-                    favoriteMoviesAdapter = FavoriteMoviesAdapter()
-                    favoriteMoviesAdapter.submitList(favoriteMovies)
-                    binding?.recyclerView?.adapter = favoriteMoviesAdapter
+                    if (favoriteMovies.isNullOrEmpty()) {
+                        showAlert(true, getString(R.string.movies))
+                    } else {
+                        showAlert(false)
+                        favoriteMoviesAdapter = FavoriteMoviesAdapter()
+                        favoriteMoviesAdapter.submitList(favoriteMovies)
+                        binding?.recyclerView?.adapter = favoriteMoviesAdapter
+                    }
                 })
             }
             1 -> { // tv shows
                 viewModel.getFavoriteTvShows().observe(viewLifecycleOwner, { favoriteTvShows ->
-                    favoriteTvShowsAdapter = FavoriteTvShowsAdapter()
-                    favoriteTvShowsAdapter.submitList(favoriteTvShows)
-                    binding?.recyclerView?.adapter = favoriteTvShowsAdapter
+                    if (favoriteTvShows.isNullOrEmpty()) {
+                        showAlert(true, getString(R.string.tv_shows))
+                    } else {
+                        showAlert(false)
+                        favoriteTvShowsAdapter = FavoriteTvShowsAdapter()
+                        favoriteTvShowsAdapter.submitList(favoriteTvShows)
+                        binding?.recyclerView?.adapter = favoriteTvShowsAdapter
+                    }
                 })
             }
         }
+    }
+
+    private fun showAlert(flag: Boolean, favoriteType: String = "") {
+        val alertText = getString(R.string.alert_favorite, favoriteType)
+        binding?.tvAlert?.text = alertText
+        binding?.tvAlert?.visibility = if (flag) View.VISIBLE else View.GONE
     }
 
     private val itemTouchHelper = ItemTouchHelper(object : ItemTouchHelper.Callback() {

@@ -25,6 +25,10 @@
     <string name="top_rated">Top Rated</string>
     <string name="undo">Undo</string>
     <string name="message_remove_favorite">Item removed from favorites</string>
+    <string name="alert_favorite">
+        You haven\'t favorited\n
+        any %s yet
+    </string>
 
 
 </resources>
