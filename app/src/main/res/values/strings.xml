@@ -23,5 +23,8 @@
     <string name="on_the_air">On The Air</string>
     <string name="popular">Popular</string>
     <string name="top_rated">Top Rated</string>
+    <string name="undo">Undo</string>
+    <string name="message_remove_favorite">Item removed from favorites</string>
+
 
 </resources>

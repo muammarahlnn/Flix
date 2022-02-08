@@ -21,4 +21,14 @@ class FavoritesViewModel(private val flixRepository: FlixRepository) : ViewModel
     fun setSection(section: Int) {
         this.section = section
     }
+
+    fun setIsFavoriteMovie(movieDetail: MovieDetailEntity) {
+        val newState = !movieDetail.isFavorite
+        flixRepository.setIsFavoriteMovieDetail(movieDetail, newState)
+    }
+
+    fun setIsFavoriteTvShow(tvShowDetail: TvShowDetailEntity) {
+        val newState = !tvShowDetail.isFavorite
+        flixRepository.setIsFavoriteTvShowDetail(tvShowDetail, newState)
+    }
 }

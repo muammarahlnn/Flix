@@ -47,6 +47,9 @@ class FavoriteMoviesAdapter : PagedListAdapter<MovieDetailEntity, FavoriteMovies
         }
     }
 
+    fun getSwipedData(swipedPosition: Int): MovieDetailEntity? =
+        getItem(swipedPosition)
+
     class MovieViewHolder(private val binding: ItemFavoriteBinding) :
         RecyclerView.ViewHolder(binding.root) {
 

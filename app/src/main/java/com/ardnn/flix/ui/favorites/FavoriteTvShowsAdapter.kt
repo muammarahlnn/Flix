@@ -47,6 +47,9 @@ class FavoriteTvShowsAdapter : PagedListAdapter<TvShowDetailEntity, FavoriteTvSh
         }
     }
 
+    fun getSwipedData(swipedPosition: Int): TvShowDetailEntity? =
+        getItem(swipedPosition)
+
     class TvShowViewHolder(private val binding: ItemFavoriteBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
