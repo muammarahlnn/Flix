@@ -3,6 +3,7 @@ package com.ardnn.flix.data.source.local.room
 import androidx.lifecycle.LiveData
 import androidx.paging.DataSource
 import androidx.room.*
+import androidx.sqlite.db.SupportSQLiteQuery
 import com.ardnn.flix.data.source.local.entity.MovieDetailEntity
 import com.ardnn.flix.data.source.local.entity.MovieEntity
 import com.ardnn.flix.data.source.local.entity.TvShowDetailEntity
@@ -13,8 +14,8 @@ interface FlixDao {
     @Query("SELECT * FROM movie_entities WHERE section = :section")
     fun getMovies(section: Int): DataSource.Factory<Int, MovieEntity>
 
-    @Query("SELECT * FROM movie_detail_entities WHERE is_favorite = 1")
-    fun getFavoriteMovies(): DataSource.Factory<Int, MovieDetailEntity>
+    @RawQuery(observedEntities = [MovieDetailEntity::class])
+    fun getFavoriteMovies(query: SupportSQLiteQuery): DataSource.Factory<Int, MovieDetailEntity>
 
     @Query("SELECT * FROM movie_detail_entities WHERE id = :id")
     fun getMovieDetail(id: Int): LiveData<MovieDetailEntity>
@@ -31,8 +32,8 @@ interface FlixDao {
     @Query("SELECT * FROM tv_show_entities WHERE section = :section")
     fun getTvShows(section: Int): DataSource.Factory<Int, TvShowEntity>
 
-    @Query("SELECT * FROM tv_show_detail_entities WHERE is_favorite = 1")
-    fun getFavoriteTvShows(): DataSource.Factory<Int, TvShowDetailEntity>
+    @RawQuery(observedEntities = [TvShowDetailEntity::class])
+    fun getFavoriteTvShows(query: SupportSQLiteQuery): DataSource.Factory<Int, TvShowDetailEntity>
 
     @Query("SELECT * FROM tv_show_detail_entities WHERE id = :id")
     fun getTvShowDetail(id: Int): LiveData<TvShowDetailEntity>

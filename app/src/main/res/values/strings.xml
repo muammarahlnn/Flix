@@ -29,6 +29,8 @@
         You haven\'t favorited\n
         any %s yet
     </string>
-
-
+    <string name="menu_default">Default</string>
+    <string name="menu_ascending">Ascending</string>
+    <string name="menu_descending">Descending</string>
+    <string name="menu_random">Random</string>
 </resources>

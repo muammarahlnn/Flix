@@ -7,6 +7,7 @@ import com.ardnn.flix.data.source.local.entity.MovieEntity
 import com.ardnn.flix.data.source.local.entity.TvShowDetailEntity
 import com.ardnn.flix.data.source.local.entity.TvShowEntity
 import com.ardnn.flix.data.source.local.room.FlixDao
+import com.ardnn.flix.utils.SortUtils
 
 class LocalDataSource private constructor(private val flixDao: FlixDao) {
 
@@ -23,11 +24,15 @@ class LocalDataSource private constructor(private val flixDao: FlixDao) {
     fun getTvShows(section: Int): DataSource.Factory<Int, TvShowEntity> =
         flixDao.getTvShows(section)
 
-    fun getFavoriteMovies(): DataSource.Factory<Int, MovieDetailEntity> =
-        flixDao.getFavoriteMovies()
+    fun getFavoriteMovies(filter: String): DataSource.Factory<Int, MovieDetailEntity> {
+        val query = SortUtils.getSortedQuery(SortUtils.MOVIES, filter)
+        return flixDao.getFavoriteMovies(query)
+    }
 
-    fun getFavoriteTvShows(): DataSource.Factory<Int, TvShowDetailEntity> =
-        flixDao.getFavoriteTvShows()
+    fun getFavoriteTvShows(filter: String): DataSource.Factory<Int, TvShowDetailEntity> {
+        val query = SortUtils.getSortedQuery(SortUtils.TV_SHOWS, filter)
+        return flixDao.getFavoriteTvShows(query)
+    }
 
     fun getMovieDetail(id: Int): LiveData<MovieDetailEntity> =
         flixDao.getMovieDetail(id)

@@ -7,16 +7,23 @@ import androidx.paging.PagedList
 import com.ardnn.flix.data.FlixRepository
 import com.ardnn.flix.data.source.local.entity.MovieDetailEntity
 import com.ardnn.flix.data.source.local.entity.TvShowDetailEntity
+import com.ardnn.flix.utils.SortUtils
 
 class FavoritesViewModel(private val flixRepository: FlixRepository) : ViewModel() {
 
     private var section = 0
 
-    fun getFavoriteMovies(): LiveData<PagedList<MovieDetailEntity>> =
-        flixRepository.getFavoriteMovies()
+    private val _moviesSort = MutableLiveData(SortUtils.DEFAULT)
+    val moviesSort: LiveData<String> = _moviesSort
 
-    fun getFavoriteTvShows(): LiveData<PagedList<TvShowDetailEntity>> =
-        flixRepository.getFavoriteTvShows()
+    private val _tvShowsSort = MutableLiveData<String>()
+    val tvShowsSort: LiveData<String> = _tvShowsSort
+
+    fun getFavoriteMovies(filter: String): LiveData<PagedList<MovieDetailEntity>> =
+        flixRepository.getFavoriteMovies(filter)
+
+    fun getFavoriteTvShows(filter: String): LiveData<PagedList<TvShowDetailEntity>> =
+        flixRepository.getFavoriteTvShows(filter)
 
     fun setSection(section: Int) {
         this.section = section
@@ -30,5 +37,13 @@ class FavoritesViewModel(private val flixRepository: FlixRepository) : ViewModel
     fun setIsFavoriteTvShow(tvShowDetail: TvShowDetailEntity) {
         val newState = !tvShowDetail.isFavorite
         flixRepository.setIsFavoriteTvShowDetail(tvShowDetail, newState)
+    }
+
+    fun setMoviesSort(filter: String) {
+        _moviesSort.value = filter
+    }
+
+    fun setTvShowsSort(filter: String) {
+        _tvShowsSort.value = filter
     }
 }
