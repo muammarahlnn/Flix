@@ -11,14 +11,27 @@ import com.ardnn.flix.vo.Resource
 
 class MoviesViewModel(private val flixRepository: FlixRepository) : ViewModel() {
 
-    val section = MutableLiveData<Int>()
+    private var section = 0
 
-    fun getMovies(page: Int): LiveData<Resource<PagedList<MovieEntity>>> =
-        Transformations.switchMap(section) { mSection ->
-            flixRepository.getMovies(page, mSection)
-        }
+    private val sortArr = arrayOf("", "")
+    private val _moviesSort = MutableLiveData(sortArr)
+    val moviesSort: LiveData<Array<String>> = _moviesSort
+
+//    fun getMovies(page: Int, filter: String): LiveData<Resource<PagedList<MovieEntity>>> =
+//        Transformations.switchMap(section) { mSection ->
+//            flixRepository.getMovies(page, mSection, filter)
+//        }
+
+    fun getMovies(page: Int, filter: String): LiveData<Resource<PagedList<MovieEntity>>> =
+        flixRepository.getMovies(page, section, filter)
 
     fun setSection(section: Int) {
-        this.section.value = section
+        this.section = section
+    }
+
+    fun setMoviesSort(filter: String) {
+        _moviesSort.value?.let {
+            it[section] = filter
+        }
     }
 }

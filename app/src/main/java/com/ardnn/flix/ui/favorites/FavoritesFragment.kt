@@ -12,7 +12,6 @@ import com.ardnn.flix.R
 import com.ardnn.flix.data.source.local.entity.MovieDetailEntity
 import com.ardnn.flix.data.source.local.entity.TvShowDetailEntity
 import com.ardnn.flix.databinding.FragmentFavoritesBinding
-import com.ardnn.flix.utils.SortUtils
 import com.ardnn.flix.viewmodel.ViewModelFactory
 import com.google.android.material.snackbar.Snackbar
 
@@ -26,11 +25,6 @@ class FavoritesFragment : Fragment() {
     private lateinit var favoriteTvShowsAdapter: FavoriteTvShowsAdapter
 
     private var section = 0
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setHasOptionsMenu(true)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -66,63 +60,15 @@ class FavoritesFragment : Fragment() {
         _binding = null
     }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        super.onCreateOptionsMenu(menu, inflater)
-
-        menu.clear()
-        inflater.inflate(R.menu.menu_favorites, menu)
-
-        when (section) {
-            0 -> { // movies
-                viewModel.moviesSort.observe(viewLifecycleOwner, { filter ->
-                    setCheckedSort(menu, filter)
-                })
-            }
-            1 -> { // tv shows
-                viewModel.tvShowsSort.observe(viewLifecycleOwner, { filter ->
-                    setCheckedSort(menu, filter)
-                })
-            }
-        }
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        var sort = ""
-        when (item.itemId) {
-            R.id.action_default -> sort = SortUtils.DEFAULT
-            R.id.action_ascending -> sort = SortUtils.ASCENDING
-            R.id.action_descending -> sort = SortUtils.DESCENDING
-            R.id.action_random -> sort = SortUtils.RANDOM
-        }
-
-        when (section) {
-            0 -> { // movies
-                viewModel.setMoviesSort(sort)
-                viewModel.getFavoriteMovies(sort).observe(viewLifecycleOwner, { favoriteMovies ->
-                    setFavoriteMovies(favoriteMovies)
-                })
-            }
-            1 -> { // tv shows
-                viewModel.setTvShowsSort(sort)
-                viewModel.getFavoriteTvShows(sort).observe(viewLifecycleOwner, { favoriteTvShows ->
-                    setFavoriteTvShows(favoriteTvShows)
-                })
-            }
-        }
-        item.isChecked = true
-
-        return super.onOptionsItemSelected(item)
-    }
-
     private fun subscribe() {
         when (section) {
             0 -> { // movies
-                viewModel.getFavoriteMovies(SortUtils.DEFAULT).observe(viewLifecycleOwner, { favoriteMovies ->
+                viewModel.getFavoriteMovies().observe(viewLifecycleOwner, { favoriteMovies ->
                     setFavoriteMovies(favoriteMovies)
                 })
             }
             1 -> { // tv shows
-                viewModel.getFavoriteTvShows(SortUtils.DEFAULT).observe(viewLifecycleOwner, { favoriteTvShows ->
+                viewModel.getFavoriteTvShows().observe(viewLifecycleOwner, { favoriteTvShows ->
                     setFavoriteTvShows(favoriteTvShows)
                 })
             }
@@ -155,23 +101,6 @@ class FavoritesFragment : Fragment() {
         } else {
             binding?.tvAlert?.visibility = View.GONE
             binding?.recyclerView?.visibility = View.VISIBLE
-        }
-    }
-
-    private fun setCheckedSort(menu: Menu, filter: String) {
-        when (filter) {
-            SortUtils.DEFAULT -> {
-                menu.findItem(R.id.action_default).isChecked = true
-            }
-            SortUtils.ASCENDING -> {
-                menu.findItem(R.id.action_ascending).isChecked = true
-            }
-            SortUtils.DESCENDING -> {
-                menu.findItem(R.id.action_descending).isChecked = true
-            }
-            SortUtils.RANDOM -> {
-                menu.findItem(R.id.action_random).isChecked = true
-            }
         }
     }
 

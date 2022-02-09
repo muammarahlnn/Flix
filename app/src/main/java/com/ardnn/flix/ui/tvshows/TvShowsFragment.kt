@@ -2,18 +2,20 @@ package com.ardnn.flix.ui.tvshows
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
+import androidx.paging.PagedList
 import androidx.recyclerview.widget.GridLayoutManager
+import com.ardnn.flix.R
 import com.ardnn.flix.data.source.local.entity.TvShowEntity
 import com.ardnn.flix.databinding.FragmentTvShowsBinding
 import com.ardnn.flix.ui.tvshow_detail.TvShowDetailActivity
 import com.ardnn.flix.utils.SingleClickListener
+import com.ardnn.flix.utils.SortUtils
 import com.ardnn.flix.viewmodel.ViewModelFactory
+import com.ardnn.flix.vo.Resource
 import com.ardnn.flix.vo.Status
 
 class TvShowsFragment : Fragment(), SingleClickListener<TvShowEntity> {
@@ -24,6 +26,11 @@ class TvShowsFragment : Fragment(), SingleClickListener<TvShowEntity> {
 
     private val page = 1 // default page to fetch movies
     private var section = 0
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -58,33 +65,85 @@ class TvShowsFragment : Fragment(), SingleClickListener<TvShowEntity> {
         _binding = null
     }
 
-    private fun subscribe() {
-        viewModel.getTvShows(page).observe(viewLifecycleOwner, { tvShowsResource ->
-            if (tvShowsResource != null) {
-                when (tvShowsResource.status) {
-                    Status.LOADING -> {
-                        showLoading(true)
-                    }
-                    Status.SUCCESS -> {
-                        if (tvShowsResource.data != null) {
-                            showLoading(false)
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
 
-                            val adapter = TvShowsAdapter(this)
-                            adapter.submitList(tvShowsResource.data)
-                            binding?.recyclerView?.adapter = adapter
-                        }
-                    }
-                    Status.ERROR -> {
-                        showLoading(false)
-                        Toast.makeText(context, "An error occurred", Toast.LENGTH_SHORT).show()
-                    }
+        menu.clear()
+        inflater.inflate(R.menu.menu_favorites, menu)
+
+        viewModel.tvShowsSort.observe(viewLifecycleOwner, { filters ->
+            when (filters[section]) {
+                SortUtils.DEFAULT -> {
+                    menu.findItem(R.id.action_default).isChecked = true
+                }
+                SortUtils.ASCENDING -> {
+                    menu.findItem(R.id.action_ascending).isChecked = true
+                }
+                SortUtils.DESCENDING -> {
+                    menu.findItem(R.id.action_descending).isChecked = true
+                }
+                SortUtils.RANDOM -> {
+                    menu.findItem(R.id.action_random).isChecked = true
                 }
             }
         })
     }
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        var sort = ""
+        when (item.itemId) {
+            R.id.action_default -> sort = SortUtils.DEFAULT
+            R.id.action_ascending -> sort = SortUtils.ASCENDING
+            R.id.action_descending -> sort = SortUtils.DESCENDING
+            R.id.action_random -> sort = SortUtils.RANDOM
+        }
+
+        viewModel.setTvShowsSort(sort)
+        viewModel.getTvShows(page, sort).observe(viewLifecycleOwner, { tvShowsResource ->
+            if (tvShowsResource != null) {
+                setTvShows(tvShowsResource)
+            }
+        })
+        return super.onOptionsItemSelected(item)
+    }
+
+    private fun subscribe() {
+        viewModel.getTvShows(page, SortUtils.DEFAULT).observe(viewLifecycleOwner, { tvShowsResource ->
+            if (tvShowsResource != null) {
+                setTvShows(tvShowsResource)
+            }
+        })
+    }
+
+    private fun setTvShows(tvShowsResource: Resource<PagedList<TvShowEntity>>) {
+        when (tvShowsResource.status) {
+            Status.LOADING -> {
+                showLoading(true)
+            }
+            Status.SUCCESS -> {
+                if (tvShowsResource.data != null) {
+                    showLoading(false)
+
+                    val adapter = TvShowsAdapter(this)
+                    adapter.submitList(tvShowsResource.data)
+                    binding?.recyclerView?.adapter = adapter
+                }
+            }
+            Status.ERROR -> {
+                showLoading(false)
+                Toast.makeText(context, "An error occurred", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
     private fun showLoading(isLoading: Boolean) {
-        binding?.progressBar?.visibility = if (isLoading) View.VISIBLE else View.GONE
+        if (isLoading) {
+            binding?.progressBar?.visibility = View.VISIBLE
+            binding?.recyclerView?.visibility = View.GONE
+        } else {
+            binding?.progressBar?.visibility = View.GONE
+            binding?.recyclerView?.visibility = View.VISIBLE
+        }
     }
 
     override fun onItemClicked(item: TvShowEntity) {

@@ -35,7 +35,7 @@ class FlixRepository private constructor(
             }
     }
 
-    override fun getMovies(page: Int, section: Int): LiveData<Resource<PagedList<MovieEntity>>> {
+    override fun getMovies(page: Int, section: Int, filter: String): LiveData<Resource<PagedList<MovieEntity>>> {
         return object : NetworkBoundResource<PagedList<MovieEntity>, List<MovieResponse>>(appExecutors) {
             override fun loadFromDB(): LiveData<PagedList<MovieEntity>> {
                 val config = PagedList.Config.Builder()
@@ -43,7 +43,7 @@ class FlixRepository private constructor(
                     .setInitialLoadSizeHint(4)
                     .setPageSize(4)
                     .build()
-                return LivePagedListBuilder(localDataSource.getMovies(section), config).build()
+                return LivePagedListBuilder(localDataSource.getMovies(section, filter), config).build()
             }
 
             override fun shouldFetch(moviesEntity: PagedList<MovieEntity>?): Boolean =
@@ -71,13 +71,13 @@ class FlixRepository private constructor(
         }.asLiveData()
     }
 
-    override fun getFavoriteMovies(filter: String): LiveData<PagedList<MovieDetailEntity>> {
+    override fun getFavoriteMovies(): LiveData<PagedList<MovieDetailEntity>> {
         val config = PagedList.Config.Builder()
             .setEnablePlaceholders(false)
             .setInitialLoadSizeHint(4)
             .setPageSize(4)
             .build()
-        return LivePagedListBuilder(localDataSource.getFavoriteMovies(filter), config).build()
+        return LivePagedListBuilder(localDataSource.getFavoriteMovies(), config).build()
     }
 
     override fun getMovieDetail(movieId: Int): LiveData<Resource<MovieDetailEntity>> {
@@ -110,7 +110,7 @@ class FlixRepository private constructor(
         }.asLiveData()
     }
 
-    override fun getTvShows(page: Int, section: Int): LiveData<Resource<PagedList<TvShowEntity>>> {
+    override fun getTvShows(page: Int, section: Int, filter: String): LiveData<Resource<PagedList<TvShowEntity>>> {
         return object : NetworkBoundResource<PagedList<TvShowEntity>, List<TvShowResponse>>(appExecutors) {
             override fun loadFromDB(): LiveData<PagedList<TvShowEntity>> {
                 val config = PagedList.Config.Builder()
@@ -118,7 +118,7 @@ class FlixRepository private constructor(
                     .setInitialLoadSizeHint(4)
                     .setPageSize(4)
                     .build()
-                return LivePagedListBuilder(localDataSource.getTvShows(section), config).build()
+                return LivePagedListBuilder(localDataSource.getTvShows(section, filter), config).build()
             }
 
             override fun shouldFetch(tvShowsEntity: PagedList<TvShowEntity>?): Boolean =
@@ -146,13 +146,13 @@ class FlixRepository private constructor(
         }.asLiveData()
     }
 
-    override fun getFavoriteTvShows(filter: String): LiveData<PagedList<TvShowDetailEntity>> {
+    override fun getFavoriteTvShows(): LiveData<PagedList<TvShowDetailEntity>> {
         val config = PagedList.Config.Builder()
             .setEnablePlaceholders(false)
             .setInitialLoadSizeHint(4)
             .setPageSize(4)
             .build()
-        return LivePagedListBuilder(localDataSource.getFavoriteTvShows(filter), config).build()
+        return LivePagedListBuilder(localDataSource.getFavoriteTvShows(), config).build()
     }
 
     override fun getTvShowDetail(tvShowId: Int): LiveData<Resource<TvShowDetailEntity>> {

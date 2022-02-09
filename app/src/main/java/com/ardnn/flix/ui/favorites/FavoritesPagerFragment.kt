@@ -1,10 +1,8 @@
 package com.ardnn.flix.ui.favorites
 
 import android.os.Bundle
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.annotation.StringRes
 import androidx.viewpager2.widget.ViewPager2
 import com.ardnn.flix.R
@@ -17,6 +15,11 @@ class FavoritesPagerFragment : Fragment() {
 
     private var _binding: FragmentFavoritesPagerBinding? = null
     private val binding get() = _binding
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -47,6 +50,11 @@ class FavoritesPagerFragment : Fragment() {
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        menu.clear()
     }
 
     companion object {

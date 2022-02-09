@@ -13,17 +13,11 @@ class FavoritesViewModel(private val flixRepository: FlixRepository) : ViewModel
 
     private var section = 0
 
-    private val _moviesSort = MutableLiveData(SortUtils.DEFAULT)
-    val moviesSort: LiveData<String> = _moviesSort
+    fun getFavoriteMovies(): LiveData<PagedList<MovieDetailEntity>> =
+        flixRepository.getFavoriteMovies()
 
-    private val _tvShowsSort = MutableLiveData<String>()
-    val tvShowsSort: LiveData<String> = _tvShowsSort
-
-    fun getFavoriteMovies(filter: String): LiveData<PagedList<MovieDetailEntity>> =
-        flixRepository.getFavoriteMovies(filter)
-
-    fun getFavoriteTvShows(filter: String): LiveData<PagedList<TvShowDetailEntity>> =
-        flixRepository.getFavoriteTvShows(filter)
+    fun getFavoriteTvShows(): LiveData<PagedList<TvShowDetailEntity>> =
+        flixRepository.getFavoriteTvShows()
 
     fun setSection(section: Int) {
         this.section = section
@@ -37,13 +31,5 @@ class FavoritesViewModel(private val flixRepository: FlixRepository) : ViewModel
     fun setIsFavoriteTvShow(tvShowDetail: TvShowDetailEntity) {
         val newState = !tvShowDetail.isFavorite
         flixRepository.setIsFavoriteTvShowDetail(tvShowDetail, newState)
-    }
-
-    fun setMoviesSort(filter: String) {
-        _moviesSort.value = filter
-    }
-
-    fun setTvShowsSort(filter: String) {
-        _tvShowsSort.value = filter
     }
 }

@@ -18,21 +18,21 @@ class LocalDataSource private constructor(private val flixDao: FlixDao) {
             INSTANCE ?: LocalDataSource(flixDao)
     }
 
-    fun getMovies(section: Int): DataSource.Factory<Int, MovieEntity> =
-        flixDao.getMovies(section)
-
-    fun getTvShows(section: Int): DataSource.Factory<Int, TvShowEntity> =
-        flixDao.getTvShows(section)
-
-    fun getFavoriteMovies(filter: String): DataSource.Factory<Int, MovieDetailEntity> {
-        val query = SortUtils.getSortedQuery(SortUtils.MOVIES, filter)
-        return flixDao.getFavoriteMovies(query)
+    fun getMovies(section: Int, filter: String): DataSource.Factory<Int, MovieEntity> {
+        val query = SortUtils.getSortedQuery(SortUtils.MOVIES, section, filter)
+        return flixDao.getMovies(query)
     }
 
-    fun getFavoriteTvShows(filter: String): DataSource.Factory<Int, TvShowDetailEntity> {
-        val query = SortUtils.getSortedQuery(SortUtils.TV_SHOWS, filter)
-        return flixDao.getFavoriteTvShows(query)
+    fun getTvShows(section: Int, filter: String): DataSource.Factory<Int, TvShowEntity> {
+        val query = SortUtils.getSortedQuery(SortUtils.TV_SHOWS, section, filter)
+        return flixDao.getTvShows(query)
     }
+
+    fun getFavoriteMovies(): DataSource.Factory<Int, MovieDetailEntity> =
+        flixDao.getFavoriteMovies()
+
+    fun getFavoriteTvShows(): DataSource.Factory<Int, TvShowDetailEntity> =
+        flixDao.getFavoriteTvShows()
 
     fun getMovieDetail(id: Int): LiveData<MovieDetailEntity> =
         flixDao.getMovieDetail(id)

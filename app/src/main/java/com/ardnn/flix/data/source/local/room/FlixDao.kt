@@ -11,11 +11,11 @@ import com.ardnn.flix.data.source.local.entity.TvShowEntity
 
 @Dao
 interface FlixDao {
-    @Query("SELECT * FROM movie_entities WHERE section = :section")
-    fun getMovies(section: Int): DataSource.Factory<Int, MovieEntity>
+    @RawQuery(observedEntities = [MovieEntity::class])
+    fun getMovies(query: SupportSQLiteQuery): DataSource.Factory<Int, MovieEntity>
 
-    @RawQuery(observedEntities = [MovieDetailEntity::class])
-    fun getFavoriteMovies(query: SupportSQLiteQuery): DataSource.Factory<Int, MovieDetailEntity>
+    @Query("SELECT * FROM movie_detail_entities where is_favorite = 1")
+    fun getFavoriteMovies(): DataSource.Factory<Int, MovieDetailEntity>
 
     @Query("SELECT * FROM movie_detail_entities WHERE id = :id")
     fun getMovieDetail(id: Int): LiveData<MovieDetailEntity>
@@ -29,11 +29,11 @@ interface FlixDao {
     @Update
     fun updateMovieDetail(movieDetail: MovieDetailEntity)
 
-    @Query("SELECT * FROM tv_show_entities WHERE section = :section")
-    fun getTvShows(section: Int): DataSource.Factory<Int, TvShowEntity>
+    @RawQuery(observedEntities = [TvShowEntity::class])
+    fun getTvShows(query: SupportSQLiteQuery): DataSource.Factory<Int, TvShowEntity>
 
-    @RawQuery(observedEntities = [TvShowDetailEntity::class])
-    fun getFavoriteTvShows(query: SupportSQLiteQuery): DataSource.Factory<Int, TvShowDetailEntity>
+    @Query("SELECT * FROM tv_show_detail_entities where is_favorite = 1")
+    fun getFavoriteTvShows(): DataSource.Factory<Int, TvShowDetailEntity>
 
     @Query("SELECT * FROM tv_show_detail_entities WHERE id = :id")
     fun getTvShowDetail(id: Int): LiveData<TvShowDetailEntity>

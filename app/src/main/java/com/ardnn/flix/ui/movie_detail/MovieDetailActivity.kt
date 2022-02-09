@@ -22,11 +22,6 @@ class MovieDetailActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var movieDetail: MovieDetailEntity
 
     private var isSynopsisExtended = false
-    private var isFavorite = false
-
-    companion object {
-        const val EXTRA_MOVIE_ID = "extra_movie_id"
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -68,7 +63,6 @@ class MovieDetailActivity : AppCompatActivity(), View.OnClickListener {
                         if (movieDetailResource.data != null) {
                             showLoading(false)
                             movieDetail = movieDetailResource.data
-                            isFavorite = movieDetail.isFavorite
                             setMovieDetailToWidgets()
                         }
                     }
@@ -161,5 +155,9 @@ class MovieDetailActivity : AppCompatActivity(), View.OnClickListener {
                 viewModel.setIsSynopsisExtended(isSynopsisExtended)
             }
         }
+    }
+
+    companion object {
+        const val EXTRA_MOVIE_ID = "extra_movie_id"
     }
 }

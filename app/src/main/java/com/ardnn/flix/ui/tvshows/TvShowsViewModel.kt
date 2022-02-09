@@ -11,14 +11,27 @@ import com.ardnn.flix.vo.Resource
 
 class TvShowsViewModel(private val flixRepository: FlixRepository) : ViewModel() {
 
-    val section = MutableLiveData<Int>()
+    private var section = 0
 
-    fun getTvShows(page: Int): LiveData<Resource<PagedList<TvShowEntity>>> =
-        Transformations.switchMap(section) { mSection ->
-            flixRepository.getTvShows(page, mSection)
-        }
+    private var sortArr = arrayOf("", "")
+    private val _tvShowsSort = MutableLiveData(sortArr)
+    val tvShowsSort: LiveData<Array<String>> = _tvShowsSort
+
+//    fun getTvShows(page: Int, filter: String): LiveData<Resource<PagedList<TvShowEntity>>> =
+//        Transformations.switchMap(section) { mSection ->
+//            flixRepository.getTvShows(page, mSection, filter)
+//        }
+
+    fun getTvShows(page: Int, filter: String): LiveData<Resource<PagedList<TvShowEntity>>> =
+        flixRepository.getTvShows(page, section, filter)
 
     fun setSection(section: Int) {
-        this.section.value = section
+        this.section = section
+    }
+
+    fun setTvShowsSort(filter: String) {
+        _tvShowsSort.value?.let {
+            it[section] = filter
+        }
     }
 }

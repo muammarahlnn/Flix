@@ -11,14 +11,14 @@ object SortUtils {
     const val RANDOM = "Random"
     const val DEFAULT = "Default"
 
-    fun getSortedQuery(type: String, filter: String): SimpleSQLiteQuery {
+    fun getSortedQuery(type: String, section: Int, filter: String): SimpleSQLiteQuery {
         val simpleQuery = StringBuilder()
         when (type) {
             MOVIES -> {
-                simpleQuery.append("SELECT * FROM movie_detail_entities WHERE is_favorite = 1 ")
+                simpleQuery.append("SELECT * FROM movie_entities WHERE section = $section ")
             }
             TV_SHOWS -> {
-                simpleQuery.append("SELECT * FROM tv_show_detail_entities WHERE is_favorite = 1 ")
+                simpleQuery.append("SELECT * FROM tv_show_entities WHERE section = $section ")
             }
         }
         when (filter) {
