@@ -1,71 +1,80 @@
 package com.ardnn.flix.data
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+import androidx.paging.LivePagedListBuilder
+import androidx.paging.PagedList
+import com.ardnn.flix.data.source.local.LocalDataSource
 import com.ardnn.flix.data.source.local.entity.*
+import com.ardnn.flix.data.source.remote.ApiResponse
 import com.ardnn.flix.data.source.remote.RemoteDataSource
 import com.ardnn.flix.data.source.remote.response.*
+import com.ardnn.flix.utils.AppExecutors
+import com.ardnn.flix.vo.Resource
 
-class FakeFlixRepository(private val remoteDataSource: RemoteDataSource) : FlixDataSource{
+class FakeFlixRepository(
+    private val remoteDataSource: RemoteDataSource,
+    private val localDataSource: LocalDataSource,
+    private val appExecutors: AppExecutors
+) : FlixDataSource{
 
-    private val _isLoadFailure = MutableLiveData<Boolean>()
-    private val _isLoading = MutableLiveData<Boolean>()
+    override fun getMovies(page: Int, section: Int, filter: String): LiveData<Resource<PagedList<MovieEntity>>> {
+        return object : NetworkBoundResource<PagedList<MovieEntity>, List<MovieResponse>>(appExecutors) {
+            public override fun loadFromDB(): LiveData<PagedList<MovieEntity>> {
+                val config = PagedList.Config.Builder()
+                    .setEnablePlaceholders(false)
+                    .setInitialLoadSizeHint(4)
+                    .setPageSize(4)
+                    .build()
+                return LivePagedListBuilder(localDataSource.getMovies(section, filter), config).build()
+            }
 
-    override fun getMovies(page: Int): LiveData<List<MovieEntity>> {
-        // show progressbar
-        _isLoading.postValue(true)
+            public override fun shouldFetch(moviesEntity: PagedList<MovieEntity>?): Boolean =
+                moviesEntity == null || moviesEntity.isEmpty()
 
-        val movieResults = MutableLiveData<List<MovieEntity>>()
-        remoteDataSource.getNowPlayingMovies(page, object : RemoteDataSource.LoadMoviesCallback {
-            override fun onSuccess(movies: List<MovieResponse>) {
-                // hide progressbar
-                _isLoading.postValue(false)
-
-                // success fetch data
-                _isLoadFailure.postValue(false)
-
-                // cast MovieResponse to MovieEntity
-                val movieList = ArrayList<MovieEntity>()
-                for (movie in movies) {
-                    val tempMovie = MovieEntity(
-                        movie.id,
-                        movie.title,
-                        movie.releaseDate,
-                        movie.posterUrl,
-                        movie.rating)
-
-                    movieList.add(tempMovie)
+            public override fun createCall(): LiveData<ApiResponse<List<MovieResponse>>> {
+                return when (section) {
+                    0 -> { // now playing
+                        remoteDataSource.getNowPlayingMovies(page)
+                    }
+                    1 -> { // top rated
+                        remoteDataSource.getTopRatedMovies(page)
+                    }
+                    else -> { // default
+                        remoteDataSource.getNowPlayingMovies(page)
+                    }
                 }
-                movieResults.postValue(movieList)
             }
 
-            override fun onFailure(message: String) {
-                // hide progressbar
-                _isLoading.postValue(false)
-
-                // unable to fetch data
-                _isLoadFailure.postValue(true)
+            override fun saveCallResult(moviesResponse: List<MovieResponse>) {
+                val moviesEntity = castMovieList(moviesResponse, section)
+                localDataSource.insertMovies(moviesEntity)
             }
-        })
 
-        return movieResults
+        }.asLiveData()
     }
 
-    override fun getMovieDetail(movieId: Int): LiveData<MovieDetailEntity> {
-        // show progressbar
-        _isLoading.postValue(true)
+    override fun getFavoriteMovies(): LiveData<PagedList<MovieDetailEntity>> {
+        val config = PagedList.Config.Builder()
+            .setEnablePlaceholders(false)
+            .setInitialLoadSizeHint(4)
+            .setPageSize(4)
+            .build()
+        return LivePagedListBuilder(localDataSource.getFavoriteMovies(), config).build()
+    }
 
-        val movieDetailResult = MutableLiveData<MovieDetailEntity>()
-        remoteDataSource.getMovieDetail(movieId, object : RemoteDataSource.LoadMovieDetailCallback {
-            override fun onSuccess(movieDetailResponse: MovieDetailResponse) {
-                // hide progressbar
-                _isLoading.postValue(false)
+    override fun getMovieDetail(movieId: Int): LiveData<Resource<MovieDetailEntity>> {
+        return object : NetworkBoundResource<MovieDetailEntity, MovieDetailResponse>(appExecutors) {
+            public override fun loadFromDB(): LiveData<MovieDetailEntity> =
+                localDataSource.getMovieDetail(movieId)
 
-                // success fetch data
-                _isLoadFailure.postValue(false)
+            override fun shouldFetch(movieDetailEntity: MovieDetailEntity?): Boolean =
+                movieDetailEntity == null
 
-                // cast movieDetailResponse to MovieDetailEntity
-                val movieDetail = MovieDetailEntity(
+            public override fun createCall(): LiveData<ApiResponse<MovieDetailResponse>> =
+                remoteDataSource.getMovieDetail(movieId)
+
+            public override fun saveCallResult(movieDetailResponse: MovieDetailResponse) {
+                val movieDetailEntity = MovieDetailEntity(
                     movieDetailResponse.id,
                     movieDetailResponse.title,
                     movieDetailResponse.overview,
@@ -74,121 +83,148 @@ class FakeFlixRepository(private val remoteDataSource: RemoteDataSource) : FlixD
                     movieDetailResponse.rating,
                     movieDetailResponse.posterUrl,
                     movieDetailResponse.wallpaperUrl,
-                    castGenreList(movieDetailResponse.genreList))
+                    castGenreList(movieDetailResponse.genreList),
+                    false)
 
-                movieDetailResult.postValue(movieDetail)
+                localDataSource.insertMovieDetail(movieDetailEntity)
             }
 
-            override fun onFailure(message: String) {
-                // hide progressbar
-                _isLoading.postValue(false)
-
-                // unable fetch data
-                _isLoadFailure.postValue(true)
-            }
-        })
-
-        return movieDetailResult
+        }.asLiveData()
     }
 
-    override fun getTvShows(page: Int): LiveData<List<TvShowEntity>> {
-        // show progressbar
-        _isLoading.postValue(true)
+    override fun getTvShows(page: Int, section: Int, filter: String): LiveData<Resource<PagedList<TvShowEntity>>> {
+        return object : NetworkBoundResource<PagedList<TvShowEntity>, List<TvShowResponse>>(appExecutors) {
+            public override fun loadFromDB(): LiveData<PagedList<TvShowEntity>> {
+                val config = PagedList.Config.Builder()
+                    .setEnablePlaceholders(false)
+                    .setInitialLoadSizeHint(4)
+                    .setPageSize(4)
+                    .build()
+                return LivePagedListBuilder(localDataSource.getTvShows(section, filter), config).build()
+            }
 
-        val tvShowResults = MutableLiveData<List<TvShowEntity>>()
-        remoteDataSource.getOnTheAirTvShows(page, object : RemoteDataSource.LoadTvShowsCallback {
-            override fun onSuccess(tvShows: List<TvShowResponse>) {
-                // hide progressbar
-                _isLoading.postValue(false)
+            override fun shouldFetch(tvShowsEntity: PagedList<TvShowEntity>?): Boolean =
+                tvShowsEntity == null || tvShowsEntity.isEmpty()
 
-                // success fetch data
-                _isLoadFailure.postValue(false)
-
-                // cast TvShowResponse to TvShowEntity
-                val tvShowList = ArrayList<TvShowEntity>()
-                for (tvShow in tvShows) {
-                    val tempTvShow = TvShowEntity(
-                        tvShow.id,
-                        tvShow.title,
-                        tvShow.firstAirDate,
-                        tvShow.posterUrl,
-                        tvShow.rating)
-
-                    tvShowList.add(tempTvShow)
+            public override fun createCall(): LiveData<ApiResponse<List<TvShowResponse>>> {
+                return when (section) {
+                    0 -> { // on the air
+                        remoteDataSource.getOnTheAirTvShows(page)
+                    }
+                    1 -> { // top rated
+                        remoteDataSource.getTopRatedTvShows(page)
+                    }
+                    else -> { // default
+                        remoteDataSource.getOnTheAirTvShows(page)
+                    }
                 }
-                tvShowResults.postValue(tvShowList)
             }
 
-            override fun onFailure(message: String) {
-                // hide progressbar
-                _isLoading.postValue(false)
-
-                // unable fetch data
-                _isLoadFailure.postValue(true)
+            public override fun saveCallResult(tvShowsResponse: List<TvShowResponse>) {
+                val tvShowsEntity = castTvShowList(tvShowsResponse, section)
+                localDataSource.insertTvShows(tvShowsEntity)
             }
-        })
 
-        return tvShowResults
+        }.asLiveData()
     }
 
-    override fun getTvShowDetail(tvShowId: Int): LiveData<TvShowDetailEntity> {
-        // show progressbar
-        _isLoading.postValue(true)
+    override fun getFavoriteTvShows(): LiveData<PagedList<TvShowDetailEntity>> {
+        val config = PagedList.Config.Builder()
+            .setEnablePlaceholders(false)
+            .setInitialLoadSizeHint(4)
+            .setPageSize(4)
+            .build()
+        return LivePagedListBuilder(localDataSource.getFavoriteTvShows(), config).build()
+    }
 
-        val tvShowDetailResult = MutableLiveData<TvShowDetailEntity>()
-        remoteDataSource.getTvShowDetail(tvShowId, object : RemoteDataSource.LoadTvShowDetailCallback {
-            override fun onSuccess(tvShowDetailResponse: TvShowDetailResponse) {
-                // hide progressbar
-                _isLoading.postValue(false)
+    override fun getTvShowDetail(tvShowId: Int): LiveData<Resource<TvShowDetailEntity>> {
+        return object : NetworkBoundResource<TvShowDetailEntity, TvShowDetailResponse>(appExecutors) {
+            public override fun loadFromDB(): LiveData<TvShowDetailEntity> =
+                localDataSource.getTvShowDetail(tvShowId)
 
-                // success fetch data
-                _isLoadFailure.postValue(false)
+            override fun shouldFetch(tvShowDetailEntity: TvShowDetailEntity?): Boolean =
+                tvShowDetailEntity == null
 
-                // cast TvShowDetailResponse to TvShowDetailEntity
-                val tvShowDetail = TvShowDetailEntity(
+            public override fun createCall(): LiveData<ApiResponse<TvShowDetailResponse>> =
+                remoteDataSource.getTvShowDetail(tvShowId)
+
+            public override fun saveCallResult(tvShowDetailResponse: TvShowDetailResponse) {
+                val tvShowDetailEntity = TvShowDetailEntity(
                     tvShowDetailResponse.id,
                     tvShowDetailResponse.title,
                     tvShowDetailResponse.overview,
                     tvShowDetailResponse.firstAirDate,
                     tvShowDetailResponse.lastAirDate,
-                    tvShowDetailResponse.runtimes,
+                    tvShowDetailResponse.runtimes?.get(0),
                     tvShowDetailResponse.rating,
                     tvShowDetailResponse.posterUrl,
                     tvShowDetailResponse.wallpaperUrl,
                     tvShowDetailResponse.numberOfEpisodes,
                     tvShowDetailResponse.numberOfSeasons,
-                    castGenreList(tvShowDetailResponse.genreList))
+                    castGenreList(tvShowDetailResponse.genreList),
+                    false)
 
-                tvShowDetailResult.postValue(tvShowDetail)
+                localDataSource.insertTvShowDetail(tvShowDetailEntity)
             }
 
-            override fun onFailure(message: String) {
-                // hide progressbar
-                _isLoading.postValue(false)
-
-                // unable fetch data
-                _isLoadFailure.postValue(true)
-            }
-        })
-
-        return tvShowDetailResult
+        }.asLiveData()
     }
 
-    override fun getIsLoadFailure(): LiveData<Boolean> =
-        _isLoadFailure
+    override fun setIsFavoriteMovieDetail(movieDetail: MovieDetailEntity, state: Boolean) {
+        appExecutors.diskIO().execute {
+            localDataSource.setIsFavoriteMovieDetail(movieDetail, state)
+        }
+    }
 
-    override fun getIsLoading(): LiveData<Boolean> =
-        _isLoading
+    override fun setIsFavoriteTvShowDetail(tvShowDetail: TvShowDetailEntity, state: Boolean) {
+        appExecutors.diskIO().execute {
+            localDataSource.setIsFavoriteTvShowDetail(tvShowDetail, state)
+        }
+    }
 
     private fun castGenreList(genreList: List<GenreResponse>?): List<GenreEntity> {
-        val tempList = ArrayList<GenreEntity>()
+        val genres = ArrayList<GenreEntity>()
         for (genre in genreList as List<GenreResponse>) {
             val tempGenre = GenreEntity(
                 genre.id,
                 genre.name)
-            tempList.add(tempGenre)
+            genres.add(tempGenre)
         }
 
-        return tempList
+        return genres
+    }
+
+    private fun castMovieList(movieList: List<MovieResponse>, section: Int): List<MovieEntity> {
+        val movies = ArrayList<MovieEntity>()
+        for (movie in movieList) {
+            val tempMovie = MovieEntity(
+                movie.id,
+                movie.title,
+                movie.releaseDate,
+                movie.posterUrl,
+                movie.rating)
+            tempMovie.section = section
+
+            movies.add(tempMovie)
+        }
+
+        return movies
+    }
+
+    private fun castTvShowList(tvShowList: List<TvShowResponse>, section: Int): List<TvShowEntity> {
+        val tvShows = ArrayList<TvShowEntity>()
+        for (tvShow in tvShowList) {
+            val tempTvShow = TvShowEntity(
+                tvShow.id,
+                tvShow.title,
+                tvShow.firstAirDate,
+                tvShow.posterUrl,
+                tvShow.rating)
+            tempTvShow.section = section
+
+            tvShows.add(tempTvShow)
+        }
+
+        return tvShows
     }
 }

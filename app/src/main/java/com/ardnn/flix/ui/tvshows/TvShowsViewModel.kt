@@ -17,11 +17,6 @@ class TvShowsViewModel(private val flixRepository: FlixRepository) : ViewModel()
     private val _tvShowsSort = MutableLiveData(sortArr)
     val tvShowsSort: LiveData<Array<String>> = _tvShowsSort
 
-//    fun getTvShows(page: Int, filter: String): LiveData<Resource<PagedList<TvShowEntity>>> =
-//        Transformations.switchMap(section) { mSection ->
-//            flixRepository.getTvShows(page, mSection, filter)
-//        }
-
     fun getTvShows(page: Int, filter: String): LiveData<Resource<PagedList<TvShowEntity>>> =
         flixRepository.getTvShows(page, section, filter)
 

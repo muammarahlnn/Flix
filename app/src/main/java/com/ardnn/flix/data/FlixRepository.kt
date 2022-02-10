@@ -37,7 +37,7 @@ class FlixRepository private constructor(
 
     override fun getMovies(page: Int, section: Int, filter: String): LiveData<Resource<PagedList<MovieEntity>>> {
         return object : NetworkBoundResource<PagedList<MovieEntity>, List<MovieResponse>>(appExecutors) {
-            override fun loadFromDB(): LiveData<PagedList<MovieEntity>> {
+            public override fun loadFromDB(): LiveData<PagedList<MovieEntity>> {
                 val config = PagedList.Config.Builder()
                     .setEnablePlaceholders(false)
                     .setInitialLoadSizeHint(4)
@@ -46,10 +46,10 @@ class FlixRepository private constructor(
                 return LivePagedListBuilder(localDataSource.getMovies(section, filter), config).build()
             }
 
-            override fun shouldFetch(moviesEntity: PagedList<MovieEntity>?): Boolean =
+            public override fun shouldFetch(moviesEntity: PagedList<MovieEntity>?): Boolean =
                 moviesEntity == null || moviesEntity.isEmpty()
 
-            override fun createCall(): LiveData<ApiResponse<List<MovieResponse>>> {
+            public override fun createCall(): LiveData<ApiResponse<List<MovieResponse>>> {
                 return when (section) {
                     0 -> { // now playing
                         remoteDataSource.getNowPlayingMovies(page)
@@ -82,16 +82,16 @@ class FlixRepository private constructor(
 
     override fun getMovieDetail(movieId: Int): LiveData<Resource<MovieDetailEntity>> {
         return object : NetworkBoundResource<MovieDetailEntity, MovieDetailResponse>(appExecutors) {
-            override fun loadFromDB(): LiveData<MovieDetailEntity> =
+            public override fun loadFromDB(): LiveData<MovieDetailEntity> =
                 localDataSource.getMovieDetail(movieId)
 
             override fun shouldFetch(movieDetailEntity: MovieDetailEntity?): Boolean =
                 movieDetailEntity == null
 
-            override fun createCall(): LiveData<ApiResponse<MovieDetailResponse>> =
+            public override fun createCall(): LiveData<ApiResponse<MovieDetailResponse>> =
                 remoteDataSource.getMovieDetail(movieId)
 
-            override fun saveCallResult(movieDetailResponse: MovieDetailResponse) {
+            public override fun saveCallResult(movieDetailResponse: MovieDetailResponse) {
                 val movieDetailEntity = MovieDetailEntity(
                     movieDetailResponse.id,
                     movieDetailResponse.title,
@@ -112,7 +112,7 @@ class FlixRepository private constructor(
 
     override fun getTvShows(page: Int, section: Int, filter: String): LiveData<Resource<PagedList<TvShowEntity>>> {
         return object : NetworkBoundResource<PagedList<TvShowEntity>, List<TvShowResponse>>(appExecutors) {
-            override fun loadFromDB(): LiveData<PagedList<TvShowEntity>> {
+            public override fun loadFromDB(): LiveData<PagedList<TvShowEntity>> {
                 val config = PagedList.Config.Builder()
                     .setEnablePlaceholders(false)
                     .setInitialLoadSizeHint(4)
@@ -124,7 +124,7 @@ class FlixRepository private constructor(
             override fun shouldFetch(tvShowsEntity: PagedList<TvShowEntity>?): Boolean =
                 tvShowsEntity == null || tvShowsEntity.isEmpty()
 
-            override fun createCall(): LiveData<ApiResponse<List<TvShowResponse>>> {
+            public override fun createCall(): LiveData<ApiResponse<List<TvShowResponse>>> {
                 return when (section) {
                     0 -> { // on the air
                         remoteDataSource.getOnTheAirTvShows(page)
@@ -138,7 +138,7 @@ class FlixRepository private constructor(
                 }
             }
 
-            override fun saveCallResult(tvShowsResponse: List<TvShowResponse>) {
+            public override fun saveCallResult(tvShowsResponse: List<TvShowResponse>) {
                 val tvShowsEntity = castTvShowList(tvShowsResponse, section)
                 localDataSource.insertTvShows(tvShowsEntity)
             }
@@ -157,16 +157,16 @@ class FlixRepository private constructor(
 
     override fun getTvShowDetail(tvShowId: Int): LiveData<Resource<TvShowDetailEntity>> {
         return object : NetworkBoundResource<TvShowDetailEntity, TvShowDetailResponse>(appExecutors) {
-            override fun loadFromDB(): LiveData<TvShowDetailEntity> =
+            public override fun loadFromDB(): LiveData<TvShowDetailEntity> =
                 localDataSource.getTvShowDetail(tvShowId)
 
             override fun shouldFetch(tvShowDetailEntity: TvShowDetailEntity?): Boolean =
                 tvShowDetailEntity == null
 
-            override fun createCall(): LiveData<ApiResponse<TvShowDetailResponse>> =
+            public override fun createCall(): LiveData<ApiResponse<TvShowDetailResponse>> =
                 remoteDataSource.getTvShowDetail(tvShowId)
 
-            override fun saveCallResult(tvShowDetailResponse: TvShowDetailResponse) {
+            public override fun saveCallResult(tvShowDetailResponse: TvShowDetailResponse) {
                 val tvShowDetailEntity = TvShowDetailEntity(
                     tvShowDetailResponse.id,
                     tvShowDetailResponse.title,

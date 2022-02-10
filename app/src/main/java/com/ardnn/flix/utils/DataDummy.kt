@@ -227,4 +227,21 @@ class DataDummy(private val context: Context) {
             posterUrl, wallpaperUrl, numberOfEpisodes, numberOfSeasons, genreList
         )
     }
+
+
+    fun generateDummyFavoriteMovies(): List<MovieDetailEntity> {
+        val list = ArrayList<MovieDetailEntity>()
+        for (i in 0 until 20) {
+            list.add(generateDummyMovieDetail())
+        }
+        return list
+    }
+
+    fun generateDummyFavoriteTvShows(): List<TvShowDetailEntity> {
+        val list = ArrayList<TvShowDetailEntity>()
+        for (i in 0 until 20) {
+            list.add(generateDummyTvShowDetail())
+        }
+        return list
+    }
 }

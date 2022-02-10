@@ -4,7 +4,6 @@ import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.ardnn.flix.data.FlixRepository
-import com.ardnn.flix.data.source.remote.RemoteDataSource
 import com.ardnn.flix.di.Injection
 import com.ardnn.flix.ui.favorites.FavoritesViewModel
 import com.ardnn.flix.ui.movie_detail.MovieDetailViewModel
@@ -29,7 +28,7 @@ class ViewModelFactory private constructor(
     }
 
     @Suppress("UNCHECKED_CAST")
-    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return when {
             modelClass.isAssignableFrom(MoviesViewModel::class.java) -> {
                 MoviesViewModel(flixRepository) as T
