@@ -5,20 +5,22 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import com.ardnn.flix.data.source.local.entity.MovieDetailEntity
-import com.ardnn.flix.data.source.local.entity.MovieEntity
-import com.ardnn.flix.data.source.local.entity.TvShowDetailEntity
-import com.ardnn.flix.data.source.local.entity.TvShowEntity
+import com.ardnn.flix.data.source.local.entity.*
+import com.ardnn.flix.data.source.local.entity.relation.MovieDetailGenreCrossRef
+import com.ardnn.flix.data.source.local.entity.relation.TvShowDetailGenreCrossRef
 
 @Database(
     entities = [
+        GenreEntity::class,
         MovieEntity::class,
         MovieDetailEntity::class,
         TvShowEntity::class,
-        TvShowDetailEntity::class],
+        TvShowDetailEntity::class,
+        MovieDetailGenreCrossRef::class,
+        TvShowDetailGenreCrossRef::class
+    ],
     version = 1,
     exportSchema = false)
-@TypeConverters(DataConverter::class)
 abstract class FlixDatabase : RoomDatabase() {
     abstract fun flixDao(): FlixDao
 

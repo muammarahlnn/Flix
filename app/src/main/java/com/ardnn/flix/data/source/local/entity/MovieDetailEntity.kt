@@ -9,9 +9,9 @@ import com.ardnn.flix.data.source.remote.ImageSize
 
 @Entity(tableName = "movie_detail_entities")
 data class MovieDetailEntity(
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = false)
     @NonNull
-    @ColumnInfo(name = "id")
+    @ColumnInfo(name = "movie_id")
     val id: Int,
 
     @ColumnInfo(name = "title")
@@ -34,9 +34,6 @@ data class MovieDetailEntity(
 
     @ColumnInfo(name = "wallpaper_url")
     val wallpaperUrl: String?,
-
-    @ColumnInfo(name = "genre_list")
-    val genreList: List<GenreEntity>?,
 
     @ColumnInfo(name = "is_favorite")
     var isFavorite: Boolean = false

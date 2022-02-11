@@ -1,12 +1,14 @@
 package com.ardnn.flix.data
 
-import android.util.Log
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import com.ardnn.flix.data.source.local.LocalDataSource
 import com.ardnn.flix.data.source.local.entity.*
+import com.ardnn.flix.data.source.local.entity.relation.MovieDetailGenreCrossRef
+import com.ardnn.flix.data.source.local.entity.relation.MovieDetailWithGenres
+import com.ardnn.flix.data.source.local.entity.relation.TvShowDetailGenreCrossRef
+import com.ardnn.flix.data.source.local.entity.relation.TvShowDetailWithGenres
 import com.ardnn.flix.data.source.remote.ApiResponse
 import com.ardnn.flix.data.source.remote.RemoteDataSource
 import com.ardnn.flix.data.source.remote.response.*
@@ -86,18 +88,19 @@ class FlixRepository private constructor(
         return LivePagedListBuilder(localDataSource.getFavoriteMovies(), config).build()
     }
 
-    override fun getMovieDetail(movieId: Int): LiveData<Resource<MovieDetailEntity>> {
-        return object : NetworkBoundResource<MovieDetailEntity, MovieDetailResponse>(appExecutors) {
-            public override fun loadFromDB(): LiveData<MovieDetailEntity> =
-                localDataSource.getMovieDetail(movieId)
+    override fun getMovieDetailWithGenres(movieId: Int): LiveData<Resource<MovieDetailWithGenres>> {
+        return object : NetworkBoundResource<MovieDetailWithGenres, MovieDetailResponse>(appExecutors) {
+            override fun loadFromDB(): LiveData<MovieDetailWithGenres> =
+                localDataSource.getMovieDetailWithGenres(movieId)
 
-            override fun shouldFetch(movieDetailEntity: MovieDetailEntity?): Boolean =
-                movieDetailEntity == null
+            override fun shouldFetch(movieDetailWithGenres: MovieDetailWithGenres?): Boolean =
+                movieDetailWithGenres == null
 
-            public override fun createCall(): LiveData<ApiResponse<MovieDetailResponse>> =
+            override fun createCall(): LiveData<ApiResponse<MovieDetailResponse>> =
                 remoteDataSource.getMovieDetail(movieId)
 
-            public override fun saveCallResult(movieDetailResponse: MovieDetailResponse) {
+            override fun saveCallResult(movieDetailResponse: MovieDetailResponse) {
+                // insert movie detail
                 val movieDetailEntity = MovieDetailEntity(
                     movieDetailResponse.id,
                     movieDetailResponse.title,
@@ -107,10 +110,19 @@ class FlixRepository private constructor(
                     movieDetailResponse.rating,
                     movieDetailResponse.posterUrl,
                     movieDetailResponse.wallpaperUrl,
-                    castGenreList(movieDetailResponse.genreList),
                     false)
-
                 localDataSource.insertMovieDetail(movieDetailEntity)
+
+                // insert genres
+                val genresEntity = castGenreList(movieDetailResponse.genreList)
+                localDataSource.insertGenre(genresEntity)
+
+                // insert movie detail genre cross ref
+                val tempMovieId = movieDetailResponse.id
+                for (genre in genresEntity) {
+                    val crossRef = MovieDetailGenreCrossRef(tempMovieId, genre.id)
+                    localDataSource.insertMovieDetailGenreCrossRef(crossRef)
+                }
             }
 
         }.asLiveData()
@@ -167,18 +179,19 @@ class FlixRepository private constructor(
         return LivePagedListBuilder(localDataSource.getFavoriteTvShows(), config).build()
     }
 
-    override fun getTvShowDetail(tvShowId: Int): LiveData<Resource<TvShowDetailEntity>> {
-        return object : NetworkBoundResource<TvShowDetailEntity, TvShowDetailResponse>(appExecutors) {
-            public override fun loadFromDB(): LiveData<TvShowDetailEntity> =
-                localDataSource.getTvShowDetail(tvShowId)
+    override fun getTvShowDetailWithGenres(tvShowId: Int): LiveData<Resource<TvShowDetailWithGenres>> {
+        return object : NetworkBoundResource<TvShowDetailWithGenres, TvShowDetailResponse>(appExecutors) {
+            override fun loadFromDB(): LiveData<TvShowDetailWithGenres> =
+                localDataSource.getTvShowDetailWithGenres(tvShowId)
 
-            override fun shouldFetch(tvShowDetailEntity: TvShowDetailEntity?): Boolean =
-                tvShowDetailEntity == null
+            override fun shouldFetch(tvShowDetailWithGenres: TvShowDetailWithGenres?): Boolean =
+                tvShowDetailWithGenres == null
 
-            public override fun createCall(): LiveData<ApiResponse<TvShowDetailResponse>> =
+            override fun createCall(): LiveData<ApiResponse<TvShowDetailResponse>> =
                 remoteDataSource.getTvShowDetail(tvShowId)
 
-            public override fun saveCallResult(tvShowDetailResponse: TvShowDetailResponse) {
+            override fun saveCallResult(tvShowDetailResponse: TvShowDetailResponse) {
+                // insert tv show detail entity
                 val tvShowDetailEntity = TvShowDetailEntity(
                     tvShowDetailResponse.id,
                     tvShowDetailResponse.title,
@@ -191,10 +204,19 @@ class FlixRepository private constructor(
                     tvShowDetailResponse.wallpaperUrl,
                     tvShowDetailResponse.numberOfEpisodes,
                     tvShowDetailResponse.numberOfSeasons,
-                    castGenreList(tvShowDetailResponse.genreList),
                     false)
-
                 localDataSource.insertTvShowDetail(tvShowDetailEntity)
+
+                // insert genres
+                val genresEntity = castGenreList(tvShowDetailResponse.genreList)
+                localDataSource.insertGenre(genresEntity)
+
+                // insert tv show detail genres cross ref
+                val tempTvShowId = tvShowDetailResponse.id
+                for (genre in genresEntity) {
+                    val crossRef = TvShowDetailGenreCrossRef(tempTvShowId, genre.id)
+                    localDataSource.insertTvShowDetailGenreCrossRef(crossRef)
+                }
             }
 
         }.asLiveData()

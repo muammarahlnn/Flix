@@ -7,8 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ardnn.flix.R
-import com.ardnn.flix.data.source.local.entity.GenreEntity
-import com.ardnn.flix.data.source.local.entity.MovieDetailEntity
+import com.ardnn.flix.data.source.local.entity.relation.MovieDetailWithGenres
 import com.ardnn.flix.data.source.remote.ImageSize
 import com.ardnn.flix.databinding.ActivityMovieDetailBinding
 import com.ardnn.flix.utils.Helper
@@ -19,7 +18,7 @@ class MovieDetailActivity : AppCompatActivity(), View.OnClickListener {
 
     private lateinit var viewModel: MovieDetailViewModel
     private lateinit var binding: ActivityMovieDetailBinding
-    private lateinit var movieDetail: MovieDetailEntity
+    private lateinit var movieDetailWithGenres: MovieDetailWithGenres
 
     private var isSynopsisExtended = false
 
@@ -62,7 +61,7 @@ class MovieDetailActivity : AppCompatActivity(), View.OnClickListener {
                     Status.SUCCESS -> {
                         if (movieDetailResource.data != null) {
                             showLoading(false)
-                            movieDetail = movieDetailResource.data
+                            movieDetailWithGenres = movieDetailResource.data
                             setMovieDetailToWidgets()
                         }
                     }
@@ -90,6 +89,7 @@ class MovieDetailActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun setMovieDetailToWidgets() {
         with (binding) {
+            val movieDetail = movieDetailWithGenres.movieDetail
             // set images
             Helper.setImageGlide(
                 this@MovieDetailActivity,
@@ -120,7 +120,7 @@ class MovieDetailActivity : AppCompatActivity(), View.OnClickListener {
             tvSynopsis.text = Helper.checkNullOrEmptyString(movieDetail.overview)
 
             // set recyclerview genre items
-            val genreAdapter = GenreAdapter(movieDetail.genreList as List<GenreEntity>)
+            val genreAdapter = GenreAdapter(movieDetailWithGenres.genres)
             rvGenre.adapter = genreAdapter
         }
     }
@@ -136,6 +136,7 @@ class MovieDetailActivity : AppCompatActivity(), View.OnClickListener {
             }
             R.id.btnFavorite -> {
                 viewModel.setIsFavorite()
+                val movieDetail = movieDetailWithGenres.movieDetail
                 if (!movieDetail.isFavorite) {
                     Toast.makeText(
                         this,

@@ -5,16 +5,16 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import com.ardnn.flix.data.FlixRepository
-import com.ardnn.flix.data.source.local.entity.TvShowDetailEntity
+import com.ardnn.flix.data.source.local.entity.relation.TvShowDetailWithGenres
 import com.ardnn.flix.vo.Resource
 
 class TvShowDetailViewModel(private val flixRepository: FlixRepository) : ViewModel() {
 
     val tvShowId = MutableLiveData<Int>()
 
-    var tvShowDetail: LiveData<Resource<TvShowDetailEntity>> =
+    var tvShowDetail: LiveData<Resource<TvShowDetailWithGenres>> =
         Transformations.switchMap(tvShowId) { mTvShowId ->
-            flixRepository.getTvShowDetail(mTvShowId)
+            flixRepository.getTvShowDetailWithGenres(mTvShowId)
         }
 
     private val _isSynopsisExtended = MutableLiveData(false)
@@ -33,8 +33,8 @@ class TvShowDetailViewModel(private val flixRepository: FlixRepository) : ViewMo
         if (tvShowDetailResource != null) {
             val tvShowDetailEntity = tvShowDetailResource.data
             if (tvShowDetailEntity != null) {
-                val newState = !tvShowDetailEntity.isFavorite
-                flixRepository.setIsFavoriteTvShowDetail(tvShowDetailEntity, newState)
+                val newState = !tvShowDetailEntity.tvShowDetail.isFavorite
+                flixRepository.setIsFavoriteTvShowDetail(tvShowDetailEntity.tvShowDetail, newState)
             }
         }
     }

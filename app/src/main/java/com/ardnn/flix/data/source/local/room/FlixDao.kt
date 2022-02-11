@@ -4,46 +4,62 @@ import androidx.lifecycle.LiveData
 import androidx.paging.DataSource
 import androidx.room.*
 import androidx.sqlite.db.SupportSQLiteQuery
-import com.ardnn.flix.data.source.local.entity.MovieDetailEntity
-import com.ardnn.flix.data.source.local.entity.MovieEntity
-import com.ardnn.flix.data.source.local.entity.TvShowDetailEntity
-import com.ardnn.flix.data.source.local.entity.TvShowEntity
+import com.ardnn.flix.data.source.local.entity.*
+import com.ardnn.flix.data.source.local.entity.relation.MovieDetailGenreCrossRef
+import com.ardnn.flix.data.source.local.entity.relation.MovieDetailWithGenres
+import com.ardnn.flix.data.source.local.entity.relation.TvShowDetailGenreCrossRef
+import com.ardnn.flix.data.source.local.entity.relation.TvShowDetailWithGenres
 
 @Dao
 interface FlixDao {
+    @Transaction
     @RawQuery(observedEntities = [MovieEntity::class])
     fun getMovies(query: SupportSQLiteQuery): DataSource.Factory<Int, MovieEntity>
 
+    @Transaction
     @Query("SELECT * FROM movie_detail_entities where is_favorite = 1")
     fun getFavoriteMovies(): DataSource.Factory<Int, MovieDetailEntity>
 
-    @Query("SELECT * FROM movie_detail_entities WHERE id = :id")
-    fun getMovieDetail(id: Int): LiveData<MovieDetailEntity>
+    @Transaction
+    @Query("SELECT * FROM movie_detail_entities WHERE movie_id = :id")
+    fun getMovieDetailWithGenres(id: Int): LiveData<MovieDetailWithGenres>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertMovies(movies: List<MovieEntity>)
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertMovieDetail(movieDetail: MovieDetailEntity)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertMovieDetailGenreCrossRef(crossRef: MovieDetailGenreCrossRef)
 
     @Update
     fun updateMovieDetail(movieDetail: MovieDetailEntity)
 
+    @Transaction
     @RawQuery(observedEntities = [TvShowEntity::class])
     fun getTvShows(query: SupportSQLiteQuery): DataSource.Factory<Int, TvShowEntity>
 
+    @Transaction
     @Query("SELECT * FROM tv_show_detail_entities where is_favorite = 1")
     fun getFavoriteTvShows(): DataSource.Factory<Int, TvShowDetailEntity>
 
-    @Query("SELECT * FROM tv_show_detail_entities WHERE id = :id")
-    fun getTvShowDetail(id: Int): LiveData<TvShowDetailEntity>
+    @Transaction
+    @Query("SELECT * FROM tv_show_detail_entities WHERE tv_show_id = :id")
+    fun getTvShowDetailWithGenres(id: Int): LiveData<TvShowDetailWithGenres>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertTvShows(tvShows: List<TvShowEntity>)
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertTvShowDetail(tvShowDetail: TvShowDetailEntity)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertTvShowDetailGenreCrossRef(crossRef: TvShowDetailGenreCrossRef)
 
     @Update
     fun updateTvShowDetail(tvShowDetail: TvShowDetailEntity)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertGenre(genres: List<GenreEntity>)
 }

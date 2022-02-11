@@ -2,10 +2,11 @@ package com.ardnn.flix.data.source.local
 
 import androidx.lifecycle.LiveData
 import androidx.paging.DataSource
-import com.ardnn.flix.data.source.local.entity.MovieDetailEntity
-import com.ardnn.flix.data.source.local.entity.MovieEntity
-import com.ardnn.flix.data.source.local.entity.TvShowDetailEntity
-import com.ardnn.flix.data.source.local.entity.TvShowEntity
+import com.ardnn.flix.data.source.local.entity.*
+import com.ardnn.flix.data.source.local.entity.relation.MovieDetailGenreCrossRef
+import com.ardnn.flix.data.source.local.entity.relation.MovieDetailWithGenres
+import com.ardnn.flix.data.source.local.entity.relation.TvShowDetailGenreCrossRef
+import com.ardnn.flix.data.source.local.entity.relation.TvShowDetailWithGenres
 import com.ardnn.flix.data.source.local.room.FlixDao
 import com.ardnn.flix.utils.SortUtils
 
@@ -34,11 +35,11 @@ class LocalDataSource private constructor(private val flixDao: FlixDao) {
     fun getFavoriteTvShows(): DataSource.Factory<Int, TvShowDetailEntity> =
         flixDao.getFavoriteTvShows()
 
-    fun getMovieDetail(id: Int): LiveData<MovieDetailEntity> =
-        flixDao.getMovieDetail(id)
+    fun getMovieDetailWithGenres(id: Int): LiveData<MovieDetailWithGenres> =
+        flixDao.getMovieDetailWithGenres(id)
 
-    fun getTvShowDetail(id: Int): LiveData<TvShowDetailEntity> =
-        flixDao.getTvShowDetail(id)
+    fun getTvShowDetailWithGenres(id: Int): LiveData<TvShowDetailWithGenres> =
+        flixDao.getTvShowDetailWithGenres(id)
 
     fun insertMovies(movies: List<MovieEntity>) {
         flixDao.insertMovies(movies)
@@ -55,6 +56,15 @@ class LocalDataSource private constructor(private val flixDao: FlixDao) {
     fun insertTvShowDetail(tvShowDetail: TvShowDetailEntity) {
         flixDao.insertTvShowDetail(tvShowDetail)
     }
+
+    fun insertMovieDetailGenreCrossRef(crossRef: MovieDetailGenreCrossRef) =
+        flixDao.insertMovieDetailGenreCrossRef(crossRef)
+
+    fun insertTvShowDetailGenreCrossRef(crossRef: TvShowDetailGenreCrossRef) =
+        flixDao.insertTvShowDetailGenreCrossRef(crossRef)
+
+    fun insertGenre(genres: List<GenreEntity>) =
+        flixDao.insertGenre(genres)
 
     fun setIsFavoriteMovieDetail(movieDetail: MovieDetailEntity, newState: Boolean) {
         movieDetail.isFavorite = newState

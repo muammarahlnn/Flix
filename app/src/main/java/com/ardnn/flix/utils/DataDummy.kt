@@ -100,7 +100,7 @@ class DataDummy(private val context: Context) {
 
         return MovieDetailEntity(
             id, title, overview, releaseDate, runtime, rating,
-            posterUrl, wallpaperUrl, genreList
+            posterUrl, wallpaperUrl
         )
     }
 
@@ -193,7 +193,7 @@ class DataDummy(private val context: Context) {
 
         return TvShowDetailEntity(
             id, title, overview, firstAirDate, lastAirDate, runtimeList[0], rating,
-            posterUrl, wallpaperUrl, numberOfEpisodes, numberOfSeasons, genreList
+            posterUrl, wallpaperUrl, numberOfEpisodes, numberOfSeasons
         )
     }
 

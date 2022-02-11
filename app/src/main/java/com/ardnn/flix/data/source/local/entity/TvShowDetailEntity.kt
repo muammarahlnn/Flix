@@ -9,9 +9,9 @@ import com.ardnn.flix.data.source.remote.ImageSize
 
 @Entity(tableName = "tv_show_detail_entities")
 data class TvShowDetailEntity(
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = false)
     @NonNull
-    @ColumnInfo(name = "id")
+    @ColumnInfo(name = "tv_show_id")
     val id: Int,
 
     @ColumnInfo(name = "title")
@@ -43,9 +43,6 @@ data class TvShowDetailEntity(
 
     @ColumnInfo(name = "number_of_seasons")
     val numberOfSeasons: Int?,
-
-    @ColumnInfo(name = "genre_list")
-    val genreList: List<GenreEntity>?,
 
     @ColumnInfo(name = "is_favorite")
     var isFavorite: Boolean = false
