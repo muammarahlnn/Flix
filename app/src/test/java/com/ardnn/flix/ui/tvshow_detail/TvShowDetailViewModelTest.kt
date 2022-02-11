@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import com.ardnn.flix.data.FlixRepository
 import com.ardnn.flix.data.source.local.entity.TvShowDetailEntity
+import com.ardnn.flix.data.source.local.entity.relation.TvShowDetailWithGenres
 import com.ardnn.flix.utils.DataDummy
 import com.ardnn.flix.vo.Resource
 import com.nhaarman.mockitokotlin2.verify
@@ -38,7 +39,7 @@ class TvShowDetailViewModelTest {
     private lateinit var flixRepository: FlixRepository
 
     @Mock
-    private lateinit var tvShowDetailObserver: Observer<Resource<TvShowDetailEntity>>
+    private lateinit var tvShowDetailObserver: Observer<Resource<TvShowDetailWithGenres>>
 
     @Mock
     private lateinit var isSynopsisExtendedObserver: Observer<Boolean>
@@ -57,10 +58,10 @@ class TvShowDetailViewModelTest {
 
     @Test
     fun `getTvShowDetail should be success`() {
-        val expected = MutableLiveData<Resource<TvShowDetailEntity>>()
-        expected.value = Resource.success(dataDummy.generateDummyTvShowDetail())
+        val expected = MutableLiveData<Resource<TvShowDetailWithGenres>>()
+        expected.value = Resource.success(dataDummy.generateDummyTvShowDetailWithGenres())
 
-        `when`(flixRepository.getTvShowDetail(tvShowId))
+        `when`(flixRepository.getTvShowDetailWithGenres(tvShowId))
             .thenReturn(expected)
 
         viewModel.tvShowDetail.observeForever(tvShowDetailObserver)
@@ -73,10 +74,10 @@ class TvShowDetailViewModelTest {
 
     @Test
     fun `setIsFavorite should be success trigger tvShowDetail observer`() {
-        val expected = MutableLiveData<Resource<TvShowDetailEntity>>()
-        expected.value = Resource.success(dataDummy.generateDummyTvShowDetail())
+        val expected = MutableLiveData<Resource<TvShowDetailWithGenres>>()
+        expected.value = Resource.success(dataDummy.generateDummyTvShowDetailWithGenres())
 
-        `when`(flixRepository.getTvShowDetail(tvShowId))
+        `when`(flixRepository.getTvShowDetailWithGenres(tvShowId))
             .thenReturn(expected)
 
         viewModel.setIsFavorite()

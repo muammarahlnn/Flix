@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import com.ardnn.flix.data.FlixRepository
 import com.ardnn.flix.data.source.local.entity.MovieDetailEntity
+import com.ardnn.flix.data.source.local.entity.relation.MovieDetailWithGenres
 import com.ardnn.flix.utils.DataDummy
 import com.ardnn.flix.vo.Resource
 import com.nhaarman.mockitokotlin2.verify
@@ -38,7 +39,7 @@ class MovieDetailViewModelTest {
     private lateinit var flixRepository: FlixRepository
 
     @Mock
-    private lateinit var movieDetailObserver: Observer<Resource<MovieDetailEntity>>
+    private lateinit var movieDetailObserver: Observer<Resource<MovieDetailWithGenres>>
 
     @Mock
     private lateinit var isSynopsisExtendedObserver: Observer<Boolean>
@@ -57,10 +58,10 @@ class MovieDetailViewModelTest {
 
     @Test
     fun `getMovieDetail should be success`() {
-        val expected = MutableLiveData<Resource<MovieDetailEntity>>()
-        expected.value = Resource.success(dataDummy.generateDummyMovieDetail())
+        val expected = MutableLiveData<Resource<MovieDetailWithGenres>>()
+        expected.value = Resource.success(dataDummy.generateDummyMovieDetailWithGenres())
 
-        `when`(flixRepository.getMovieDetail(movieId))
+        `when`(flixRepository.getMovieDetailWithGenres(movieId))
             .thenReturn(expected)
 
         viewModel.movieDetail.observeForever(movieDetailObserver)
@@ -73,10 +74,10 @@ class MovieDetailViewModelTest {
 
     @Test
     fun `setIsFavorite should be success trigger movieDetail observer`() {
-        val expected = MutableLiveData<Resource<MovieDetailEntity>>()
-        expected.value = Resource.success(dataDummy.generateDummyMovieDetail())
+        val expected = MutableLiveData<Resource<MovieDetailWithGenres>>()
+        expected.value = Resource.success(dataDummy.generateDummyMovieDetailWithGenres())
 
-        `when`(flixRepository.getMovieDetail(movieId))
+        `when`(flixRepository.getMovieDetailWithGenres(movieId))
             .thenReturn(expected)
 
         viewModel.setIsFavorite()

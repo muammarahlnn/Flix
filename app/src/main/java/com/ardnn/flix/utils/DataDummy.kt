@@ -2,6 +2,8 @@ package com.ardnn.flix.utils
 
 import android.content.Context
 import com.ardnn.flix.data.source.local.entity.*
+import com.ardnn.flix.data.source.local.entity.relation.MovieDetailWithGenres
+import com.ardnn.flix.data.source.local.entity.relation.TvShowDetailWithGenres
 import com.ardnn.flix.data.source.remote.response.*
 import org.json.JSONArray
 import org.json.JSONObject
@@ -95,13 +97,22 @@ class DataDummy(private val context: Context) {
         val posterUrl = movieDetail.getString("poster_path")
         val wallpaperUrl = movieDetail.getString("backdrop_path")
 
-        val genreArr = movieDetail.getJSONArray("genres")
-        val genreList = parsingGenreEntityList(genreArr)
-
         return MovieDetailEntity(
             id, title, overview, releaseDate, runtime, rating,
             posterUrl, wallpaperUrl
         )
+    }
+
+    fun generateDummyMovieDetailWithGenres(): MovieDetailWithGenres {
+        val movieDetail = generateDummyMovieDetail()
+
+        val genres = ArrayList<GenreEntity>()
+        for (i in 1..5) {
+            val genre = GenreEntity(i, "dummy $i")
+            genres.add(genre)
+        }
+
+        return MovieDetailWithGenres(movieDetail, genres)
     }
 
     fun generateRemoteDummyMovieDetail(): MovieDetailResponse {
@@ -188,13 +199,22 @@ class DataDummy(private val context: Context) {
             runtimeList.add(runtime)
         }
 
-        val genreArr = tvShowDetail.getJSONArray("genres")
-        val genreList = parsingGenreEntityList(genreArr)
-
         return TvShowDetailEntity(
             id, title, overview, firstAirDate, lastAirDate, runtimeList[0], rating,
             posterUrl, wallpaperUrl, numberOfEpisodes, numberOfSeasons
         )
+    }
+
+    fun generateDummyTvShowDetailWithGenres(): TvShowDetailWithGenres {
+        val tvShowDetail = generateDummyTvShowDetail()
+
+        val genres = ArrayList<GenreEntity>()
+        for (i in 1..5) {
+            val genre = GenreEntity(i, "dummy $i")
+            genres.add(genre)
+        }
+
+        return TvShowDetailWithGenres(tvShowDetail, genres)
     }
 
     fun generateRemoteDummyTvShowDetail(): TvShowDetailResponse {

@@ -5,6 +5,10 @@ import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import com.ardnn.flix.data.source.local.LocalDataSource
 import com.ardnn.flix.data.source.local.entity.*
+import com.ardnn.flix.data.source.local.entity.relation.MovieDetailGenreCrossRef
+import com.ardnn.flix.data.source.local.entity.relation.MovieDetailWithGenres
+import com.ardnn.flix.data.source.local.entity.relation.TvShowDetailGenreCrossRef
+import com.ardnn.flix.data.source.local.entity.relation.TvShowDetailWithGenres
 import com.ardnn.flix.data.source.remote.ApiResponse
 import com.ardnn.flix.data.source.remote.RemoteDataSource
 import com.ardnn.flix.data.source.remote.response.*
@@ -16,7 +20,6 @@ class FakeFlixRepository(
     private val localDataSource: LocalDataSource,
     private val appExecutors: AppExecutors
 ) : FlixDataSource{
-
     override fun getMovies(page: Int, section: Int, filter: String): LiveData<Resource<PagedList<MovieEntity>>> {
         return object : NetworkBoundResource<PagedList<MovieEntity>, List<MovieResponse>>(appExecutors) {
             public override fun loadFromDB(): LiveData<PagedList<MovieEntity>> {
@@ -36,7 +39,13 @@ class FakeFlixRepository(
                     0 -> { // now playing
                         remoteDataSource.getNowPlayingMovies(page)
                     }
-                    1 -> { // top rated
+                    1 -> { // upcoming
+                        remoteDataSource.getUpcomingMovies(page)
+                    }
+                    2 -> { // popular
+                        remoteDataSource.getPopularMovies(page)
+                    }
+                    3 -> { // top rated
                         remoteDataSource.getTopRatedMovies(page)
                     }
                     else -> { // default
@@ -62,18 +71,19 @@ class FakeFlixRepository(
         return LivePagedListBuilder(localDataSource.getFavoriteMovies(), config).build()
     }
 
-    override fun getMovieDetail(movieId: Int): LiveData<Resource<MovieDetailEntity>> {
-        return object : NetworkBoundResource<MovieDetailEntity, MovieDetailResponse>(appExecutors) {
-            public override fun loadFromDB(): LiveData<MovieDetailEntity> =
-                localDataSource.getMovieDetail(movieId)
+    override fun getMovieDetailWithGenres(movieId: Int): LiveData<Resource<MovieDetailWithGenres>> {
+        return object : NetworkBoundResource<MovieDetailWithGenres, MovieDetailResponse>(appExecutors) {
+            override fun loadFromDB(): LiveData<MovieDetailWithGenres> =
+                localDataSource.getMovieDetailWithGenres(movieId)
 
-            override fun shouldFetch(movieDetailEntity: MovieDetailEntity?): Boolean =
-                movieDetailEntity == null
+            override fun shouldFetch(movieDetailWithGenres: MovieDetailWithGenres?): Boolean =
+                movieDetailWithGenres == null
 
-            public override fun createCall(): LiveData<ApiResponse<MovieDetailResponse>> =
+            override fun createCall(): LiveData<ApiResponse<MovieDetailResponse>> =
                 remoteDataSource.getMovieDetail(movieId)
 
-            public override fun saveCallResult(movieDetailResponse: MovieDetailResponse) {
+            override fun saveCallResult(movieDetailResponse: MovieDetailResponse) {
+                // insert movie detail
                 val movieDetailEntity = MovieDetailEntity(
                     movieDetailResponse.id,
                     movieDetailResponse.title,
@@ -83,10 +93,19 @@ class FakeFlixRepository(
                     movieDetailResponse.rating,
                     movieDetailResponse.posterUrl,
                     movieDetailResponse.wallpaperUrl,
-                    castGenreList(movieDetailResponse.genreList),
                     false)
-
                 localDataSource.insertMovieDetail(movieDetailEntity)
+
+                // insert genres
+                val genresEntity = castGenreList(movieDetailResponse.genreList)
+                localDataSource.insertGenre(genresEntity)
+
+                // insert movie detail genre cross ref
+                val tempMovieId = movieDetailResponse.id
+                for (genre in genresEntity) {
+                    val crossRef = MovieDetailGenreCrossRef(tempMovieId, genre.id)
+                    localDataSource.insertMovieDetailGenreCrossRef(crossRef)
+                }
             }
 
         }.asLiveData()
@@ -108,14 +127,20 @@ class FakeFlixRepository(
 
             public override fun createCall(): LiveData<ApiResponse<List<TvShowResponse>>> {
                 return when (section) {
-                    0 -> { // on the air
+                    0 -> { // airing today
+                        remoteDataSource.getAiringTodayTvShows(page)
+                    }
+                    1 -> { // on the air
                         remoteDataSource.getOnTheAirTvShows(page)
                     }
-                    1 -> { // top rated
+                    2 -> { // popular
+                        remoteDataSource.getPopularTvShows(page)
+                    }
+                    3 -> { // top rated
                         remoteDataSource.getTopRatedTvShows(page)
                     }
                     else -> { // default
-                        remoteDataSource.getOnTheAirTvShows(page)
+                        remoteDataSource.getAiringTodayTvShows(page)
                     }
                 }
             }
@@ -137,34 +162,48 @@ class FakeFlixRepository(
         return LivePagedListBuilder(localDataSource.getFavoriteTvShows(), config).build()
     }
 
-    override fun getTvShowDetail(tvShowId: Int): LiveData<Resource<TvShowDetailEntity>> {
-        return object : NetworkBoundResource<TvShowDetailEntity, TvShowDetailResponse>(appExecutors) {
-            public override fun loadFromDB(): LiveData<TvShowDetailEntity> =
-                localDataSource.getTvShowDetail(tvShowId)
+    override fun getTvShowDetailWithGenres(tvShowId: Int): LiveData<Resource<TvShowDetailWithGenres>> {
+        return object : NetworkBoundResource<TvShowDetailWithGenres, TvShowDetailResponse>(appExecutors) {
+            override fun loadFromDB(): LiveData<TvShowDetailWithGenres> =
+                localDataSource.getTvShowDetailWithGenres(tvShowId)
 
-            override fun shouldFetch(tvShowDetailEntity: TvShowDetailEntity?): Boolean =
-                tvShowDetailEntity == null
+            override fun shouldFetch(tvShowDetailWithGenres: TvShowDetailWithGenres?): Boolean =
+                tvShowDetailWithGenres == null
 
-            public override fun createCall(): LiveData<ApiResponse<TvShowDetailResponse>> =
+            override fun createCall(): LiveData<ApiResponse<TvShowDetailResponse>> =
                 remoteDataSource.getTvShowDetail(tvShowId)
 
-            public override fun saveCallResult(tvShowDetailResponse: TvShowDetailResponse) {
+            override fun saveCallResult(tvShowDetailResponse: TvShowDetailResponse) {
+                // insert tv show detail entity
+                val runtime: Int? =
+                    if (tvShowDetailResponse.runtimes.isNullOrEmpty()) null
+                    else tvShowDetailResponse.runtimes?.get(0)
+
                 val tvShowDetailEntity = TvShowDetailEntity(
                     tvShowDetailResponse.id,
                     tvShowDetailResponse.title,
                     tvShowDetailResponse.overview,
                     tvShowDetailResponse.firstAirDate,
                     tvShowDetailResponse.lastAirDate,
-                    tvShowDetailResponse.runtimes?.get(0),
+                    runtime,
                     tvShowDetailResponse.rating,
                     tvShowDetailResponse.posterUrl,
                     tvShowDetailResponse.wallpaperUrl,
                     tvShowDetailResponse.numberOfEpisodes,
                     tvShowDetailResponse.numberOfSeasons,
-                    castGenreList(tvShowDetailResponse.genreList),
                     false)
-
                 localDataSource.insertTvShowDetail(tvShowDetailEntity)
+
+                // insert genres
+                val genresEntity = castGenreList(tvShowDetailResponse.genreList)
+                localDataSource.insertGenre(genresEntity)
+
+                // insert tv show detail genres cross ref
+                val tempTvShowId = tvShowDetailResponse.id
+                for (genre in genresEntity) {
+                    val crossRef = TvShowDetailGenreCrossRef(tempTvShowId, genre.id)
+                    localDataSource.insertTvShowDetailGenreCrossRef(crossRef)
+                }
             }
 
         }.asLiveData()
@@ -197,7 +236,7 @@ class FakeFlixRepository(
     private fun castMovieList(movieList: List<MovieResponse>, section: Int): List<MovieEntity> {
         val movies = ArrayList<MovieEntity>()
         for (movie in movieList) {
-            val tempMovie = MovieEntity(
+            val tempMovie = MovieEntity(0,
                 movie.id,
                 movie.title,
                 movie.releaseDate,
@@ -214,7 +253,7 @@ class FakeFlixRepository(
     private fun castTvShowList(tvShowList: List<TvShowResponse>, section: Int): List<TvShowEntity> {
         val tvShows = ArrayList<TvShowEntity>()
         for (tvShow in tvShowList) {
-            val tempTvShow = TvShowEntity(
+            val tempTvShow = TvShowEntity(0,
                 tvShow.id,
                 tvShow.title,
                 tvShow.firstAirDate,

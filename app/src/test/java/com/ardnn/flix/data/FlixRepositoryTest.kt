@@ -8,6 +8,8 @@ import com.ardnn.flix.data.source.local.entity.MovieDetailEntity
 import com.ardnn.flix.data.source.local.entity.MovieEntity
 import com.ardnn.flix.data.source.local.entity.TvShowDetailEntity
 import com.ardnn.flix.data.source.local.entity.TvShowEntity
+import com.ardnn.flix.data.source.local.entity.relation.MovieDetailWithGenres
+import com.ardnn.flix.data.source.local.entity.relation.TvShowDetailWithGenres
 import com.ardnn.flix.data.source.remote.RemoteDataSource
 import com.ardnn.flix.data.source.remote.response.MovieDetailResponse
 import com.ardnn.flix.data.source.remote.response.MovieResponse
@@ -98,17 +100,17 @@ class FlixRepositoryTest {
     }
 
     @Test
-    fun getMovieDetail() {
-        val dummyEntity = MutableLiveData<MovieDetailEntity>()
-        dummyEntity.value = dataDummy.generateDummyMovieDetail()
-        `when`(local.getMovieDetail(movieId)).thenReturn(dummyEntity)
+    fun getMovieDetailWithGenres() {
+        val dummyEntity = MutableLiveData<MovieDetailWithGenres>()
+        dummyEntity.value = dataDummy.generateDummyMovieDetailWithGenres()
+        `when`(local.getMovieDetailWithGenres(movieId)).thenReturn(dummyEntity)
 
-        val movieDetailEntity = LiveDataTestUtil.getValue(flixRepository.getMovieDetail(movieId))
-        verify(local).getMovieDetail(movieId)
+        val movieDetailEntity = LiveDataTestUtil.getValue(flixRepository.getMovieDetailWithGenres(movieId))
+        verify(local).getMovieDetailWithGenres(movieId)
 
         assertNotNull(movieDetailEntity.data)
-        assertNotNull(movieDetailEntity.data?.id)
-        assertEquals(dummyMovieDetailResponse.id, movieDetailEntity.data?.id)
+        assertNotNull(movieDetailEntity.data?.movieDetail?.id)
+        assertEquals(dummyMovieDetailResponse.id, movieDetailEntity.data?.movieDetail?.id)
     }
 
     @Test
@@ -139,16 +141,16 @@ class FlixRepositoryTest {
     }
 
     @Test
-    fun getTvShowDetail() {
-        val dummyEntity = MutableLiveData<TvShowDetailEntity>()
-        dummyEntity.value = dataDummy.generateDummyTvShowDetail()
-        `when`(local.getTvShowDetail(tvShowId)).thenReturn(dummyEntity)
+    fun getTvShowDetailWithGenres() {
+        val dummyEntity = MutableLiveData<TvShowDetailWithGenres>()
+        dummyEntity.value = dataDummy.generateDummyTvShowDetailWithGenres()
+        `when`(local.getTvShowDetailWithGenres(tvShowId)).thenReturn(dummyEntity)
 
-        val tvShowDetailEntity = LiveDataTestUtil.getValue(flixRepository.getTvShowDetail(tvShowId))
-        verify(local).getTvShowDetail(tvShowId)
+        val tvShowDetailEntity = LiveDataTestUtil.getValue(flixRepository.getTvShowDetailWithGenres(tvShowId))
+        verify(local).getTvShowDetailWithGenres(tvShowId)
 
         assertNotNull(tvShowDetailEntity.data)
-        assertNotNull(tvShowDetailEntity.data?.id)
-        assertEquals(dummyTvShowDetailResponse.id, tvShowDetailEntity.data?.id)
+        assertNotNull(tvShowDetailEntity.data?.tvShowDetail?.id)
+        assertEquals(dummyTvShowDetailResponse.id, tvShowDetailEntity.data?.tvShowDetail?.id)
     }
 }
