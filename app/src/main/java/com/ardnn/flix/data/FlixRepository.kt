@@ -192,13 +192,17 @@ class FlixRepository private constructor(
 
             override fun saveCallResult(tvShowDetailResponse: TvShowDetailResponse) {
                 // insert tv show detail entity
+                val runtime: Int? =
+                    if (tvShowDetailResponse.runtimes.isNullOrEmpty()) null
+                    else tvShowDetailResponse.runtimes[0]
+
                 val tvShowDetailEntity = TvShowDetailEntity(
                     tvShowDetailResponse.id,
                     tvShowDetailResponse.title,
                     tvShowDetailResponse.overview,
                     tvShowDetailResponse.firstAirDate,
                     tvShowDetailResponse.lastAirDate,
-                    tvShowDetailResponse.runtimes?.get(0),
+                    runtime,
                     tvShowDetailResponse.rating,
                     tvShowDetailResponse.posterUrl,
                     tvShowDetailResponse.wallpaperUrl,
