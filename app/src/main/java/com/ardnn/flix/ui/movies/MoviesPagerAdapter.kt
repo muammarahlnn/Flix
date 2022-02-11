@@ -16,6 +16,7 @@ class MoviesPagerAdapter(fragmentActivity: FragmentActivity) : FragmentStateAdap
     }
 
     override fun getItemCount(): Int {
-        return 2
+        // [now playing, upcoming, popular, top rated]
+        return 4
     }
 }

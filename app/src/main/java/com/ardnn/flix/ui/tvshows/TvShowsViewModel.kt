@@ -13,7 +13,7 @@ class TvShowsViewModel(private val flixRepository: FlixRepository) : ViewModel()
 
     private var section = 0
 
-    private var sortArr = arrayOf("", "")
+    private var sortArr = arrayOf("", "", "", "")
     private val _tvShowsSort = MutableLiveData(sortArr)
     val tvShowsSort: LiveData<Array<String>> = _tvShowsSort
 

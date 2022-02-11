@@ -50,7 +50,9 @@ class TvShowsPagerFragment : Fragment() {
     companion object {
         @StringRes
         private val TAB_TITLES = intArrayOf(
+            R.string.airing_today,
             R.string.on_the_air,
+            R.string.popular,
             R.string.top_rated
         )
     }

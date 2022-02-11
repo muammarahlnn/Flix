@@ -54,7 +54,13 @@ class FlixRepository private constructor(
                     0 -> { // now playing
                         remoteDataSource.getNowPlayingMovies(page)
                     }
-                    1 -> { // top rated
+                    1 -> { // upcoming
+                        remoteDataSource.getUpcomingMovies(page)
+                    }
+                    2 -> { // popular
+                        remoteDataSource.getPopularMovies(page)
+                    }
+                    3 -> { // top rated
                         remoteDataSource.getTopRatedMovies(page)
                     }
                     else -> { // default
@@ -126,14 +132,20 @@ class FlixRepository private constructor(
 
             public override fun createCall(): LiveData<ApiResponse<List<TvShowResponse>>> {
                 return when (section) {
-                    0 -> { // on the air
+                    0 -> { // airing today
+                        remoteDataSource.getAiringTodayTvShows(page)
+                    }
+                    1 -> { // on the air
                         remoteDataSource.getOnTheAirTvShows(page)
                     }
-                    1 -> { // top rated
+                    2 -> { // popular
+                        remoteDataSource.getPopularTvShows(page)
+                    }
+                    3 -> { // top rated
                         remoteDataSource.getTopRatedTvShows(page)
                     }
                     else -> { // default
-                        remoteDataSource.getOnTheAirTvShows(page)
+                        remoteDataSource.getAiringTodayTvShows(page)
                     }
                 }
             }

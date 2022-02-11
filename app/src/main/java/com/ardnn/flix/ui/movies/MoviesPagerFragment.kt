@@ -52,6 +52,8 @@ class MoviesPagerFragment : Fragment() {
         @StringRes
         private val TAB_TITLES = intArrayOf(
             R.string.now_playing,
+            R.string.upcoming,
+            R.string.popular,
             R.string.top_rated
         )
     }

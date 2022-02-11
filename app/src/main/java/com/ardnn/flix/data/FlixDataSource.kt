@@ -11,15 +11,15 @@ import com.ardnn.flix.vo.Resource
 interface FlixDataSource {
     fun getMovies(page: Int, section: Int, filter: String): LiveData<Resource<PagedList<MovieEntity>>>
 
-    fun getFavoriteMovies(): LiveData<PagedList<MovieDetailEntity>>
-
     fun getMovieDetail(movieId: Int): LiveData<Resource<MovieDetailEntity>>
 
     fun getTvShows(page: Int, section: Int, filter: String): LiveData<Resource<PagedList<TvShowEntity>>>
 
-    fun getFavoriteTvShows(): LiveData<PagedList<TvShowDetailEntity>>
-
     fun getTvShowDetail(tvShowId: Int): LiveData<Resource<TvShowDetailEntity>>
+
+    fun getFavoriteMovies(): LiveData<PagedList<MovieDetailEntity>>
+
+    fun getFavoriteTvShows(): LiveData<PagedList<TvShowDetailEntity>>
 
     fun setIsFavoriteMovieDetail(movieDetail: MovieDetailEntity, state: Boolean)
 

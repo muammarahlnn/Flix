@@ -16,7 +16,8 @@ class TvShowsPagerAdapter(fragmentActivity: FragmentActivity) : FragmentStateAda
     }
 
     override fun getItemCount(): Int {
-        return 2
+        // [airing today, on the air, popular, top rated]
+        return 4
     }
 
 }

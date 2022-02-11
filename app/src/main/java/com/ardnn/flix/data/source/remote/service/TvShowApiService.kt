@@ -14,8 +14,20 @@ interface TvShowApiService {
         @Query("api_key") apiKey: String
     ): Call<TvShowDetailResponse>
 
+    @GET("airing_today")
+    fun getAiringTodayTvShows(
+        @Query("api_key") apiKey: String,
+        @Query("page") page: Int
+    ): Call<TvShowsResponse>
+
     @GET("on_the_air")
     fun getOnTheAirTvShows(
+        @Query("api_key") apiKey: String,
+        @Query("page") page: Int
+    ): Call<TvShowsResponse>
+
+    @GET("popular")
+    fun getPopularTvShows(
         @Query("api_key") apiKey: String,
         @Query("page") page: Int
     ): Call<TvShowsResponse>

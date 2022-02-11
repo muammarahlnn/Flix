@@ -109,6 +109,77 @@ class RemoteDataSource private constructor() {
         return resultMovies
     }
 
+    // method to get upcoming movies
+    fun getUpcomingMovies(page: Int): LiveData<ApiResponse<List<MovieResponse>>> {
+        EspressoIdlingResource.increment()
+
+        val resultMovies = MutableLiveData<ApiResponse<List<MovieResponse>>>()
+        MOVIE_SERVICE.getUpcomingMovies(API_KEY, page)
+            .enqueue(object : Callback<MoviesResponse> {
+                override fun onResponse(
+                    call: Call<MoviesResponse>,
+                    response: Response<MoviesResponse>
+                ) {
+                    if (response.isSuccessful) {
+                        if (response.body() != null) {
+                            if (response.body()?.movies != null) {
+                                resultMovies.postValue(ApiResponse.success(response.body()?.movies as List<MovieResponse>))
+                                EspressoIdlingResource.decrement()
+                            } else {
+                                EspressoIdlingResource.decrement()
+                            }
+                        } else {
+                            EspressoIdlingResource.decrement()
+                        }
+                    } else {
+                        EspressoIdlingResource.decrement()
+                    }
+                }
+
+                override fun onFailure(call: Call<MoviesResponse>, t: Throwable) {
+                    EspressoIdlingResource.decrement()
+                }
+            })
+
+        return resultMovies
+    }
+
+    // method to get popular movies
+    fun getPopularMovies(page: Int): LiveData<ApiResponse<List<MovieResponse>>> {
+        EspressoIdlingResource.increment()
+
+        val resultMovies = MutableLiveData<ApiResponse<List<MovieResponse>>>()
+        MOVIE_SERVICE.getPopularMovies(API_KEY, page)
+            .enqueue(object : Callback<MoviesResponse> {
+                override fun onResponse(
+                    call: Call<MoviesResponse>,
+                    response: Response<MoviesResponse>
+                ) {
+                    if (response.isSuccessful) {
+                        if (response.body() != null) {
+                            if (response.body()?.movies != null) {
+                                resultMovies.postValue(ApiResponse.success(response.body()?.movies as List<MovieResponse>))
+                                EspressoIdlingResource.decrement()
+                            } else {
+                                EspressoIdlingResource.decrement()
+                            }
+                        } else {
+                            EspressoIdlingResource.decrement()
+                        }
+                    } else {
+                        EspressoIdlingResource.decrement()
+                    }
+                }
+
+                override fun onFailure(call: Call<MoviesResponse>, t: Throwable) {
+                    EspressoIdlingResource.decrement()
+                }
+
+            })
+
+        return resultMovies
+    }
+
     // method to get top rated movies
     fun getTopRatedMovies(page: Int): LiveData<ApiResponse<List<MovieResponse>>> {
         EspressoIdlingResource.increment()
@@ -176,6 +247,42 @@ class RemoteDataSource private constructor() {
         return resultTvShowDetail
     }
 
+    // method to get airing today tv shows
+    fun getAiringTodayTvShows(page: Int): LiveData<ApiResponse<List<TvShowResponse>>> {
+        EspressoIdlingResource.increment()
+
+        val resultTvShows = MutableLiveData<ApiResponse<List<TvShowResponse>>>()
+        TV_SHOW_SERVICE.getAiringTodayTvShows(API_KEY, page)
+            .enqueue(object : Callback<TvShowsResponse> {
+                override fun onResponse(
+                    call: Call<TvShowsResponse>,
+                    response: Response<TvShowsResponse>
+                ) {
+                    if (response.isSuccessful) {
+                        if (response.body() != null) {
+                            if (response.body()?.tvShows != null) {
+                                resultTvShows.postValue(ApiResponse.success(response.body()?.tvShows as List<TvShowResponse>))
+                                EspressoIdlingResource.decrement()
+                            } else {
+                                EspressoIdlingResource.decrement()
+                            }
+                        } else {
+                            EspressoIdlingResource.decrement()
+                        }
+                    } else {
+                        EspressoIdlingResource.decrement()
+                    }
+                }
+
+                override fun onFailure(call: Call<TvShowsResponse>, t: Throwable) {
+                    EspressoIdlingResource.decrement()
+
+                }
+            })
+
+        return resultTvShows
+    }
+
     // method to get on the air tv shows
     fun getOnTheAirTvShows(page: Int): LiveData<ApiResponse<List<TvShowResponse>>> {
         EspressoIdlingResource.increment()
@@ -206,6 +313,42 @@ class RemoteDataSource private constructor() {
                 override fun onFailure(call: Call<TvShowsResponse>, t: Throwable) {
                     EspressoIdlingResource.decrement()
                 }
+            })
+
+        return resultTvShows
+    }
+
+    // method to get popular tv shows
+    fun getPopularTvShows(page: Int): LiveData<ApiResponse<List<TvShowResponse>>> {
+        EspressoIdlingResource.increment()
+
+        val resultTvShows = MutableLiveData<ApiResponse<List<TvShowResponse>>>()
+        TV_SHOW_SERVICE.getPopularTvShows(API_KEY, page)
+            .enqueue(object : Callback<TvShowsResponse> {
+                override fun onResponse(
+                    call: Call<TvShowsResponse>,
+                    response: Response<TvShowsResponse>
+                ) {
+                    if (response.isSuccessful) {
+                        if (response.body() != null) {
+                            if (response.body()?.tvShows != null) {
+                                resultTvShows.postValue(ApiResponse.success(response.body()?.tvShows as List<TvShowResponse>))
+                                EspressoIdlingResource.decrement()
+                            } else {
+                                EspressoIdlingResource.decrement()
+                            }
+                        } else {
+                            EspressoIdlingResource.decrement()
+                        }
+                    } else {
+                        EspressoIdlingResource.decrement()
+                    }
+                }
+
+                override fun onFailure(call: Call<TvShowsResponse>, t: Throwable) {
+                    EspressoIdlingResource.decrement()
+                }
+
             })
 
         return resultTvShows
@@ -244,27 +387,6 @@ class RemoteDataSource private constructor() {
             })
 
         return resultTvShows
-    }
-
-    // callbacks
-    interface LoadMovieDetailCallback {
-        fun onSuccess(movieDetailResponse: MovieDetailResponse)
-        fun onFailure(message: String)
-    }
-
-    interface LoadMoviesCallback {
-        fun onSuccess(movies: List<MovieResponse>)
-        fun onFailure(message: String)
-    }
-
-    interface LoadTvShowDetailCallback {
-        fun onSuccess(tvShowDetailResponse: TvShowDetailResponse)
-        fun onFailure(message: String)
-    }
-
-    interface LoadTvShowsCallback {
-        fun onSuccess(tvShows: List<TvShowResponse>)
-        fun onFailure(message: String)
     }
 
 }
