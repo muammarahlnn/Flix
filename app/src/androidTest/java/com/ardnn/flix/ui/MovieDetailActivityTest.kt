@@ -44,7 +44,6 @@ class MovieDetailActivityTest {
         onView(withId(R.id.rvGenre)).check(matches(isDisplayed()))
         onView(withId(R.id.tvSynopsis)).check(matches(isDisplayed()))
         onView(withId(R.id.clWrapperSynopsis)).perform(click()) // to extended synopsis text
-        onView(withId(R.id.clWrapperSynopsis)).perform(click()) // to shortened synopsis text
         onView(withId(R.id.btnBack)).perform(click())
     }
 
@@ -65,7 +64,6 @@ class MovieDetailActivityTest {
         onView(withId(R.id.rvGenre)).check(matches(isDisplayed()))
         onView(withId(R.id.tvSynopsis)).check(matches(isDisplayed()))
         onView(withId(R.id.clWrapperSynopsis)).perform(click()) // to extended synopsis text
-        onView(withId(R.id.clWrapperSynopsis)).perform(click()) // to shortened synopsis text
         onView(withId(R.id.btnBack)).perform(click())
     }
 }

@@ -49,7 +49,6 @@ class TvShowDetailActivityTest {
         onView(withId(R.id.tvLastAiring)).check(matches(isDisplayed()))
         onView(withId(R.id.tvSynopsis)).check(matches(isDisplayed()))
         onView(withId(R.id.clWrapperSynopsis)).perform(click()) // to extended synopsis text
-        onView(withId(R.id.clWrapperSynopsis)).perform(click()) // to shortened synopsis text
         onView(withId(R.id.btnBack)).perform(click())
     }
 
@@ -75,7 +74,6 @@ class TvShowDetailActivityTest {
         onView(withId(R.id.tvLastAiring)).check(matches(isDisplayed()))
         onView(withId(R.id.tvSynopsis)).check(matches(isDisplayed()))
         onView(withId(R.id.clWrapperSynopsis)).perform(click()) // to extended synopsis text
-        onView(withId(R.id.clWrapperSynopsis)).perform(click()) // to shortened synopsis text
         onView(withId(R.id.btnBack)).perform(click())
     }
 }
