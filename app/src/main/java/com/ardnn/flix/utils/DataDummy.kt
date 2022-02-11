@@ -56,7 +56,7 @@ class DataDummy(private val context: Context) {
             val posterUrl = movie.getString("poster_path")
             val rating = movie.getDouble("vote_average").toFloat()
 
-            val movieEntity = MovieEntity(id, title, releaseDate, posterUrl, rating)
+            val movieEntity = MovieEntity(0, id, title, releaseDate, posterUrl, rating)
             list.add(movieEntity)
         }
         return list
@@ -140,7 +140,7 @@ class DataDummy(private val context: Context) {
             val posterUrl = movie.getString("poster_path")
             val rating = movie.getDouble("vote_average").toFloat()
 
-            val tvShowEntity = TvShowEntity(id, title, firstAirDate, posterUrl, rating)
+            val tvShowEntity = TvShowEntity(0, id, title, firstAirDate, posterUrl, rating)
             list.add(tvShowEntity)
         }
         return list

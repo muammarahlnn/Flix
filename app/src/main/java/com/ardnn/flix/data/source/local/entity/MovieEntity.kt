@@ -9,9 +9,12 @@ import com.ardnn.flix.data.source.remote.ImageSize
 
 @Entity(tableName = "movie_entities")
 data class MovieEntity(
-    @PrimaryKey(autoGenerate = false)
+    @PrimaryKey(autoGenerate = true)
     @NonNull
     @ColumnInfo(name = "id")
+    val pId: Int,
+
+    @ColumnInfo(name = "movie_id")
     val id: Int,
 
     @ColumnInfo(name = "title")

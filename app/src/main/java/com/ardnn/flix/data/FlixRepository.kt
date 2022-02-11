@@ -249,7 +249,7 @@ class FlixRepository private constructor(
     private fun castMovieList(movieList: List<MovieResponse>, section: Int): List<MovieEntity> {
         val movies = ArrayList<MovieEntity>()
         for (movie in movieList) {
-            val tempMovie = MovieEntity(
+            val tempMovie = MovieEntity(0,
                 movie.id,
                 movie.title,
                 movie.releaseDate,
@@ -266,7 +266,7 @@ class FlixRepository private constructor(
     private fun castTvShowList(tvShowList: List<TvShowResponse>, section: Int): List<TvShowEntity> {
         val tvShows = ArrayList<TvShowEntity>()
         for (tvShow in tvShowList) {
-            val tempTvShow = TvShowEntity(
+            val tempTvShow = TvShowEntity(0,
                 tvShow.id,
                 tvShow.title,
                 tvShow.firstAirDate,
