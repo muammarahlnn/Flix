@@ -42,6 +42,20 @@ class HomeActivityTest {
     }
 
     @Test
+    fun loadUpcomingMovies() {
+        onView(withText("Upcoming")).perform(click())
+        onView(withId(R.id.recyclerView)).check(matches(isDisplayed()))
+        onView(withId(R.id.recyclerView)).perform(RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(listSize))
+    }
+
+    @Test
+    fun loadPopularMovies() {
+        onView(withText("Popular")).perform(click())
+        onView(withId(R.id.recyclerView)).check(matches(isDisplayed()))
+        onView(withId(R.id.recyclerView)).perform(RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(listSize))
+    }
+
+    @Test
     fun loadTopRatedMovies() {
         onView(withText("Top Rated")).perform(click())
         onView(withId(R.id.recyclerView)).check(matches(isDisplayed()))
@@ -49,8 +63,24 @@ class HomeActivityTest {
     }
 
     @Test
+    fun loadAiringTodayTvShows() {
+        onView(withId(R.id.navigationTvShows)).perform(click())
+        onView(withId(R.id.recyclerView)).check(matches(isDisplayed()))
+        onView(withId(R.id.recyclerView)).perform(RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(listSize))
+    }
+
+    @Test
     fun loadOnTheAirTvShows() {
         onView(withId(R.id.navigationTvShows)).perform(click())
+        onView(withText("On The Air")).perform(click())
+        onView(withId(R.id.recyclerView)).check(matches(isDisplayed()))
+        onView(withId(R.id.recyclerView)).perform(RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(listSize))
+    }
+
+    @Test
+    fun loadPopularTvShows() {
+        onView(withId(R.id.navigationTvShows)).perform(click())
+        onView(withText("Popular")).perform(click())
         onView(withId(R.id.recyclerView)).check(matches(isDisplayed()))
         onView(withId(R.id.recyclerView)).perform(RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(listSize))
     }
@@ -64,18 +94,21 @@ class HomeActivityTest {
     }
 
     @Test
-    fun loadFavoriteMovies() {
+    fun addAndRemoveFavoriteMovie() {
         onView(withId(R.id.recyclerView)).perform(RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(0, click()))
         onView(withId(R.id.btnFavorite)).perform(click())
         onView(withId(R.id.btnBack)).perform(click())
 
         onView(withId(R.id.navigationFavorites)).perform(click())
         onView(withId(R.id.recyclerView)).check(matches(isDisplayed()))
-        onView(withId(R.id.recyclerView)).perform(RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(listSize))
+        onView(withId(R.id.recyclerView)).perform(RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(0, click()))
+
+        onView(withId(R.id.btnFavorite)).perform(click())
+        onView(withId(R.id.btnBack)).perform(click())
     }
 
     @Test
-    fun loadFavoriteTvShows() {
+    fun addAndRemoveFavoriteTvShow() {
         onView(withId(R.id.navigationTvShows)).perform(click())
         onView(withId(R.id.recyclerView)).perform(RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(0, click()))
         onView(withId(R.id.btnFavorite)).perform(click())
@@ -84,7 +117,10 @@ class HomeActivityTest {
         onView(withId(R.id.navigationFavorites)).perform(click())
         onView(allOf(withText("TV Shows"), isDescendantOfA(withId(R.id.tabLayout)))).perform(click())
         onView(withId(R.id.recyclerView)).check(matches(isDisplayed()))
-        onView(withId(R.id.recyclerView)).perform(RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(listSize))
+        onView(withId(R.id.recyclerView)).perform(RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(0, click()))
+
+        onView(withId(R.id.btnFavorite)).perform(click())
+        onView(withId(R.id.btnBack)).perform(click())
     }
 
 }
