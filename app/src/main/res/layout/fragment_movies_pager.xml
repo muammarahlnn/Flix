@@ -18,7 +18,8 @@
         app:tabMaxWidth="0dp"
         app:tabSelectedTextColor="@color/white_smoke"
         app:tabTextAppearance="@style/TabLayoutText"
-        app:tabTextColor="@color/gray_primary" />
+        app:tabTextColor="@color/gray_primary"
+        app:tabMode="scrollable"/>
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/viewPager"
