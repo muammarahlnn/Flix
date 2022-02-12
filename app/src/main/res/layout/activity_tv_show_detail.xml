@@ -19,7 +19,7 @@
             android:scaleType="centerCrop"
             app:layout_constraintTop_toTopOf="parent"
             tools:background="@color/gray_primary"
-            tools:ignore="ContentDescription" />
+            android:contentDescription="@string/iv_wallpaper_desc" />
 
         <ImageView
             android:id="@+id/btnBack"
@@ -33,7 +33,7 @@
             android:src="@drawable/ic_arrow_back_yellow"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:ignore="ContentDescription" />
+            android:contentDescription="@string/btn_back_desc" />
 
         <ImageView
             android:id="@+id/btnFavorite"
@@ -46,7 +46,7 @@
             android:src="@drawable/ic_favorite_border_yellow"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:ignore="ContentDescription" />
+            android:contentDescription="@string/btn_favorite_desc" />
 
         <ProgressBar
             android:id="@+id/progressBar"
@@ -93,7 +93,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop"
-                tools:ignore="ContentDescription" />
+                android:contentDescription="@string/iv_poster_desc" />
 
         </androidx.cardview.widget.CardView>
 
@@ -223,7 +223,7 @@
             android:src="@drawable/ic_star_yellow"
             app:layout_constraintStart_toStartOf="@+id/tvTitle"
             app:layout_constraintTop_toBottomOf="@+id/llEpisodes"
-            tools:ignore="ContentDescription" />
+            android:contentDescription="@string/iv_rating_desc" />
 
         <TextView
             android:id="@+id/tvRating"

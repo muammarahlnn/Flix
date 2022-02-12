@@ -7,7 +7,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <!-- fixme -->
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView"
         android:layout_width="75dp"
@@ -34,7 +33,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:src="@color/white"
-                tools:ignore="ContentDescription" />
+                android:contentDescription="@string/iv_poster_desc" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -84,7 +83,7 @@
             android:layout_height="18dp"
             android:layout_marginEnd="4dp"
             android:src="@drawable/ic_star_yellow"
-            tools:ignore="ContentDescription" />
+            android:contentDescription="@string/iv_rating_desc" />
 
         <TextView
             android:id="@+id/tvRating"

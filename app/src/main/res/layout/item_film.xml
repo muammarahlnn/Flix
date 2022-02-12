@@ -22,7 +22,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:src="@color/white"
-            tools:ignore="ContentDescription" />
+            android:contentDescription="@string/iv_poster_desc" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -39,7 +39,7 @@
                 android:layout_height="18dp"
                 android:layout_marginEnd="2dp"
                 android:src="@drawable/ic_star_yellow"
-                tools:ignore="ContentDescription" />
+                android:contentDescription="@string/iv_rating_desc" />
 
             <TextView
                 android:id="@+id/tvRating"

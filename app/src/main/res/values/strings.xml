@@ -34,4 +34,10 @@
     <string name="menu_descending">Descending</string>
     <string name="menu_random">Random</string>
     <string name="genre_toolbar_title">%s %s</string>
+    <string name="iv_wallpaper_desc">Wallpaper image</string>
+    <string name="btn_back_desc">Button back</string>
+    <string name="btn_favorite_desc">Button favorite</string>
+    <string name="iv_poster_desc">Poster image</string>
+    <string name="iv_rating_desc">Image rating</string>
+    <string name="app_logo_desc">Application logo image</string>
 </resources>
