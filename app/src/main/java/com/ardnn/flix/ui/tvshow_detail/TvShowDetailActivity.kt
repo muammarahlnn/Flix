@@ -2,6 +2,7 @@ package com.ardnn.flix.ui.tvshow_detail
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -73,6 +74,8 @@ class TvShowDetailActivity : AppCompatActivity(), View.OnClickListener,
                     }
                     Status.ERROR -> {
                         showLoading(false)
+
+                        Log.d(TAG, tvShowDetailResource.message.toString())
                         Toast.makeText(applicationContext, "An error occurred", Toast.LENGTH_SHORT)
                             .show()
                     }
@@ -182,6 +185,7 @@ class TvShowDetailActivity : AppCompatActivity(), View.OnClickListener,
     }
 
     companion object {
+        private const val TAG = "TvShowDetailActivity"
         const val EXTRA_TV_SHOW_ID = "extra_tv_show_id"
     }
 

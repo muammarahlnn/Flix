@@ -2,6 +2,7 @@ package com.ardnn.flix.ui.movies
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
 import android.widget.Toast
@@ -121,10 +122,12 @@ class MoviesFragment : Fragment(), SingleClickListener<MovieEntity> {
         when (moviesResource.status) {
             Status.LOADING -> {
                 showLoading(true)
+                showAlert(false)
             }
             Status.SUCCESS -> {
                 if (moviesResource.data != null) {
                     showLoading(false)
+                    showAlert(false)
 
                     val adapter = MoviesAdapter(this)
                     adapter.submitList(moviesResource.data)
@@ -133,6 +136,9 @@ class MoviesFragment : Fragment(), SingleClickListener<MovieEntity> {
             }
             Status.ERROR -> {
                 showLoading(false)
+                showAlert(true)
+
+                Log.d(TAG, moviesResource.message.toString())
                 Toast.makeText(context, "An error occurred", Toast.LENGTH_SHORT)
                     .show()
             }
@@ -149,6 +155,16 @@ class MoviesFragment : Fragment(), SingleClickListener<MovieEntity> {
         }
     }
 
+    private fun showAlert(isFailure: Boolean) {
+        if (isFailure) {
+            binding?.tvAlert?.visibility = View.VISIBLE
+            binding?.recyclerView?.visibility = View.GONE
+        } else {
+            binding?.tvAlert?.visibility = View.GONE
+            binding?.recyclerView?.visibility = View.VISIBLE
+        }
+    }
+
     override fun onItemClicked(item: MovieEntity) {
         val toMovieDetail = Intent(requireActivity(), MovieDetailActivity::class.java)
         toMovieDetail.putExtra(MovieDetailActivity.EXTRA_MOVIE_ID, item.id)
@@ -156,6 +172,7 @@ class MoviesFragment : Fragment(), SingleClickListener<MovieEntity> {
     }
 
     companion object {
+        private const val TAG = "MoviesFragment"
         const val ARG_SECTION_NUMBER = "section_number"
     }
 

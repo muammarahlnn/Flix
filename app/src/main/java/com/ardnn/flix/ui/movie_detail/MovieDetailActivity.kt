@@ -2,6 +2,7 @@ package com.ardnn.flix.ui.movie_detail
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -72,6 +73,8 @@ class MovieDetailActivity : AppCompatActivity(), View.OnClickListener,
                     }
                     Status.ERROR -> {
                         showLoading(false)
+
+                        Log.d(TAG, movieDetailResource.message.toString())
                         Toast.makeText(applicationContext, "An error occurred", Toast.LENGTH_SHORT).show()
                     }
                 }
@@ -173,6 +176,7 @@ class MovieDetailActivity : AppCompatActivity(), View.OnClickListener,
     }
 
     companion object {
+        private const val TAG = "MovieDetailActivity"
         const val EXTRA_MOVIE_ID = "extra_movie_id"
     }
 

@@ -2,6 +2,7 @@ package com.ardnn.flix.ui.tvshows
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
 import android.widget.Toast
@@ -119,10 +120,12 @@ class TvShowsFragment : Fragment(), SingleClickListener<TvShowEntity> {
         when (tvShowsResource.status) {
             Status.LOADING -> {
                 showLoading(true)
+                showAlert(false)
             }
             Status.SUCCESS -> {
                 if (tvShowsResource.data != null) {
                     showLoading(false)
+                    showAlert(false)
 
                     val adapter = TvShowsAdapter(this)
                     adapter.submitList(tvShowsResource.data)
@@ -131,6 +134,9 @@ class TvShowsFragment : Fragment(), SingleClickListener<TvShowEntity> {
             }
             Status.ERROR -> {
                 showLoading(false)
+                showAlert(true)
+
+                Log.d(TAG, tvShowsResource.message.toString())
                 Toast.makeText(context, "An error occurred", Toast.LENGTH_SHORT).show()
             }
         }
@@ -146,6 +152,16 @@ class TvShowsFragment : Fragment(), SingleClickListener<TvShowEntity> {
         }
     }
 
+    private fun showAlert(isFailure: Boolean) {
+        if (isFailure) {
+            binding?.tvAlert?.visibility = View.VISIBLE
+            binding?.recyclerView?.visibility = View.GONE
+        } else {
+            binding?.tvAlert?.visibility = View.GONE
+            binding?.recyclerView?.visibility = View.VISIBLE
+        }
+    }
+
     override fun onItemClicked(item: TvShowEntity) {
         val toTvShowDetail = Intent(requireActivity(), TvShowDetailActivity::class.java)
         toTvShowDetail.putExtra(TvShowDetailActivity.EXTRA_TV_SHOW_ID, item.id)
@@ -153,6 +169,7 @@ class TvShowsFragment : Fragment(), SingleClickListener<TvShowEntity> {
     }
 
     companion object {
+        private const val TAG = "TvShowsFragment"
         const val ARG_SECTION_NUMBER = "section_number"
     }
 
