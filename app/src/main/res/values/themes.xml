@@ -26,6 +26,7 @@
     <style name="ToolbarTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:textColorPrimary">@color/yellow_primary</item>
         <item name="android:textColorSecondary">@color/gray_primary</item>
-        <item name="android:textColor">@color/gray_border</item>
+        <item name="android:textColor">@color/gray_primary</item>
+        <item name="android:background">@color/black_primary</item>
     </style>`
 </resources>

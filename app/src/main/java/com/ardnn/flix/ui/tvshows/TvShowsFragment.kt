@@ -70,7 +70,7 @@ class TvShowsFragment : Fragment(), SingleClickListener<TvShowEntity> {
         super.onCreateOptionsMenu(menu, inflater)
 
         menu.clear()
-        inflater.inflate(R.menu.menu_favorites, menu)
+        inflater.inflate(R.menu.menu_films, menu)
 
         viewModel.tvShowsSort.observe(viewLifecycleOwner, { filters ->
             when (filters[section]) {

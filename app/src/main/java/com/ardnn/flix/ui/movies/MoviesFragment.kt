@@ -70,7 +70,7 @@ class MoviesFragment : Fragment(), SingleClickListener<MovieEntity> {
         super.onCreateOptionsMenu(menu, inflater)
 
         menu.clear()
-        inflater.inflate(R.menu.menu_favorites, menu)
+        inflater.inflate(R.menu.menu_films, menu)
 
         viewModel.moviesSort.observe(viewLifecycleOwner, { filters ->
             when (filters[section]) {
