@@ -55,7 +55,7 @@ class FavoritesViewModelTest {
     @Test
     fun `getFavoriteMovies should be success`() {
         val expected = MutableLiveData<PagedList<MovieDetailEntity>>()
-        expected.value = PagedTestDataSources.snapshot(dataDummy.generateDummyFavoriteMovies())
+        expected.value = PagedTestDataSources.snapshot(dataDummy.generateDummyMovieDetailList())
 
         `when`(flixRepository.getFavoriteMovies())
             .thenReturn(expected)
@@ -88,7 +88,7 @@ class FavoritesViewModelTest {
     @Test
     fun `getFavoriteTvShows should be success`() {
         val expected = MutableLiveData<PagedList<TvShowDetailEntity>>()
-        expected.value = PagedTestDataSources.snapshot(dataDummy.generateDummyFavoriteTvShows())
+        expected.value = PagedTestDataSources.snapshot(dataDummy.generateDummyTvShowDetailList())
 
         `when`(flixRepository.getFavoriteTvShows())
             .thenReturn(expected)

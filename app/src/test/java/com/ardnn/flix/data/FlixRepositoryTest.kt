@@ -8,6 +8,8 @@ import com.ardnn.flix.data.source.local.entity.MovieDetailEntity
 import com.ardnn.flix.data.source.local.entity.MovieEntity
 import com.ardnn.flix.data.source.local.entity.TvShowDetailEntity
 import com.ardnn.flix.data.source.local.entity.TvShowEntity
+import com.ardnn.flix.data.source.local.entity.relation.GenreWithMovieDetails
+import com.ardnn.flix.data.source.local.entity.relation.GenreWithTvShowDetails
 import com.ardnn.flix.data.source.local.entity.relation.MovieDetailWithGenres
 import com.ardnn.flix.data.source.local.entity.relation.TvShowDetailWithGenres
 import com.ardnn.flix.data.source.remote.RemoteDataSource
@@ -56,6 +58,7 @@ class FlixRepositoryTest {
     private lateinit var dummyTvShowsResponse: List<TvShowResponse>
     private lateinit var dummyTvShowDetailResponse: TvShowDetailResponse
 
+    private val genreId = 0
     private val page = 1
 
     @Before
@@ -152,5 +155,33 @@ class FlixRepositoryTest {
         assertNotNull(tvShowDetailEntity.data)
         assertNotNull(tvShowDetailEntity.data?.tvShowDetail?.id)
         assertEquals(dummyTvShowDetailResponse.id, tvShowDetailEntity.data?.tvShowDetail?.id)
+    }
+
+    @Test
+    fun getGenreWithMovies() {
+        val dummyEntity = MutableLiveData<GenreWithMovieDetails>()
+        dummyEntity.value = dataDummy.generateDummyGenreWithMovies()
+        `when`(local.getGenreWithMovies(genreId)).thenReturn(dummyEntity)
+
+        val genreEntity = LiveDataTestUtil.getValue(flixRepository.getGenreWithMovies(genreId))
+        verify(local).getGenreWithMovies(genreId)
+
+        assertNotNull(genreEntity)
+        assertNotNull(genreEntity.genre)
+        assertNotNull(genreEntity.movieDetails)
+    }
+
+    @Test
+    fun getGenreWithTvShows() {
+        val dummyEntity = MutableLiveData<GenreWithTvShowDetails>()
+        dummyEntity.value = dataDummy.generateDummyGenreWithTvShows()
+        `when`(local.getGenreWithTvShows(genreId)).thenReturn(dummyEntity)
+
+        val genreEntity = LiveDataTestUtil.getValue(flixRepository.getGenreWithTvShows(genreId))
+        verify(local).getGenreWithTvShows(genreId)
+
+        assertNotNull(genreEntity)
+        assertNotNull(genreEntity.genre)
+        assertNotNull(genreEntity.tvShowDetails)
     }
 }

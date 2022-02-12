@@ -5,10 +5,7 @@ import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import com.ardnn.flix.data.source.local.LocalDataSource
 import com.ardnn.flix.data.source.local.entity.*
-import com.ardnn.flix.data.source.local.entity.relation.MovieDetailGenreCrossRef
-import com.ardnn.flix.data.source.local.entity.relation.MovieDetailWithGenres
-import com.ardnn.flix.data.source.local.entity.relation.TvShowDetailGenreCrossRef
-import com.ardnn.flix.data.source.local.entity.relation.TvShowDetailWithGenres
+import com.ardnn.flix.data.source.local.entity.relation.*
 import com.ardnn.flix.data.source.remote.ApiResponse
 import com.ardnn.flix.data.source.remote.RemoteDataSource
 import com.ardnn.flix.data.source.remote.response.*
@@ -20,6 +17,7 @@ class FakeFlixRepository(
     private val localDataSource: LocalDataSource,
     private val appExecutors: AppExecutors
 ) : FlixDataSource{
+
     override fun getMovies(page: Int, section: Int, filter: String): LiveData<Resource<PagedList<MovieEntity>>> {
         return object : NetworkBoundResource<PagedList<MovieEntity>, List<MovieResponse>>(appExecutors) {
             public override fun loadFromDB(): LiveData<PagedList<MovieEntity>> {
@@ -207,6 +205,14 @@ class FakeFlixRepository(
             }
 
         }.asLiveData()
+    }
+
+    override fun getGenreWithMovies(genreId: Int): LiveData<GenreWithMovieDetails> {
+        return localDataSource.getGenreWithMovies(genreId)
+    }
+
+    override fun getGenreWithTvShows(genreId: Int): LiveData<GenreWithTvShowDetails> {
+        return localDataSource.getGenreWithTvShows(genreId)
     }
 
     override fun setIsFavoriteMovieDetail(movieDetail: MovieDetailEntity, state: Boolean) {

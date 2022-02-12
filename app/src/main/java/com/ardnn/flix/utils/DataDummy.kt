@@ -2,6 +2,8 @@ package com.ardnn.flix.utils
 
 import android.content.Context
 import com.ardnn.flix.data.source.local.entity.*
+import com.ardnn.flix.data.source.local.entity.relation.GenreWithMovieDetails
+import com.ardnn.flix.data.source.local.entity.relation.GenreWithTvShowDetails
 import com.ardnn.flix.data.source.local.entity.relation.MovieDetailWithGenres
 import com.ardnn.flix.data.source.local.entity.relation.TvShowDetailWithGenres
 import com.ardnn.flix.data.source.remote.response.*
@@ -14,20 +16,6 @@ class DataDummy(private val context: Context) {
         return context.assets.open(fileName).bufferedReader().use {
             it.readText()
         }
-    }
-
-    private fun parsingGenreEntityList(genreArr: JSONArray): List<GenreEntity> {
-        val genreList = ArrayList<GenreEntity>()
-        for (i in 0 until genreArr.length()) {
-            val genre = genreArr.getJSONObject(i)
-            val genreEntity = GenreEntity(
-                genre.getInt("id"),
-                genre.getString("name")
-            )
-
-            genreList.add(genreEntity)
-        }
-        return genreList
     }
 
     private fun parsingGenreResponseList(genreArr: JSONArray): List<GenreResponse> {
@@ -249,7 +237,7 @@ class DataDummy(private val context: Context) {
     }
 
 
-    fun generateDummyFavoriteMovies(): List<MovieDetailEntity> {
+    fun generateDummyMovieDetailList(): List<MovieDetailEntity> {
         val list = ArrayList<MovieDetailEntity>()
         for (i in 0 until 20) {
             list.add(generateDummyMovieDetail())
@@ -257,11 +245,29 @@ class DataDummy(private val context: Context) {
         return list
     }
 
-    fun generateDummyFavoriteTvShows(): List<TvShowDetailEntity> {
+    fun generateDummyTvShowDetailList(): List<TvShowDetailEntity> {
         val list = ArrayList<TvShowDetailEntity>()
         for (i in 0 until 20) {
             list.add(generateDummyTvShowDetail())
         }
         return list
+    }
+
+    fun generateDummyGenreWithMovies(isEmpty: Boolean = false): GenreWithMovieDetails {
+        val genre = GenreEntity(0, "dummy")
+        val movies =
+            if (isEmpty) listOf()
+            else generateDummyMovieDetailList()
+
+        return GenreWithMovieDetails(genre, movies)
+    }
+
+    fun generateDummyGenreWithTvShows(isEmpty: Boolean = false): GenreWithTvShowDetails {
+        val genre = GenreEntity(0, "dummy")
+        val tvShows =
+            if (isEmpty) listOf()
+            else generateDummyTvShowDetailList()
+
+        return GenreWithTvShowDetails(genre, tvShows)
     }
 }
