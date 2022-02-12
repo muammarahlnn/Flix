@@ -68,12 +68,15 @@ class TvShowDetailActivity : AppCompatActivity(), View.OnClickListener,
                     Status.SUCCESS -> {
                         if (tvShowDetailResource.data != null) {
                             showLoading(false)
+                            showAlert(false)
+
                             tvShowDetailWithGenres = tvShowDetailResource.data
                             setTvShowDetailToWidgets()
                         }
                     }
                     Status.ERROR -> {
                         showLoading(false)
+                        showAlert(true)
 
                         Log.d(TAG, tvShowDetailResource.message.toString())
                         Toast.makeText(applicationContext, "An error occurred", Toast.LENGTH_SHORT)
@@ -139,11 +142,23 @@ class TvShowDetailActivity : AppCompatActivity(), View.OnClickListener,
     }
 
     private fun showLoading(isLoading: Boolean) {
-        binding.progressBar.visibility =  if (isLoading) View.VISIBLE else View.GONE
+        if (isLoading) {
+            binding.clAlert.visibility = View.VISIBLE
+            binding.progressBar.visibility = View.VISIBLE
+            binding.tvAlert.visibility = View.GONE
+        } else {
+            binding.clAlert.visibility = View.GONE
+        }
     }
 
     private fun showAlert(isFailure: Boolean) {
-        binding.clAlert.visibility = if (isFailure) View.VISIBLE else View.GONE
+        if (isFailure) {
+            binding.clAlert.visibility = View.VISIBLE
+            binding.progressBar.visibility = View.GONE
+            binding.tvAlert.visibility = View.VISIBLE
+        } else {
+            binding.clAlert.visibility = View.GONE
+        }
     }
 
     override fun onClick(v: View) {

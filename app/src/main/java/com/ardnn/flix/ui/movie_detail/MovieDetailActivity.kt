@@ -67,12 +67,15 @@ class MovieDetailActivity : AppCompatActivity(), View.OnClickListener,
                     Status.SUCCESS -> {
                         if (movieDetailResource.data != null) {
                             showLoading(false)
+                            showAlert(false)
+
                             movieDetailWithGenres = movieDetailResource.data
                             setMovieDetailToWidgets()
                         }
                     }
                     Status.ERROR -> {
                         showLoading(false)
+                        showAlert(true)
 
                         Log.d(TAG, movieDetailResource.message.toString())
                         Toast.makeText(applicationContext, "An error occurred", Toast.LENGTH_SHORT).show()
@@ -134,8 +137,25 @@ class MovieDetailActivity : AppCompatActivity(), View.OnClickListener,
     }
 
     private fun showLoading(isLoading: Boolean) {
-        binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
+        if (isLoading) {
+            binding.clAlert.visibility = View.VISIBLE
+            binding.progressBar.visibility = View.VISIBLE
+            binding.tvAlert.visibility = View.GONE
+        } else {
+            binding.clAlert.visibility = View.GONE
+        }
     }
+
+    private fun showAlert(isFailure: Boolean) {
+        if (isFailure) {
+            binding.clAlert.visibility = View.VISIBLE
+            binding.progressBar.visibility = View.GONE
+            binding.tvAlert.visibility = View.VISIBLE
+        } else {
+            binding.clAlert.visibility = View.GONE
+        }
+    }
+
 
     override fun onClick(v: View) {
         when (v.id) {
