@@ -2,6 +2,7 @@ package com.ardnn.flix.ui.genre
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import com.ardnn.flix.R
@@ -23,6 +24,9 @@ class GenreActivity : AppCompatActivity() {
         // set action bar
         setSupportActionBar(binding.toolbar.root)
         supportActionBar?.setDisplayShowTitleEnabled(false)
+        supportActionBar?.setHomeButtonEnabled(true)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        binding.toolbar.ivIcon.visibility = View.GONE
 
         // set action bar title
         val genreName = intent.getStringExtra(EXTRA_GENRE_NAME)
@@ -42,6 +46,9 @@ class GenreActivity : AppCompatActivity() {
 
         // subscribe view model
         subscribe()
+
+        // click listener
+
     }
 
     private fun subscribe() {
@@ -65,6 +72,11 @@ class GenreActivity : AppCompatActivity() {
                 })
             }
         }
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        finish()
+        return true
     }
 
     companion object {
