@@ -18,22 +18,6 @@ class FlixRepository private constructor(
     private val appExecutors: AppExecutors
 ) : FlixDataSource {
 
-    companion object {
-        @Volatile
-        private var instance: FlixRepository? = null
-
-        fun getInstance(
-            remoteData: RemoteDataSource,
-            localData: LocalDataSource,
-            appExecutors: AppExecutors
-        ): FlixRepository =
-            instance ?: synchronized(this) {
-                instance ?: FlixRepository(remoteData, localData, appExecutors).apply {
-                    instance = this
-                }
-            }
-    }
-
     override fun getMovies(page: Int, section: Int, filter: String): LiveData<Resource<PagedList<MovieEntity>>> {
         return object : NetworkBoundResource<PagedList<MovieEntity>, List<MovieResponse>>(appExecutors) {
             public override fun loadFromDB(): LiveData<PagedList<MovieEntity>> {
@@ -287,5 +271,21 @@ class FlixRepository private constructor(
         }
 
         return tvShows
+    }
+
+    companion object {
+        @Volatile
+        private var instance: FlixRepository? = null
+
+        fun getInstance(
+            remoteData: RemoteDataSource,
+            localData: LocalDataSource,
+            appExecutors: AppExecutors
+        ): FlixRepository =
+            instance ?: synchronized(this) {
+                instance ?: FlixRepository(remoteData, localData, appExecutors).apply {
+                    instance = this
+                }
+            }
     }
 }

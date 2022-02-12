@@ -16,19 +16,6 @@ class TvShowsAdapter(
     private val clickListener: SingleClickListener<TvShowEntity>
 ) : PagedListAdapter<TvShowEntity, TvShowsAdapter.TvShowViewHolder>(DIFF_CALLBACK) {
 
-    companion object {
-        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<TvShowEntity>() {
-            override fun areItemsTheSame(oldItem: TvShowEntity, newItem: TvShowEntity): Boolean {
-                return oldItem.id == newItem.id
-            }
-
-            override fun areContentsTheSame(oldItem: TvShowEntity, newItem: TvShowEntity): Boolean {
-                return oldItem == newItem
-            }
-
-        }
-    }
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TvShowViewHolder {
         val binding = ItemFilmBinding
             .inflate(LayoutInflater.from(parent.context), parent, false)
@@ -39,6 +26,19 @@ class TvShowsAdapter(
         val tvShow = getItem(position)
         if (tvShow != null) {
             holder.onBind(tvShow)
+        }
+    }
+
+    companion object {
+        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<TvShowEntity>() {
+            override fun areItemsTheSame(oldItem: TvShowEntity, newItem: TvShowEntity): Boolean {
+                return oldItem.id == newItem.id
+            }
+
+            override fun areContentsTheSame(oldItem: TvShowEntity, newItem: TvShowEntity): Boolean {
+                return oldItem == newItem
+            }
+
         }
     }
 

@@ -12,10 +12,6 @@ class AppExecutors @VisibleForTesting constructor(
     private val mainThread: Executor,
 ) {
 
-    companion object {
-        private const val THREAD_COUNT = 3
-    }
-
     constructor() : this(
         Executors.newSingleThreadExecutor(),
         Executors.newFixedThreadPool(THREAD_COUNT),
@@ -28,6 +24,10 @@ class AppExecutors @VisibleForTesting constructor(
 
     fun mainThread(): Executor = mainThread
 
+
+    companion object {
+        private const val THREAD_COUNT = 3
+    }
 
     private class MainThreadExecutor : Executor {
         private val mainThreadHandler = Handler(Looper.getMainLooper())

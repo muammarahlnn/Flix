@@ -15,6 +15,19 @@ import com.ardnn.flix.utils.Helper
 
 class GenreMoviesAdapter : PagedListAdapter<MovieDetailEntity, GenreMoviesAdapter.MovieViewHolder>(DIFF_CALLBACK) {
 
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
+        val binding = ItemFilmBinding
+            .inflate(LayoutInflater.from(parent.context), parent, false)
+        return MovieViewHolder(binding)
+    }
+
+    override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
+        val movieDetail = getItem(position)
+        if (movieDetail != null) {
+            holder.onBind(movieDetail)
+        }
+    }
+
     companion object {
         private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<MovieDetailEntity>() {
             override fun areItemsTheSame(
@@ -31,19 +44,6 @@ class GenreMoviesAdapter : PagedListAdapter<MovieDetailEntity, GenreMoviesAdapte
                 return oldItem == newItem
             }
 
-        }
-    }
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
-        val binding = ItemFilmBinding
-            .inflate(LayoutInflater.from(parent.context), parent, false)
-        return MovieViewHolder(binding)
-    }
-
-    override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
-        val movieDetail = getItem(position)
-        if (movieDetail != null) {
-            holder.onBind(movieDetail)
         }
     }
 

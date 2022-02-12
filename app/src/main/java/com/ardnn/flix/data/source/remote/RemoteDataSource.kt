@@ -15,33 +15,6 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class RemoteDataSource private constructor() {
 
-    companion object {
-        private const val API_KEY = BuildConfig.API_KEY
-        private val MOVIE_SERVICE: MovieApiService =
-            Retrofit.Builder()
-                .baseUrl(Const.BASE_URL_MOVIE)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build()
-                .create(MovieApiService::class.java)
-
-        private val TV_SHOW_SERVICE: TvShowApiService =
-            Retrofit.Builder()
-                .baseUrl(Const.BASE_URL_TV_SHOW)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build()
-                .create(TvShowApiService::class.java)
-
-        @Volatile
-        private var instance: RemoteDataSource? = null
-
-        fun getInstance(): RemoteDataSource =
-            instance ?: synchronized(this) {
-                RemoteDataSource().apply {
-                    instance = this
-                }
-            }
-    }
-
     // method to get movie detail
     fun getMovieDetail(movieId: Int): LiveData<ApiResponse<MovieDetailResponse>> {
         EspressoIdlingResource.increment()
@@ -543,4 +516,30 @@ class RemoteDataSource private constructor() {
         return resultTvShows
     }
 
+    companion object {
+        private const val API_KEY = BuildConfig.API_KEY
+        private val MOVIE_SERVICE: MovieApiService =
+            Retrofit.Builder()
+                .baseUrl(Const.BASE_URL_MOVIE)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build()
+                .create(MovieApiService::class.java)
+
+        private val TV_SHOW_SERVICE: TvShowApiService =
+            Retrofit.Builder()
+                .baseUrl(Const.BASE_URL_TV_SHOW)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build()
+                .create(TvShowApiService::class.java)
+
+        @Volatile
+        private var instance: RemoteDataSource? = null
+
+        fun getInstance(): RemoteDataSource =
+            instance ?: synchronized(this) {
+                RemoteDataSource().apply {
+                    instance = this
+                }
+            }
+    }
 }

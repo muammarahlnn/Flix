@@ -15,6 +15,22 @@ import com.ardnn.flix.utils.Helper
 
 class FavoriteMoviesAdapter : PagedListAdapter<MovieDetailEntity, FavoriteMoviesAdapter.MovieViewHolder>(DIFF_CALLBACK) {
 
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
+        val binding = ItemFavoriteBinding
+            .inflate(LayoutInflater.from(parent.context), parent, false)
+        return MovieViewHolder(binding)
+    }
+
+    override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
+        val movieDetail = getItem(position)
+        if (movieDetail != null) {
+            holder.onBind(movieDetail)
+        }
+    }
+
+    fun getSwipedData(swipedPosition: Int): MovieDetailEntity? =
+        getItem(swipedPosition)
+
     companion object {
         private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<MovieDetailEntity>() {
             override fun areItemsTheSame(
@@ -33,22 +49,6 @@ class FavoriteMoviesAdapter : PagedListAdapter<MovieDetailEntity, FavoriteMovies
 
         }
     }
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
-        val binding = ItemFavoriteBinding
-            .inflate(LayoutInflater.from(parent.context), parent, false)
-        return MovieViewHolder(binding)
-    }
-
-    override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
-        val movieDetail = getItem(position)
-        if (movieDetail != null) {
-            holder.onBind(movieDetail)
-        }
-    }
-
-    fun getSwipedData(swipedPosition: Int): MovieDetailEntity? =
-        getItem(swipedPosition)
 
     class MovieViewHolder(private val binding: ItemFavoriteBinding) :
         RecyclerView.ViewHolder(binding.root) {

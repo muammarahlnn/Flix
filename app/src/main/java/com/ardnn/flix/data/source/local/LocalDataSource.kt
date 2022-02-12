@@ -9,13 +9,6 @@ import com.ardnn.flix.utils.SortUtils
 
 class LocalDataSource private constructor(private val flixDao: FlixDao) {
 
-    companion object {
-        private var INSTANCE: LocalDataSource? = null
-
-        fun getInstance(flixDao: FlixDao): LocalDataSource =
-            INSTANCE ?: LocalDataSource(flixDao)
-    }
-
     fun getMovies(section: Int, filter: String): DataSource.Factory<Int, MovieEntity> {
         val query = SortUtils.getSortedQuery(SortUtils.MOVIES, section, filter)
         return flixDao.getMovies(query)
@@ -77,5 +70,12 @@ class LocalDataSource private constructor(private val flixDao: FlixDao) {
     fun setIsFavoriteTvShowDetail(tvShowDetail: TvShowDetailEntity, newState: Boolean) {
         tvShowDetail.isFavorite = newState
         flixDao.updateTvShowDetail(tvShowDetail)
+    }
+
+    companion object {
+        private var INSTANCE: LocalDataSource? = null
+
+        fun getInstance(flixDao: FlixDao): LocalDataSource =
+            INSTANCE ?: LocalDataSource(flixDao)
     }
 }

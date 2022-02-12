@@ -4,7 +4,6 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import androidx.room.TypeConverters
 import com.ardnn.flix.data.source.local.entity.*
 import com.ardnn.flix.data.source.local.entity.relation.MovieDetailGenreCrossRef
 import com.ardnn.flix.data.source.local.entity.relation.TvShowDetailGenreCrossRef
@@ -22,6 +21,7 @@ import com.ardnn.flix.data.source.local.entity.relation.TvShowDetailGenreCrossRe
     version = 1,
     exportSchema = false)
 abstract class FlixDatabase : RoomDatabase() {
+
     abstract fun flixDao(): FlixDao
 
     companion object {

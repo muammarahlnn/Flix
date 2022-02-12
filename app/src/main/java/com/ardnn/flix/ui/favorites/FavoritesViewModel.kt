@@ -1,13 +1,11 @@
 package com.ardnn.flix.ui.favorites
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.paging.PagedList
 import com.ardnn.flix.data.FlixRepository
 import com.ardnn.flix.data.source.local.entity.MovieDetailEntity
 import com.ardnn.flix.data.source.local.entity.TvShowDetailEntity
-import com.ardnn.flix.utils.SortUtils
 
 class FavoritesViewModel(private val flixRepository: FlixRepository) : ViewModel() {
 

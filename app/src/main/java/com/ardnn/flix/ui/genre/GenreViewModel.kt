@@ -2,7 +2,6 @@ package com.ardnn.flix.ui.genre
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import androidx.paging.PagedList
 import com.ardnn.flix.data.FlixRepository
 import com.ardnn.flix.data.source.local.entity.relation.GenreWithMovieDetails
 import com.ardnn.flix.data.source.local.entity.relation.GenreWithTvShowDetails

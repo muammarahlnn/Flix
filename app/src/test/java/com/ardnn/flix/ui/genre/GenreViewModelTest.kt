@@ -3,15 +3,10 @@ package com.ardnn.flix.ui.genre
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
-import androidx.paging.PagedList
 import com.ardnn.flix.data.FlixRepository
-import com.ardnn.flix.data.source.local.entity.GenreEntity
-import com.ardnn.flix.data.source.local.entity.MovieDetailEntity
-import com.ardnn.flix.data.source.local.entity.TvShowDetailEntity
 import com.ardnn.flix.data.source.local.entity.relation.GenreWithMovieDetails
 import com.ardnn.flix.data.source.local.entity.relation.GenreWithTvShowDetails
 import com.ardnn.flix.utils.DataDummy
-import com.ardnn.flix.utils.PagedTestDataSources
 import com.nhaarman.mockitokotlin2.verify
 import org.junit.Assert.*
 

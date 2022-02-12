@@ -15,6 +15,19 @@ import com.ardnn.flix.utils.Helper
 
 class GenreTvShowsAdapter : PagedListAdapter<TvShowDetailEntity, GenreTvShowsAdapter.TvShowViewHolder>(DIFF_CALLBACK) {
 
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TvShowViewHolder {
+        val binding = ItemFilmBinding
+            .inflate(LayoutInflater.from(parent.context), parent, false)
+        return TvShowViewHolder(binding)
+    }
+
+    override fun onBindViewHolder(holder: TvShowViewHolder, position: Int) {
+        val tvShowDetail = getItem(position)
+        if (tvShowDetail != null) {
+            holder.onBind(tvShowDetail)
+        }
+    }
+
     companion object {
         private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<TvShowDetailEntity>() {
             override fun areItemsTheSame(
@@ -31,19 +44,6 @@ class GenreTvShowsAdapter : PagedListAdapter<TvShowDetailEntity, GenreTvShowsAda
                 return oldItem == newItem
             }
 
-        }
-    }
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TvShowViewHolder {
-        val binding = ItemFilmBinding
-            .inflate(LayoutInflater.from(parent.context), parent, false)
-        return TvShowViewHolder(binding)
-    }
-
-    override fun onBindViewHolder(holder: TvShowViewHolder, position: Int) {
-        val tvShowDetail = getItem(position)
-        if (tvShowDetail != null) {
-            holder.onBind(tvShowDetail)
         }
     }
 

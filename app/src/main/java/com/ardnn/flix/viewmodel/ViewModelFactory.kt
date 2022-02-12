@@ -16,18 +16,6 @@ class ViewModelFactory private constructor(
     private val flixRepository: FlixRepository
 ) : ViewModelProvider.NewInstanceFactory() {
 
-    companion object {
-        @Volatile
-        private var instance: ViewModelFactory? = null
-
-        fun getInstance(context: Context): ViewModelFactory =
-            instance ?: synchronized(this) {
-                ViewModelFactory(Injection.provideRepository(context)).apply {
-                    instance = this
-                }
-            }
-    }
-
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return when {
@@ -53,5 +41,17 @@ class ViewModelFactory private constructor(
                 throw Throwable("Unknown ViewModel class: ${modelClass.name}")
             }
         }
+    }
+
+    companion object {
+        @Volatile
+        private var instance: ViewModelFactory? = null
+
+        fun getInstance(context: Context): ViewModelFactory =
+            instance ?: synchronized(this) {
+                ViewModelFactory(Injection.provideRepository(context)).apply {
+                    instance = this
+                }
+            }
     }
 }

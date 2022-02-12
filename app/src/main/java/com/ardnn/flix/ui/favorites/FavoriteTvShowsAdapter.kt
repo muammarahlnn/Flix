@@ -15,6 +15,22 @@ import com.ardnn.flix.utils.Helper
 
 class FavoriteTvShowsAdapter : PagedListAdapter<TvShowDetailEntity, FavoriteTvShowsAdapter.TvShowViewHolder>(DIFF_CALLBACK) {
 
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TvShowViewHolder {
+        val binding = ItemFavoriteBinding
+            .inflate(LayoutInflater.from(parent.context), parent, false)
+        return TvShowViewHolder(binding)
+    }
+
+    override fun onBindViewHolder(holder: TvShowViewHolder, position: Int) {
+        val tvShowDetail = getItem(position)
+        if (tvShowDetail != null) {
+            holder.onBind(tvShowDetail)
+        }
+    }
+
+    fun getSwipedData(swipedPosition: Int): TvShowDetailEntity? =
+        getItem(swipedPosition)
+
     companion object {
         private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<TvShowDetailEntity>() {
             override fun areItemsTheSame(
@@ -33,22 +49,6 @@ class FavoriteTvShowsAdapter : PagedListAdapter<TvShowDetailEntity, FavoriteTvSh
 
         }
     }
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TvShowViewHolder {
-        val binding = ItemFavoriteBinding
-            .inflate(LayoutInflater.from(parent.context), parent, false)
-        return TvShowViewHolder(binding)
-    }
-
-    override fun onBindViewHolder(holder: TvShowViewHolder, position: Int) {
-        val tvShowDetail = getItem(position)
-        if (tvShowDetail != null) {
-            holder.onBind(tvShowDetail)
-        }
-    }
-
-    fun getSwipedData(swipedPosition: Int): TvShowDetailEntity? =
-        getItem(swipedPosition)
 
     class TvShowViewHolder(private val binding: ItemFavoriteBinding) :
         RecyclerView.ViewHolder(binding.root) {
