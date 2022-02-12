@@ -5,10 +5,7 @@ import androidx.paging.DataSource
 import androidx.room.*
 import androidx.sqlite.db.SupportSQLiteQuery
 import com.ardnn.flix.data.source.local.entity.*
-import com.ardnn.flix.data.source.local.entity.relation.MovieDetailGenreCrossRef
-import com.ardnn.flix.data.source.local.entity.relation.MovieDetailWithGenres
-import com.ardnn.flix.data.source.local.entity.relation.TvShowDetailGenreCrossRef
-import com.ardnn.flix.data.source.local.entity.relation.TvShowDetailWithGenres
+import com.ardnn.flix.data.source.local.entity.relation.*
 
 @Dao
 interface FlixDao {
@@ -59,6 +56,14 @@ interface FlixDao {
 
     @Update
     fun updateTvShowDetail(tvShowDetail: TvShowDetailEntity)
+
+    @Transaction
+    @Query("SELECT * FROM genre_entities WHERE genre_id = :id")
+    fun getGenreWithMovies(id: Int): LiveData<GenreWithMovieDetails>
+
+    @Transaction
+    @Query("SELECT * FROM genre_entities WHERE genre_id = :id")
+    fun getGenreWithTvShows(id: Int): LiveData<GenreWithTvShowDetails>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertGenre(genres: List<GenreEntity>)

@@ -12,6 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Flix">
         <activity
+            android:name=".ui.genre.GenreActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.tvshow_detail.TvShowDetailActivity"
             android:exported="false" />
         <activity

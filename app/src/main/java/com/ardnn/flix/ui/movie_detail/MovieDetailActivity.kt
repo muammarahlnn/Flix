@@ -1,5 +1,6 @@
 package com.ardnn.flix.ui.movie_detail
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
@@ -7,14 +8,18 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ardnn.flix.R
+import com.ardnn.flix.data.source.local.entity.GenreEntity
 import com.ardnn.flix.data.source.local.entity.relation.MovieDetailWithGenres
 import com.ardnn.flix.data.source.remote.ImageSize
 import com.ardnn.flix.databinding.ActivityMovieDetailBinding
+import com.ardnn.flix.ui.genre.GenreActivity
 import com.ardnn.flix.utils.Helper
+import com.ardnn.flix.utils.SingleClickListener
 import com.ardnn.flix.viewmodel.ViewModelFactory
 import com.ardnn.flix.vo.Status
 
-class MovieDetailActivity : AppCompatActivity(), View.OnClickListener {
+class MovieDetailActivity : AppCompatActivity(), View.OnClickListener,
+    SingleClickListener<GenreEntity> {
 
     private lateinit var viewModel: MovieDetailViewModel
     private lateinit var binding: ActivityMovieDetailBinding
@@ -120,7 +125,7 @@ class MovieDetailActivity : AppCompatActivity(), View.OnClickListener {
             tvSynopsis.text = Helper.checkNullOrEmptyString(movieDetail.overview)
 
             // set recyclerview genre items
-            val genreAdapter = GenreAdapter(movieDetailWithGenres.genres)
+            val genreAdapter = GenreAdapter(movieDetailWithGenres.genres, this@MovieDetailActivity)
             rvGenre.adapter = genreAdapter
         }
     }
@@ -158,7 +163,17 @@ class MovieDetailActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
+    override fun onItemClicked(item: GenreEntity) {
+        // to genre activity
+        val toGenre = Intent(this, GenreActivity::class.java)
+        toGenre.putExtra(GenreActivity.EXTRA_GENRE_ID, item.id)
+        toGenre.putExtra(GenreActivity.EXTRA_GENRE_NAME, item.name)
+        toGenre.putExtra(GenreActivity.EXTRA_TYPE, getString(R.string.movies))
+        startActivity(toGenre)
+    }
+
     companion object {
         const val EXTRA_MOVIE_ID = "extra_movie_id"
     }
+
 }

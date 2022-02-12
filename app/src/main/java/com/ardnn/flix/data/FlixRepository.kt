@@ -5,10 +5,7 @@ import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import com.ardnn.flix.data.source.local.LocalDataSource
 import com.ardnn.flix.data.source.local.entity.*
-import com.ardnn.flix.data.source.local.entity.relation.MovieDetailGenreCrossRef
-import com.ardnn.flix.data.source.local.entity.relation.MovieDetailWithGenres
-import com.ardnn.flix.data.source.local.entity.relation.TvShowDetailGenreCrossRef
-import com.ardnn.flix.data.source.local.entity.relation.TvShowDetailWithGenres
+import com.ardnn.flix.data.source.local.entity.relation.*
 import com.ardnn.flix.data.source.remote.ApiResponse
 import com.ardnn.flix.data.source.remote.RemoteDataSource
 import com.ardnn.flix.data.source.remote.response.*
@@ -224,6 +221,14 @@ class FlixRepository private constructor(
             }
 
         }.asLiveData()
+    }
+
+    override fun getGenreWithMovies(genreId: Int): LiveData<GenreWithMovieDetails> {
+        return localDataSource.getGenreWithMovies(genreId)
+    }
+
+    override fun getGenreWithTvShows(genreId: Int): LiveData<GenreWithTvShowDetails> {
+        return localDataSource.getGenreWithTvShows(genreId)
     }
 
     override fun setIsFavoriteMovieDetail(movieDetail: MovieDetailEntity, state: Boolean) {

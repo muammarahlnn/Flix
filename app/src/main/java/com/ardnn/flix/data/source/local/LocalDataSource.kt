@@ -3,10 +3,7 @@ package com.ardnn.flix.data.source.local
 import androidx.lifecycle.LiveData
 import androidx.paging.DataSource
 import com.ardnn.flix.data.source.local.entity.*
-import com.ardnn.flix.data.source.local.entity.relation.MovieDetailGenreCrossRef
-import com.ardnn.flix.data.source.local.entity.relation.MovieDetailWithGenres
-import com.ardnn.flix.data.source.local.entity.relation.TvShowDetailGenreCrossRef
-import com.ardnn.flix.data.source.local.entity.relation.TvShowDetailWithGenres
+import com.ardnn.flix.data.source.local.entity.relation.*
 import com.ardnn.flix.data.source.local.room.FlixDao
 import com.ardnn.flix.utils.SortUtils
 
@@ -40,6 +37,12 @@ class LocalDataSource private constructor(private val flixDao: FlixDao) {
 
     fun getTvShowDetailWithGenres(id: Int): LiveData<TvShowDetailWithGenres> =
         flixDao.getTvShowDetailWithGenres(id)
+
+    fun getGenreWithMovies(id: Int): LiveData<GenreWithMovieDetails> =
+        flixDao.getGenreWithMovies(id)
+
+    fun getGenreWithTvShows(id: Int): LiveData<GenreWithTvShowDetails> =
+        flixDao.getGenreWithTvShows(id)
 
     fun insertMovies(movies: List<MovieEntity>) {
         flixDao.insertMovies(movies)
