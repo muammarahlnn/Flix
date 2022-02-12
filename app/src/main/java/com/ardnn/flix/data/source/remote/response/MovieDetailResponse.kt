@@ -4,29 +4,29 @@ import com.google.gson.annotations.SerializedName
 
 data class MovieDetailResponse(
     @field:SerializedName("id")
-    val id: Int,
+    val id: Int = -1,
 
     @field:SerializedName("original_title")
-    val title: String?,
+    val title: String? = null,
 
     @field:SerializedName("overview")
-    val overview: String?,
+    val overview: String? = null,
 
     @field:SerializedName("release_date")
-    val releaseDate: String?,
+    val releaseDate: String? = null,
 
     @field:SerializedName("runtime")
-    val runtime: Int?,
+    val runtime: Int? = null,
 
     @field:SerializedName("vote_average")
-    val rating: Float?,
+    val rating: Float? = null,
 
     @field:SerializedName("poster_path")
-    val posterUrl: String?,
+    val posterUrl: String? = null,
 
     @field:SerializedName("backdrop_path")
-    val wallpaperUrl: String?,
+    val wallpaperUrl: String? = null,
 
     @field:SerializedName("genres")
-    val genreList: List<GenreResponse>?
+    val genreList: List<GenreResponse>? = listOf()
 )

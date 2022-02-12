@@ -58,14 +58,26 @@ class RemoteDataSource private constructor() {
                             resultMovieDetail.postValue(ApiResponse.success(response.body() as MovieDetailResponse))
                             EspressoIdlingResource.decrement()
                         } else {
+                            resultMovieDetail.postValue(ApiResponse.error(
+                                "response.body() is null",
+                                MovieDetailResponse()
+                            ))
                             EspressoIdlingResource.decrement()
                         }
                     } else {
+                        resultMovieDetail.postValue(ApiResponse.error(
+                            response.message(),
+                            MovieDetailResponse()
+                        ))
                         EspressoIdlingResource.decrement()
                     }
                 }
 
                 override fun onFailure(call: Call<MovieDetailResponse>, t: Throwable) {
+                    resultMovieDetail.postValue(ApiResponse.error(
+                        "onFailure: ${t.localizedMessage}",
+                        MovieDetailResponse()
+                    ))
                     EspressoIdlingResource.decrement()
                 }
             })
@@ -90,17 +102,33 @@ class RemoteDataSource private constructor() {
                                 resultMovies.postValue(ApiResponse.success(response.body()?.movies as List<MovieResponse>))
                                 EspressoIdlingResource.decrement()
                             } else {
+                                resultMovies.postValue(ApiResponse.error(
+                                    "response.body().movies is null",
+                                    listOf()
+                                ))
                                 EspressoIdlingResource.decrement()
                             }
                         } else {
+                            resultMovies.postValue(ApiResponse.error(
+                                "response.body() is null",
+                                listOf()
+                            ))
                             EspressoIdlingResource.decrement()
                         }
                     } else {
+                        resultMovies.postValue(ApiResponse.error(
+                            response.message(),
+                            listOf()
+                        ))
                         EspressoIdlingResource.decrement()
                     }
                 }
 
                 override fun onFailure(call: Call<MoviesResponse>, t: Throwable) {
+                    resultMovies.postValue(ApiResponse.error(
+                        "onFailure: ${t.localizedMessage}",
+                        listOf()
+                    ))
                     EspressoIdlingResource.decrement()
                 }
 
@@ -126,17 +154,33 @@ class RemoteDataSource private constructor() {
                                 resultMovies.postValue(ApiResponse.success(response.body()?.movies as List<MovieResponse>))
                                 EspressoIdlingResource.decrement()
                             } else {
+                                resultMovies.postValue(ApiResponse.error(
+                                    "response.body().movies is null",
+                                    listOf()
+                                ))
                                 EspressoIdlingResource.decrement()
                             }
                         } else {
+                            resultMovies.postValue(ApiResponse.error(
+                                "response.body() is null",
+                                listOf()
+                            ))
                             EspressoIdlingResource.decrement()
                         }
                     } else {
+                        resultMovies.postValue(ApiResponse.error(
+                            response.message(),
+                            listOf()
+                        ))
                         EspressoIdlingResource.decrement()
                     }
                 }
 
                 override fun onFailure(call: Call<MoviesResponse>, t: Throwable) {
+                    resultMovies.postValue(ApiResponse.error(
+                        "onFailure: ${t.localizedMessage}",
+                        listOf()
+                    ))
                     EspressoIdlingResource.decrement()
                 }
             })
@@ -161,17 +205,33 @@ class RemoteDataSource private constructor() {
                                 resultMovies.postValue(ApiResponse.success(response.body()?.movies as List<MovieResponse>))
                                 EspressoIdlingResource.decrement()
                             } else {
+                                resultMovies.postValue(ApiResponse.error(
+                                    "response.body().movies is null",
+                                    listOf()
+                                ))
                                 EspressoIdlingResource.decrement()
                             }
                         } else {
+                            resultMovies.postValue(ApiResponse.error(
+                                "response.body() is null",
+                                listOf()
+                            ))
                             EspressoIdlingResource.decrement()
                         }
                     } else {
+                        resultMovies.postValue(ApiResponse.error(
+                            response.message(),
+                            listOf()
+                        ))
                         EspressoIdlingResource.decrement()
                     }
                 }
 
                 override fun onFailure(call: Call<MoviesResponse>, t: Throwable) {
+                    resultMovies.postValue(ApiResponse.error(
+                        "onFailure: ${t.localizedMessage}",
+                        listOf()
+                    ))
                     EspressoIdlingResource.decrement()
                 }
 
@@ -197,17 +257,33 @@ class RemoteDataSource private constructor() {
                                 resultMovies.postValue(ApiResponse.success(response.body()?.movies as List<MovieResponse>))
                                 EspressoIdlingResource.decrement()
                             } else {
+                                resultMovies.postValue(ApiResponse.error(
+                                    "response.body().movies is null",
+                                    listOf()
+                                ))
                                 EspressoIdlingResource.decrement()
                             }
                         } else {
+                            resultMovies.postValue(ApiResponse.error(
+                                "response.body() is null",
+                                listOf()
+                            ))
                             EspressoIdlingResource.decrement()
                         }
                     } else {
+                        resultMovies.postValue(ApiResponse.error(
+                            response.message(),
+                            listOf()
+                        ))
                         EspressoIdlingResource.decrement()
                     }
                 }
 
                 override fun onFailure(call: Call<MoviesResponse>, t: Throwable) {
+                    resultMovies.postValue(ApiResponse.error(
+                        "onFailure: ${t.localizedMessage}",
+                        listOf()
+                    ))
                     EspressoIdlingResource.decrement()
                 }
 
@@ -232,14 +308,26 @@ class RemoteDataSource private constructor() {
                             resultTvShowDetail.postValue(ApiResponse.success(response.body() as TvShowDetailResponse))
                             EspressoIdlingResource.decrement()
                         } else {
+                            resultTvShowDetail.postValue(ApiResponse.error(
+                                "response.body() is null",
+                                TvShowDetailResponse()
+                            ))
                             EspressoIdlingResource.decrement()
                         }
                     } else {
+                        resultTvShowDetail.postValue(ApiResponse.error(
+                            response.message(),
+                            TvShowDetailResponse()
+                        ))
                         EspressoIdlingResource.decrement()
                     }
                 }
 
                 override fun onFailure(call: Call<TvShowDetailResponse>, t: Throwable) {
+                    resultTvShowDetail.postValue(ApiResponse.error(
+                        "onFailure: ${t.localizedMessage}",
+                        TvShowDetailResponse()
+                    ))
                     EspressoIdlingResource.decrement()
                 }
             })
@@ -264,20 +352,36 @@ class RemoteDataSource private constructor() {
                                 resultTvShows.postValue(ApiResponse.success(response.body()?.tvShows as List<TvShowResponse>))
                                 EspressoIdlingResource.decrement()
                             } else {
+                                resultTvShows.postValue(ApiResponse.error(
+                                    "response.body().tvShows is null",
+                                    listOf()
+                                ))
                                 EspressoIdlingResource.decrement()
                             }
                         } else {
+                            resultTvShows.postValue(ApiResponse.error(
+                                "response.body() is null",
+                                listOf()
+                            ))
                             EspressoIdlingResource.decrement()
                         }
                     } else {
+                        resultTvShows.postValue(ApiResponse.error(
+                            response.message(),
+                            listOf()
+                        ))
                         EspressoIdlingResource.decrement()
                     }
                 }
 
                 override fun onFailure(call: Call<TvShowsResponse>, t: Throwable) {
+                    resultTvShows.postValue(ApiResponse.error(
+                        "onFailure: ${t.localizedMessage}",
+                        listOf()
+                    ))
                     EspressoIdlingResource.decrement()
-
                 }
+
             })
 
         return resultTvShows
@@ -300,19 +404,36 @@ class RemoteDataSource private constructor() {
                                 resultTvShows.postValue(ApiResponse.success(response.body()?.tvShows as List<TvShowResponse>))
                                 EspressoIdlingResource.decrement()
                             } else {
+                                resultTvShows.postValue(ApiResponse.error(
+                                    "response.body().tvShows is null",
+                                    listOf()
+                                ))
                                 EspressoIdlingResource.decrement()
                             }
                         } else {
+                            resultTvShows.postValue(ApiResponse.error(
+                                "response.body() is null",
+                                listOf()
+                            ))
                             EspressoIdlingResource.decrement()
                         }
                     } else {
+                        resultTvShows.postValue(ApiResponse.error(
+                            response.message(),
+                            listOf()
+                        ))
                         EspressoIdlingResource.decrement()
                     }
                 }
 
                 override fun onFailure(call: Call<TvShowsResponse>, t: Throwable) {
+                    resultTvShows.postValue(ApiResponse.error(
+                        "onFailure: ${t.localizedMessage}",
+                        listOf()
+                    ))
                     EspressoIdlingResource.decrement()
                 }
+
             })
 
         return resultTvShows
@@ -335,17 +456,33 @@ class RemoteDataSource private constructor() {
                                 resultTvShows.postValue(ApiResponse.success(response.body()?.tvShows as List<TvShowResponse>))
                                 EspressoIdlingResource.decrement()
                             } else {
+                                resultTvShows.postValue(ApiResponse.error(
+                                    "response.body().tvShows is null",
+                                    listOf()
+                                ))
                                 EspressoIdlingResource.decrement()
                             }
                         } else {
+                            resultTvShows.postValue(ApiResponse.error(
+                                "response.body() is null",
+                                listOf()
+                            ))
                             EspressoIdlingResource.decrement()
                         }
                     } else {
+                        resultTvShows.postValue(ApiResponse.error(
+                            response.message(),
+                            listOf()
+                        ))
                         EspressoIdlingResource.decrement()
                     }
                 }
 
                 override fun onFailure(call: Call<TvShowsResponse>, t: Throwable) {
+                    resultTvShows.postValue(ApiResponse.error(
+                        "onFailure: ${t.localizedMessage}",
+                        listOf()
+                    ))
                     EspressoIdlingResource.decrement()
                 }
 
@@ -371,19 +508,36 @@ class RemoteDataSource private constructor() {
                                 resultTvShows.postValue(ApiResponse.success(response.body()?.tvShows as List<TvShowResponse>))
                                 EspressoIdlingResource.decrement()
                             } else {
+                                resultTvShows.postValue(ApiResponse.error(
+                                    "response.body().tvShows is null",
+                                    listOf()
+                                ))
                                 EspressoIdlingResource.decrement()
                             }
                         } else {
+                            resultTvShows.postValue(ApiResponse.error(
+                                "response.body() is null",
+                                listOf()
+                            ))
                             EspressoIdlingResource.decrement()
                         }
                     } else {
+                        resultTvShows.postValue(ApiResponse.error(
+                            response.message(),
+                            listOf()
+                        ))
                         EspressoIdlingResource.decrement()
                     }
                 }
 
                 override fun onFailure(call: Call<TvShowsResponse>, t: Throwable) {
+                    resultTvShows.postValue(ApiResponse.error(
+                        "onFailure: ${t.localizedMessage}",
+                        listOf()
+                    ))
                     EspressoIdlingResource.decrement()
                 }
+
             })
 
         return resultTvShows

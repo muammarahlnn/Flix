@@ -4,22 +4,22 @@ import com.google.gson.annotations.SerializedName
 
 data class TvShowsResponse(
     @field:SerializedName("results")
-    val tvShows: List<TvShowResponse>
+    val tvShows: List<TvShowResponse> = listOf()
 )
 
 data class TvShowResponse(
     @field:SerializedName("id")
-    val id: Int,
+    val id: Int = -1,
 
     @field:SerializedName("name")
-    val title: String?,
+    val title: String? = null,
 
     @field:SerializedName("first_air_date")
-    val firstAirDate: String?,
+    val firstAirDate: String? = null,
 
     @field:SerializedName("poster_path")
-    val posterUrl: String?,
+    val posterUrl: String? = null,
 
     @field:SerializedName("vote_average")
-    val rating: Float?,
+    val rating: Float? = null,
 )

@@ -4,38 +4,38 @@ import com.google.gson.annotations.SerializedName
 
 data class TvShowDetailResponse(
     @field:SerializedName("id")
-    val id: Int,
+    val id: Int = -1,
 
     @field:SerializedName("name")
-    val title: String?,
+    val title: String? = null,
 
     @field:SerializedName("overview")
-    val overview: String?,
+    val overview: String? = null,
 
     @field:SerializedName("first_air_date")
-    val firstAirDate: String?,
+    val firstAirDate: String? = null,
 
     @field:SerializedName("last_air_date")
-    val lastAirDate: String?,
+    val lastAirDate: String? = null,
 
     @field:SerializedName("episode_run_time")
-    val runtimes: List<Int>?,
+    val runtimes: List<Int>? = listOf(),
 
     @field:SerializedName("vote_average")
-    val rating: Float?,
+    val rating: Float? = null,
 
     @field:SerializedName("poster_path")
-    val posterUrl: String?,
+    val posterUrl: String? = null,
 
     @field:SerializedName("backdrop_path")
-    val wallpaperUrl: String?,
+    val wallpaperUrl: String? = null,
 
     @field:SerializedName("number_of_episodes")
-    val numberOfEpisodes: Int?,
+    val numberOfEpisodes: Int? = null,
 
     @field:SerializedName("number_of_seasons")
-    val numberOfSeasons: Int?,
+    val numberOfSeasons: Int? = null,
 
     @field:SerializedName("genres")
-    val genreList: List<GenreResponse>?,
+    val genreList: List<GenreResponse>? = listOf(),
 )
