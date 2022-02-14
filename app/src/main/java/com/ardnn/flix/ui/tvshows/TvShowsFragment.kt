@@ -61,8 +61,8 @@ class TvShowsFragment : Fragment(), SingleClickListener<TvShowEntity> {
         }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onDestroyView() {
+        super.onDestroyView()
         _binding = null
     }
 

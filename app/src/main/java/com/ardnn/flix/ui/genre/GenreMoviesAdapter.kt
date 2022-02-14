@@ -28,25 +28,6 @@ class GenreMoviesAdapter : PagedListAdapter<MovieDetailEntity, GenreMoviesAdapte
         }
     }
 
-    companion object {
-        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<MovieDetailEntity>() {
-            override fun areItemsTheSame(
-                oldItem: MovieDetailEntity,
-                newItem: MovieDetailEntity
-            ): Boolean {
-                return oldItem.id == newItem.id
-            }
-
-            override fun areContentsTheSame(
-                oldItem: MovieDetailEntity,
-                newItem: MovieDetailEntity
-            ): Boolean {
-                return oldItem == newItem
-            }
-
-        }
-    }
-
     class MovieViewHolder(private val binding: ItemFilmBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
@@ -73,6 +54,25 @@ class GenreMoviesAdapter : PagedListAdapter<MovieDetailEntity, GenreMoviesAdapte
                 toMovieDetail.putExtra(MovieDetailActivity.EXTRA_MOVIE_ID, movieDetail.id)
                 itemView.context.startActivity(toMovieDetail)
             }
+        }
+    }
+
+    companion object {
+        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<MovieDetailEntity>() {
+            override fun areItemsTheSame(
+                oldItem: MovieDetailEntity,
+                newItem: MovieDetailEntity
+            ): Boolean {
+                return oldItem.id == newItem.id
+            }
+
+            override fun areContentsTheSame(
+                oldItem: MovieDetailEntity,
+                newItem: MovieDetailEntity
+            ): Boolean {
+                return oldItem == newItem
+            }
+
         }
     }
 }

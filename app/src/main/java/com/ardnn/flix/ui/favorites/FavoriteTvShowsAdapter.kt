@@ -31,25 +31,6 @@ class FavoriteTvShowsAdapter : PagedListAdapter<TvShowDetailEntity, FavoriteTvSh
     fun getSwipedData(swipedPosition: Int): TvShowDetailEntity? =
         getItem(swipedPosition)
 
-    companion object {
-        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<TvShowDetailEntity>() {
-            override fun areItemsTheSame(
-                oldItem: TvShowDetailEntity,
-                newItem: TvShowDetailEntity
-            ): Boolean {
-                return oldItem.id == newItem.id
-            }
-
-            override fun areContentsTheSame(
-                oldItem: TvShowDetailEntity,
-                newItem: TvShowDetailEntity
-            ): Boolean {
-                return oldItem == newItem
-            }
-
-        }
-    }
-
     class TvShowViewHolder(private val binding: ItemFavoriteBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
@@ -76,6 +57,25 @@ class FavoriteTvShowsAdapter : PagedListAdapter<TvShowDetailEntity, FavoriteTvSh
                 toTvShowDetail.putExtra(TvShowDetailActivity.EXTRA_TV_SHOW_ID, tvShowDetail.id)
                 itemView.context.startActivity(toTvShowDetail)
             }
+        }
+    }
+
+    companion object {
+        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<TvShowDetailEntity>() {
+            override fun areItemsTheSame(
+                oldItem: TvShowDetailEntity,
+                newItem: TvShowDetailEntity
+            ): Boolean {
+                return oldItem.id == newItem.id
+            }
+
+            override fun areContentsTheSame(
+                oldItem: TvShowDetailEntity,
+                newItem: TvShowDetailEntity
+            ): Boolean {
+                return oldItem == newItem
+            }
+
         }
     }
 }

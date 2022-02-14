@@ -29,19 +29,6 @@ class MoviesAdapter(
         }
     }
 
-    companion object {
-        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<MovieEntity>() {
-            override fun areItemsTheSame(oldItem: MovieEntity, newItem: MovieEntity): Boolean {
-                return oldItem.id == newItem.id
-            }
-
-            override fun areContentsTheSame(oldItem: MovieEntity, newItem: MovieEntity): Boolean {
-                return oldItem == newItem
-            }
-
-        }
-    }
-
     inner class MovieViewHolder(private val binding: ItemFilmBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
@@ -69,4 +56,16 @@ class MoviesAdapter(
         }
     }
 
+    companion object {
+        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<MovieEntity>() {
+            override fun areItemsTheSame(oldItem: MovieEntity, newItem: MovieEntity): Boolean {
+                return oldItem.id == newItem.id
+            }
+
+            override fun areContentsTheSame(oldItem: MovieEntity, newItem: MovieEntity): Boolean {
+                return oldItem == newItem
+            }
+
+        }
+    }
 }

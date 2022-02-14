@@ -28,25 +28,6 @@ class GenreTvShowsAdapter : PagedListAdapter<TvShowDetailEntity, GenreTvShowsAda
         }
     }
 
-    companion object {
-        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<TvShowDetailEntity>() {
-            override fun areItemsTheSame(
-                oldItem: TvShowDetailEntity,
-                newItem: TvShowDetailEntity
-            ): Boolean {
-                return oldItem.id == newItem.id
-            }
-
-            override fun areContentsTheSame(
-                oldItem: TvShowDetailEntity,
-                newItem: TvShowDetailEntity
-            ): Boolean {
-                return oldItem == newItem
-            }
-
-        }
-    }
-
     class TvShowViewHolder(private val binding: ItemFilmBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
@@ -76,4 +57,23 @@ class GenreTvShowsAdapter : PagedListAdapter<TvShowDetailEntity, GenreTvShowsAda
         }
     }
 
+
+    companion object {
+        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<TvShowDetailEntity>() {
+            override fun areItemsTheSame(
+                oldItem: TvShowDetailEntity,
+                newItem: TvShowDetailEntity
+            ): Boolean {
+                return oldItem.id == newItem.id
+            }
+
+            override fun areContentsTheSame(
+                oldItem: TvShowDetailEntity,
+                newItem: TvShowDetailEntity
+            ): Boolean {
+                return oldItem == newItem
+            }
+
+        }
+    }
 }
