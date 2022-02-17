@@ -6,6 +6,8 @@ import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import com.ardnn.flix.data.FlixRepository
 import com.ardnn.flix.data.source.local.entity.relation.MovieDetailWithGenres
+import com.ardnn.flix.data.source.remote.ApiResponse
+import com.ardnn.flix.data.source.remote.response.CastResponse
 import com.ardnn.flix.vo.Resource
 
 class MovieDetailViewModel(private val flixRepository: FlixRepository) : ViewModel() {
@@ -15,6 +17,11 @@ class MovieDetailViewModel(private val flixRepository: FlixRepository) : ViewMod
     var movieDetail: LiveData<Resource<MovieDetailWithGenres>> =
         Transformations.switchMap(movieId) { mMovieId ->
             flixRepository.getMovieDetailWithGenres(mMovieId)
+        }
+
+    var movieCredits: LiveData<ApiResponse<List<CastResponse>>> =
+        Transformations.switchMap(movieId) { mMovieId ->
+            flixRepository.getMovieCredits(mMovieId)
         }
 
     private val _isSynopsisExtended = MutableLiveData(false)

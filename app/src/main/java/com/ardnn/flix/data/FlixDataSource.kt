@@ -10,6 +10,8 @@ import com.ardnn.flix.data.source.local.entity.relation.GenreWithMovieDetails
 import com.ardnn.flix.data.source.local.entity.relation.GenreWithTvShowDetails
 import com.ardnn.flix.data.source.local.entity.relation.MovieDetailWithGenres
 import com.ardnn.flix.data.source.local.entity.relation.TvShowDetailWithGenres
+import com.ardnn.flix.data.source.remote.ApiResponse
+import com.ardnn.flix.data.source.remote.response.CastResponse
 import com.ardnn.flix.vo.Resource
 
 interface FlixDataSource {
@@ -17,9 +19,15 @@ interface FlixDataSource {
 
     fun getMovieDetailWithGenres(movieId: Int): LiveData<Resource<MovieDetailWithGenres>>
 
+    // not resource yet
+    fun getMovieCredits(movieId: Int): LiveData<ApiResponse<List<CastResponse>>>
+
     fun getTvShows(page: Int, section: Int, filter: String): LiveData<Resource<PagedList<TvShowEntity>>>
 
     fun getTvShowDetailWithGenres(tvShowId: Int): LiveData<Resource<TvShowDetailWithGenres>>
+
+    // not resource yet
+    fun getTvShowCredits(tvShowId: Int): LiveData<ApiResponse<List<CastResponse>>>
 
     fun getFavoriteMovies(): LiveData<PagedList<MovieDetailEntity>>
 

@@ -1,5 +1,6 @@
 package com.ardnn.flix.data.source.remote.service
 
+import com.ardnn.flix.data.source.remote.response.CreditsResponse
 import com.ardnn.flix.data.source.remote.response.MovieDetailResponse
 import com.ardnn.flix.data.source.remote.response.MoviesResponse
 import retrofit2.Call
@@ -13,6 +14,12 @@ interface MovieApiService {
         @Path("movie_id") movieId: Int,
         @Query("api_key") apiKey: String
     ): Call<MovieDetailResponse>
+
+    @GET("{movie_id}/credits")
+    fun getMovieCredits(
+        @Path("movie_id") movieId: Int,
+        @Query("api_key") apiKey: String
+    ): Call<CreditsResponse>
 
     @GET("now_playing")
     fun getNowPlayingMovies(

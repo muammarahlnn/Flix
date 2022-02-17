@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import com.ardnn.flix.BuildConfig
 import com.ardnn.flix.data.source.remote.response.*
 import com.ardnn.flix.data.source.remote.service.MovieApiService
+import com.ardnn.flix.data.source.remote.service.PersonApiService
 import com.ardnn.flix.data.source.remote.service.TvShowApiService
 import com.ardnn.flix.utils.EspressoIdlingResource
 import retrofit2.Call
@@ -265,6 +266,63 @@ class RemoteDataSource private constructor() {
         return resultMovies
     }
 
+    // method to get movie credits
+    fun getMovieCredits(movieId: Int): LiveData<ApiResponse<List<CastResponse>>> {
+        EspressoIdlingResource.increment()
+
+        val resultCredits = MutableLiveData<ApiResponse<List<CastResponse>>>()
+        MOVIE_SERVICE.getMovieCredits(movieId, API_KEY)
+            .enqueue(object : Callback<CreditsResponse> {
+                override fun onResponse(
+                    call: Call<CreditsResponse>,
+                    response: Response<CreditsResponse>
+                ) {
+                    if (response.isSuccessful) {
+                        if (response.body() != null) {
+                            if (response.body()?.cast != null) {
+                                resultCredits.postValue(
+                                    ApiResponse.success(response.body()?.cast as List<CastResponse>)
+                                )
+                                EspressoIdlingResource.decrement()
+                            } else {
+                                resultCredits.postValue(
+                                    ApiResponse.error(
+                                        "response.body().cast is null",
+                                        listOf())
+                                )
+                                EspressoIdlingResource.decrement()
+                            }
+                        } else {
+                            resultCredits.postValue(
+                                ApiResponse.error(
+                                    "response.body() is null",
+                                    listOf())
+                            )
+                            EspressoIdlingResource.decrement()
+                        }
+                    } else {
+                        resultCredits.postValue(
+                            ApiResponse.error(
+                                response.message(),
+                                listOf())
+                        )
+                        EspressoIdlingResource.decrement()
+                    }
+                }
+
+                override fun onFailure(call: Call<CreditsResponse>, t: Throwable) {
+                    resultCredits.postValue(
+                        ApiResponse.error(
+                            "onFailure: ${t.localizedMessage}",
+                            listOf())
+                    )
+                    EspressoIdlingResource.decrement()
+                }
+            })
+
+        return resultCredits
+    }
+
     // method to get tv show detail
     fun getTvShowDetail(tvShowId: Int): LiveData<ApiResponse<TvShowDetailResponse>> {
         EspressoIdlingResource.increment()
@@ -516,6 +574,112 @@ class RemoteDataSource private constructor() {
         return resultTvShows
     }
 
+    // method to get tv show credits
+    fun getTvShowCredits(tvShowId: Int): LiveData<ApiResponse<List<CastResponse>>> {
+        EspressoIdlingResource.increment()
+
+        val resultCredits = MutableLiveData<ApiResponse<List<CastResponse>>>()
+        TV_SHOW_SERVICE.getTvShowCredits(tvShowId, API_KEY)
+            .enqueue(object : Callback<CreditsResponse> {
+                override fun onResponse(
+                    call: Call<CreditsResponse>,
+                    response: Response<CreditsResponse>
+                ) {
+                    if (response.isSuccessful) {
+                        if (response.body() != null) {
+                            if (response.body()?.cast != null) {
+                                resultCredits.postValue(
+                                    ApiResponse.success(response.body()?.cast as List<CastResponse>)
+                                )
+                                EspressoIdlingResource.decrement()
+                            } else {
+                                resultCredits.postValue(
+                                    ApiResponse.error(
+                                        "response.body().cast is null",
+                                        listOf())
+                                )
+                                EspressoIdlingResource.decrement()
+                            }
+                        } else {
+                            resultCredits.postValue(
+                                ApiResponse.error(
+                                    "response.body() is null",
+                                    listOf())
+                            )
+                            EspressoIdlingResource.decrement()
+                        }
+                    } else {
+                        resultCredits.postValue(
+                            ApiResponse.error(
+                                response.message(),
+                                listOf())
+                        )
+                        EspressoIdlingResource.decrement()
+                    }
+                }
+
+                override fun onFailure(call: Call<CreditsResponse>, t: Throwable) {
+                    resultCredits.postValue(
+                        ApiResponse.error(
+                            "onFailure: ${t.localizedMessage}",
+                            listOf())
+                    )
+                    EspressoIdlingResource.decrement()
+                }
+
+            })
+
+        return resultCredits
+    }
+    // method to get person detail
+    fun getPersonDetail(personId: Int): LiveData<ApiResponse<PersonResponse>> {
+        EspressoIdlingResource.increment()
+
+        val resultPersonDetail = MutableLiveData<ApiResponse<PersonResponse>>()
+        PERSON_SERVICE.getPersonDetail(personId, API_KEY)
+            .enqueue(object : Callback<PersonResponse> {
+                override fun onResponse(
+                    call: Call<PersonResponse>,
+                    response: Response<PersonResponse>
+                ) {
+                    if (response.isSuccessful) {
+                        if (response.body() != null) {
+                            resultPersonDetail.postValue(
+                                ApiResponse.success(response.body() as PersonResponse)
+                            )
+                            EspressoIdlingResource.decrement()
+                        } else {
+                            resultPersonDetail.postValue(
+                                ApiResponse.error(
+                                    "response.body() is null",
+                                    PersonResponse())
+                            )
+                            EspressoIdlingResource.decrement()
+                        }
+                    } else {
+                        resultPersonDetail.postValue(
+                            ApiResponse.error(
+                                response.message(),
+                                PersonResponse())
+                        )
+                        EspressoIdlingResource.decrement()
+                    }
+                }
+
+                override fun onFailure(call: Call<PersonResponse>, t: Throwable) {
+                    resultPersonDetail.postValue(
+                        ApiResponse.error(
+                            "onFailure: ${t.localizedMessage}",
+                            PersonResponse())
+                    )
+                    EspressoIdlingResource.decrement()
+                }
+
+            })
+
+        return resultPersonDetail
+    }
+
     companion object {
         private const val API_KEY = BuildConfig.API_KEY
         private val MOVIE_SERVICE: MovieApiService =
@@ -531,6 +695,13 @@ class RemoteDataSource private constructor() {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
                 .create(TvShowApiService::class.java)
+
+        private val PERSON_SERVICE: PersonApiService =
+            Retrofit.Builder()
+                .baseUrl(Const.BASE_URL_PERSON)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build()
+                .create(PersonApiService::class.java)
 
         @Volatile
         private var instance: RemoteDataSource? = null

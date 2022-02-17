@@ -86,6 +86,13 @@ class TvShowDetailActivity : AppCompatActivity(), View.OnClickListener,
             }
         })
 
+        viewModel.tvShowCredits.observe(this, { tvShowCredits ->
+            val credits = tvShowCredits.body
+            for (credit in credits) {
+                Log.d(TAG, credit.name.toString())
+            }
+        })
+
         viewModel.isSynopsisExtended.observe(this, { isExtended ->
             with (binding) {
                 if (isExtended) {

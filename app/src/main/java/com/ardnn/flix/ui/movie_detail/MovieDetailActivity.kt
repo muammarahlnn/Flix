@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.ardnn.flix.R
 import com.ardnn.flix.data.source.local.entity.GenreEntity
 import com.ardnn.flix.data.source.local.entity.relation.MovieDetailWithGenres
+import com.ardnn.flix.data.source.remote.ApiResponse
 import com.ardnn.flix.data.source.remote.ImageSize
 import com.ardnn.flix.databinding.ActivityMovieDetailBinding
 import com.ardnn.flix.ui.genre.GenreActivity
@@ -81,6 +82,13 @@ class MovieDetailActivity : AppCompatActivity(), View.OnClickListener,
                         Toast.makeText(applicationContext, "An error occurred", Toast.LENGTH_SHORT).show()
                     }
                 }
+            }
+        })
+
+        viewModel.movieCredits.observe(this, { movieCredits ->
+            val credits = movieCredits.body
+            for (credit in credits) {
+                Log.d(TAG, credit.name.toString())
             }
         })
 

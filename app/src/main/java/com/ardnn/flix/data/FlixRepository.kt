@@ -109,6 +109,10 @@ class FlixRepository private constructor(
         }.asLiveData()
     }
 
+    override fun getMovieCredits(movieId: Int): LiveData<ApiResponse<List<CastResponse>>> {
+        return remoteDataSource.getMovieCredits(movieId)
+    }
+
     override fun getTvShows(page: Int, section: Int, filter: String): LiveData<Resource<PagedList<TvShowEntity>>> {
         return object : NetworkBoundResource<PagedList<TvShowEntity>, List<TvShowResponse>>(appExecutors) {
             public override fun loadFromDB(): LiveData<PagedList<TvShowEntity>> {
@@ -205,6 +209,10 @@ class FlixRepository private constructor(
             }
 
         }.asLiveData()
+    }
+
+    override fun getTvShowCredits(tvShowId: Int): LiveData<ApiResponse<List<CastResponse>>> {
+        return remoteDataSource.getTvShowCredits(tvShowId)
     }
 
     override fun getGenreWithMovies(genreId: Int): LiveData<GenreWithMovieDetails> {

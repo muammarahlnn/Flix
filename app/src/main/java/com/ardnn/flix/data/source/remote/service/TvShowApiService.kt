@@ -1,5 +1,6 @@
 package com.ardnn.flix.data.source.remote.service
 
+import com.ardnn.flix.data.source.remote.response.CreditsResponse
 import com.ardnn.flix.data.source.remote.response.TvShowDetailResponse
 import com.ardnn.flix.data.source.remote.response.TvShowsResponse
 import retrofit2.Call
@@ -13,6 +14,12 @@ interface TvShowApiService {
         @Path("tv_id") tvShowId: Int,
         @Query("api_key") apiKey: String
     ): Call<TvShowDetailResponse>
+
+    @GET("{tv_id}/credits")
+    fun getTvShowCredits(
+        @Path("tv_id") tvShowId: Int,
+        @Query("api_key") apiKey: String
+    ): Call<CreditsResponse>
 
     @GET("airing_today")
     fun getAiringTodayTvShows(
