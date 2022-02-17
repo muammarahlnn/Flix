@@ -8,7 +8,6 @@ import androidx.fragment.app.Fragment
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.paging.PagedList
-import androidx.recyclerview.widget.GridLayoutManager
 import com.ardnn.flix.R
 import com.ardnn.flix.data.source.local.entity.MovieEntity
 import com.ardnn.flix.databinding.FragmentMoviesBinding
@@ -52,9 +51,6 @@ class MoviesFragment : Fragment(), SingleClickListener<MovieEntity> {
             // get section and set it on view model
             section = arguments?.getInt(ARG_SECTION_NUMBER, 0) as Int
             viewModel.setSection(section)
-
-            // set recyclerview
-            binding?.recyclerView?.layoutManager = GridLayoutManager(requireActivity(), 2)
 
             // subscribe view model
             subscribe()
