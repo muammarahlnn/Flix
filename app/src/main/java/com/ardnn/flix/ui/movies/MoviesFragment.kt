@@ -10,7 +10,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.paging.PagedList
 import com.ardnn.flix.R
 import com.ardnn.flix.data.source.local.entity.MovieEntity
-import com.ardnn.flix.databinding.FragmentMoviesBinding
+import com.ardnn.flix.databinding.FragmentFilmsBinding
 import com.ardnn.flix.ui.movie_detail.MovieDetailActivity
 import com.ardnn.flix.utils.SingleClickListener
 import com.ardnn.flix.utils.SortUtils
@@ -21,7 +21,7 @@ import com.ardnn.flix.vo.Status
 class MoviesFragment : Fragment(), SingleClickListener<MovieEntity> {
 
     private lateinit var viewModel: MoviesViewModel
-    private var _binding: FragmentMoviesBinding? = null
+    private var _binding: FragmentFilmsBinding? = null
     private val binding get() = _binding
 
     private val page = 1 // default page to fetch movies
@@ -37,7 +37,7 @@ class MoviesFragment : Fragment(), SingleClickListener<MovieEntity> {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        _binding = FragmentMoviesBinding.inflate(layoutInflater, container, false)
+        _binding = FragmentFilmsBinding.inflate(layoutInflater, container, false)
         return binding?.root
     }
 

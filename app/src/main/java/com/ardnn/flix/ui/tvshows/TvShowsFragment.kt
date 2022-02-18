@@ -11,7 +11,7 @@ import androidx.paging.PagedList
 import androidx.recyclerview.widget.GridLayoutManager
 import com.ardnn.flix.R
 import com.ardnn.flix.data.source.local.entity.TvShowEntity
-import com.ardnn.flix.databinding.FragmentTvShowsBinding
+import com.ardnn.flix.databinding.FragmentFilmsBinding
 import com.ardnn.flix.ui.tvshow_detail.TvShowDetailActivity
 import com.ardnn.flix.utils.SingleClickListener
 import com.ardnn.flix.utils.SortUtils
@@ -22,7 +22,7 @@ import com.ardnn.flix.vo.Status
 class TvShowsFragment : Fragment(), SingleClickListener<TvShowEntity> {
 
     private lateinit var viewModel: TvShowsViewModel
-    private var _binding: FragmentTvShowsBinding? = null
+    private var _binding: FragmentFilmsBinding? = null
     private val binding get() = _binding
 
     private val page = 1 // default page to fetch movies
@@ -38,7 +38,7 @@ class TvShowsFragment : Fragment(), SingleClickListener<TvShowEntity> {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        _binding = FragmentTvShowsBinding.inflate(layoutInflater, container, false)
+        _binding = FragmentFilmsBinding.inflate(layoutInflater, container, false)
         return binding?.root
     }
 

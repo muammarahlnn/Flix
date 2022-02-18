@@ -18,6 +18,7 @@
         <entry key="..\:/coding/github/Flix/app/src/main/res/drawable/selector_item_favorites.xml" value="0.2755208333333333" />
         <entry key="..\:/coding/github/Flix/app/src/main/res/drawable/selector_item_movies.xml" value="0.2755208333333333" />
         <entry key="..\:/coding/github/Flix/app/src/main/res/drawable/selector_item_tv_shows.xml" value="0.2755208333333333" />
+        <entry key="..\:/coding/github/Flix/app/src/main/res/layout-land/fragment_films.xml" value="0.25" />
         <entry key="..\:/coding/github/Flix/app/src/main/res/layout-land/fragment_movies.xml" value="0.3046875" />
         <entry key="..\:/coding/github/Flix/app/src/main/res/layout-land/fragment_tv_shows.xml" value="0.3046875" />
         <entry key="..\:/coding/github/Flix/app/src/main/res/layout-land/item_film.xml" value="0.2" />
@@ -31,6 +32,7 @@
         <entry key="..\:/coding/github/Flix/app/src/main/res/layout/fragment_favorites.xml" value="0.264" />
         <entry key="..\:/coding/github/Flix/app/src/main/res/layout/fragment_favorites_pager.xml" value="0.259375" />
         <entry key="..\:/coding/github/Flix/app/src/main/res/layout/fragment_film.xml" value="0.259375" />
+        <entry key="..\:/coding/github/Flix/app/src/main/res/layout/fragment_films.xml" value="0.371875" />
         <entry key="..\:/coding/github/Flix/app/src/main/res/layout/fragment_movies.xml" value="0.259375" />
         <entry key="..\:/coding/github/Flix/app/src/main/res/layout/fragment_movies_pager.xml" value="0.259375" />
         <entry key="..\:/coding/github/Flix/app/src/main/res/layout/fragment_tv_shows.xml" value="0.259375" />
