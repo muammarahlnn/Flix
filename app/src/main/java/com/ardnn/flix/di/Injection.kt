@@ -12,7 +12,11 @@ object Injection {
         val database = FlixDatabase.getInstance(context)
 
         val remoteDataSource = RemoteDataSource.getInstance()
-        val localDataSource = LocalDataSource.getInstance(database.flixDao())
+        val localDataSource = LocalDataSource.getInstance(
+            database.movieDao(),
+            database.tvShowDao(),
+            database.genreDao()
+        )
         val appExecutors = AppExecutors()
 
         return FlixRepository.getInstance(remoteDataSource, localDataSource, appExecutors)

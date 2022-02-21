@@ -22,7 +22,9 @@ import com.ardnn.flix.data.source.local.entity.relation.TvShowDetailGenreCrossRe
     exportSchema = false)
 abstract class FlixDatabase : RoomDatabase() {
 
-    abstract fun flixDao(): FlixDao
+    abstract fun movieDao(): MovieDao
+    abstract fun tvShowDao(): TvShowDao
+    abstract fun genreDao(): GenreDao
 
     companion object {
         @Volatile
