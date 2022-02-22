@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/navigationMovies">
+
+    <fragment
+        android:id="@+id/navigationMovies"
+        android:name="com.ardnn.flix.ui.movies.MoviesPagerFragment"
+        android:label="@string/movies"
+        tools:layout="@layout/fragment_movies_pager" />
+    <fragment
+        android:id="@+id/navigationTvShows"
+        android:name="com.ardnn.flix.ui.tvshows.TvShowsPagerFragment"
+        android:label="@string/tv_shows"
+        tools:layout="@layout/fragment_tv_shows_pager" />
+    <fragment
+        android:id="@+id/navigationFavorites"
+        android:name="com.ardnn.flix.ui.favorites.FavoritesPagerFragment"
+        android:label="@string/favorites"
+        tools:layout="@layout/fragment_favorites_pager" />
+</navigation>

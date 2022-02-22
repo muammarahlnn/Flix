@@ -2,16 +2,13 @@ package com.ardnn.flix.ui.home
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.MenuItem
-import androidx.fragment.app.Fragment
+import androidx.navigation.findNavController
+import androidx.navigation.ui.setupWithNavController
 import com.ardnn.flix.R
 import com.ardnn.flix.databinding.ActivityHomeBinding
-import com.ardnn.flix.ui.favorites.FavoritesPagerFragment
-import com.ardnn.flix.ui.movies.MoviesPagerFragment
-import com.ardnn.flix.ui.tvshows.TvShowsPagerFragment
-import com.google.android.material.navigation.NavigationBarView
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
-class HomeActivity : AppCompatActivity(), NavigationBarView.OnItemSelectedListener {
+class HomeActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityHomeBinding
 
@@ -25,36 +22,16 @@ class HomeActivity : AppCompatActivity(), NavigationBarView.OnItemSelectedListen
         supportActionBar?.setDisplayShowTitleEnabled(false)
 
         // set bottom navigation
-        binding.bnvHome.setOnItemSelectedListener(this)
-        binding.bnvHome.itemIconTintList = null
-        binding.bnvHome.selectedItemId = R.id.navigationMovies
-    }
+        val navView: BottomNavigationView = binding.navHome
+        val navController = findNavController(R.id.navHostFragmentHome)
 
-    override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        var selectedFragment: Fragment? = null
-        when (item.itemId) {
-            R.id.navigationMovies -> {
-                selectedFragment = MoviesPagerFragment()
-                binding.toolbar.tvSection.text = getString(R.string.movies)
-            }
-            R.id.navigationTvShows -> {
-                selectedFragment = TvShowsPagerFragment()
-                binding.toolbar.tvSection.text = getString(R.string.tv_shows)
-            }
-            R.id.navigationFavorites -> {
-                selectedFragment = FavoritesPagerFragment()
-                binding.toolbar.tvSection.text = getString(R.string.favorites)
-            }
+        // set toolbar title depends on selected fragment
+        navController.addOnDestinationChangedListener { controller, destination, args ->
+            binding.toolbar.tvSection.text = navController.currentDestination?.label
         }
 
-        if (selectedFragment != null) {
-            supportFragmentManager.beginTransaction()
-                .replace(R.id.frameContainer, selectedFragment)
-                .commit()
+        navView.setupWithNavController(navController)
+        navView.itemIconTintList = null // to make item icon do not use app primary color
 
-            return true
-        }
-
-        return false
     }
 }
