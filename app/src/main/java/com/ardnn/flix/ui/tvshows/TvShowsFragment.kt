@@ -8,7 +8,6 @@ import androidx.fragment.app.Fragment
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.paging.PagedList
-import androidx.recyclerview.widget.GridLayoutManager
 import com.ardnn.flix.R
 import com.ardnn.flix.data.source.local.entity.TvShowEntity
 import com.ardnn.flix.databinding.FragmentFilmsBinding

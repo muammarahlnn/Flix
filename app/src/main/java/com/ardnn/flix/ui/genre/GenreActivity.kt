@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.GridLayoutManager
 import com.ardnn.flix.R
 import com.ardnn.flix.databinding.ActivityGenreBinding
 import com.ardnn.flix.utils.PagedListDataSources

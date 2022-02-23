@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.ardnn.flix.R
 import com.ardnn.flix.data.source.local.entity.GenreEntity
 import com.ardnn.flix.data.source.local.entity.relation.MovieDetailWithGenres
-import com.ardnn.flix.data.source.remote.ApiResponse
 import com.ardnn.flix.data.source.remote.ImageSize
 import com.ardnn.flix.databinding.ActivityMovieDetailBinding
 import com.ardnn.flix.ui.genre.GenreActivity

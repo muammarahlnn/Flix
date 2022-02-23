@@ -12,24 +12,14 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Flix">
         <activity
-            android:name=".ui.home.TempHomeActivity"
-            android:exported="false"
-            android:label="@string/title_activity_temp_home" />
-        <activity
             android:name=".ui.genre.GenreActivity"
             android:exported="false" />
         <activity
             android:name=".ui.tvshow_detail.TvShowDetailActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.tvshow_detail.TvShowActivity"
-            android:exported="false" />
-        <activity
             android:name=".ui.movie_detail.MovieDetailActivity"
             android:exported="false" />
-        <activity
-            android:name=".ui.detail.DetailActivity"
-            android:exported="true" />
         <activity
             android:name=".ui.splash.SplashActivity"
             android:exported="true"
