@@ -53,9 +53,6 @@ class TvShowsFragment : Fragment(), SingleClickListener<TvShowEntity> {
             section = arguments?.getInt(ARG_SECTION_NUMBER, 0) as Int
             viewModel.setSection(section)
 
-            // set recyclerview
-            binding?.recyclerView?.layoutManager = GridLayoutManager(requireActivity(), 2)
-
             // subscribe view model
             subscribe()
         }
