@@ -14,7 +14,7 @@ import com.ardnn.flix.data.source.remote.ApiResponse
 import com.ardnn.flix.data.source.remote.response.CastResponse
 import com.ardnn.flix.vo.Resource
 
-interface FlixDataSource {
+interface IFlixRepository {
     fun getMovies(page: Int, section: Int, filter: String): LiveData<Resource<PagedList<MovieEntity>>>
 
     fun getMovieDetailWithGenres(movieId: Int): LiveData<Resource<MovieDetailWithGenres>>

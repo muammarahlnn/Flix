@@ -9,37 +9,37 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface TvShowApiService {
-    @GET("{tv_id}")
+    @GET("3/tv/{tv_id}")
     fun getTvShowDetails(
         @Path("tv_id") tvShowId: Int,
         @Query("api_key") apiKey: String
     ): Call<TvShowDetailResponse>
 
-    @GET("{tv_id}/credits")
+    @GET("3/tv/{tv_id}/credits")
     fun getTvShowCredits(
         @Path("tv_id") tvShowId: Int,
         @Query("api_key") apiKey: String
     ): Call<CreditsResponse>
 
-    @GET("airing_today")
+    @GET("3/tv/airing_today")
     fun getAiringTodayTvShows(
         @Query("api_key") apiKey: String,
         @Query("page") page: Int
     ): Call<TvShowsResponse>
 
-    @GET("on_the_air")
+    @GET("3/tv/on_the_air")
     fun getOnTheAirTvShows(
         @Query("api_key") apiKey: String,
         @Query("page") page: Int
     ): Call<TvShowsResponse>
 
-    @GET("popular")
+    @GET("3/tv/popular")
     fun getPopularTvShows(
         @Query("api_key") apiKey: String,
         @Query("page") page: Int
     ): Call<TvShowsResponse>
 
-    @GET("top_rated")
+    @GET("3/tv/top_rated")
     fun getTopRatedTvShows(
         @Query("api_key") apiKey: String,
         @Query("page") page: Int

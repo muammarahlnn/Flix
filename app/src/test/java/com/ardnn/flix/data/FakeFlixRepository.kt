@@ -7,7 +7,7 @@ import com.ardnn.flix.data.source.local.LocalDataSource
 import com.ardnn.flix.data.source.local.entity.*
 import com.ardnn.flix.data.source.local.entity.relation.*
 import com.ardnn.flix.data.source.remote.ApiResponse
-import com.ardnn.flix.data.source.remote.RemoteDataSource
+import com.ardnn.flix.data.source.remote.datasource.RemoteDataSource
 import com.ardnn.flix.data.source.remote.response.*
 import com.ardnn.flix.utils.AppExecutors
 import com.ardnn.flix.vo.Resource
@@ -16,7 +16,7 @@ class FakeFlixRepository(
     private val remoteDataSource: RemoteDataSource,
     private val localDataSource: LocalDataSource,
     private val appExecutors: AppExecutors
-) : FlixDataSource{
+) : IFlixRepository{
 
     override fun getMovies(page: Int, section: Int, filter: String): LiveData<Resource<PagedList<MovieEntity>>> {
         return object : NetworkBoundResource<PagedList<MovieEntity>, List<MovieResponse>>(appExecutors) {
@@ -107,6 +107,10 @@ class FakeFlixRepository(
             }
 
         }.asLiveData()
+    }
+
+    override fun getMovieCredits(movieId: Int): LiveData<ApiResponse<List<CastResponse>>> {
+        return remoteDataSource.getMovieCredits(movieId)
     }
 
     override fun getTvShows(page: Int, section: Int, filter: String): LiveData<Resource<PagedList<TvShowEntity>>> {
@@ -205,6 +209,10 @@ class FakeFlixRepository(
             }
 
         }.asLiveData()
+    }
+
+    override fun getTvShowCredits(tvShowId: Int): LiveData<ApiResponse<List<CastResponse>>> {
+        return remoteDataSource.getTvShowCredits(tvShowId)
     }
 
     override fun getGenreWithMovies(genreId: Int): LiveData<GenreWithMovieDetails> {

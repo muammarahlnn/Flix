@@ -12,7 +12,7 @@ import com.ardnn.flix.data.source.local.entity.relation.GenreWithMovieDetails
 import com.ardnn.flix.data.source.local.entity.relation.GenreWithTvShowDetails
 import com.ardnn.flix.data.source.local.entity.relation.MovieDetailWithGenres
 import com.ardnn.flix.data.source.local.entity.relation.TvShowDetailWithGenres
-import com.ardnn.flix.data.source.remote.RemoteDataSource
+import com.ardnn.flix.data.source.remote.datasource.RemoteDataSource
 import com.ardnn.flix.data.source.remote.response.MovieDetailResponse
 import com.ardnn.flix.data.source.remote.response.MovieResponse
 import com.ardnn.flix.data.source.remote.response.TvShowDetailResponse
