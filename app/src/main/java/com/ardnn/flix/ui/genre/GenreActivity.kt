@@ -41,9 +41,6 @@ class GenreActivity : AppCompatActivity() {
         val genreId = intent.getIntExtra(EXTRA_GENRE_ID, 0)
         viewModel.setGenreId(genreId)
 
-        // set recyclerview
-        binding.recyclerView.layoutManager = GridLayoutManager(this, 2)
-
         // subscribe view model
         subscribe()
 
