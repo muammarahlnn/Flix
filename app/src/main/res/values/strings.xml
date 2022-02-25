@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">Flix</string>
+    <string name="movies">Movies</string>
+    <string name="tv_shows">TV Shows</string>
+
+    <string name="minutes">%d mins</string>
+    <string name="bullet">•</string>
+    <string name="over_10">/10</string>
+    <string name="synopsis">Synopsis</string>
+    <string name="more">more</string>
+    <string name="less">less</string>
+
+</resources>
