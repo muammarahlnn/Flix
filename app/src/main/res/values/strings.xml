@@ -1,0 +1,43 @@
+<resources>
+    <string name="app_name">Flix</string>
+    <string name="movies">Movies</string>
+    <string name="tv_shows">TV Shows</string>
+    <string name="minutes">%d mins</string>
+    <string name="bullet">•</string>
+    <string name="over_10">/10</string>
+    <string name="synopsis">Synopsis</string>
+    <string name="more">more</string>
+    <string name="less">less</string>
+    <string name="episodes">episodes</string>
+    <string name="seasons">seasons</string>
+    <string name="first_airing">First Airing</string>
+    <string name="last_airing">Last Airing</string>
+    <string name="unable_to_retrieve_data">
+        Unable to retrieve data\n
+        Please check your internet connection
+    </string>
+    <string name="favorites">Favorites</string>
+    <string name="now_playing">Now Playing</string>
+    <string name="upcoming">Upcoming</string>
+    <string name="airing_today">Airing Today</string>
+    <string name="on_the_air">On The Air</string>
+    <string name="popular">Popular</string>
+    <string name="top_rated">Top Rated</string>
+    <string name="undo">Undo</string>
+    <string name="message_remove_favorite">Item removed from favorites</string>
+    <string name="alert_favorite">
+        You haven\'t favorited\n
+        any %s yet
+    </string>
+    <string name="menu_default">Default</string>
+    <string name="menu_ascending">Ascending</string>
+    <string name="menu_descending">Descending</string>
+    <string name="menu_random">Random</string>
+    <string name="genre_toolbar_title">%s %s</string>
+    <string name="iv_wallpaper_desc">Wallpaper image</string>
+    <string name="btn_back_desc">Button back</string>
+    <string name="btn_favorite_desc">Button favorite</string>
+    <string name="iv_poster_desc">Poster image</string>
+    <string name="iv_rating_desc">Image rating</string>
+    <string name="app_logo_desc">Application logo image</string>
+</resources>

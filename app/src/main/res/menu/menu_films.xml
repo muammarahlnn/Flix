@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/action_default"
+            android:checked="true"
+            android:title="@string/menu_default" />
+        <item
+            android:id="@+id/action_ascending"
+            android:checked="false"
+            android:title="@string/menu_ascending" />
+        <item
+            android:id="@+id/action_descending"
+            android:checked="false"
+            android:title="@string/menu_descending" />
+        <item
+            android:id="@+id/action_random"
+            android:checked="false"
+            android:title="@string/menu_random" />
+    </group>
+</menu>

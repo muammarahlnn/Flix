@@ -1,0 +1,146 @@
+{
+  "adult": false,
+  "backdrop_path": "/oKt4J3TFjWirVwBqoHyIvv5IImd.jpg",
+  "created_by": [
+    {
+      "id": 96172,
+      "credit_id": "5c333881c3a3680b8ca83ef8",
+      "name": "Sam Levinson",
+      "gender": 2,
+      "profile_path": "/unyjIDs02a9ghtZhnajoAKKGzhW.jpg"
+    }
+  ],
+  "episode_run_time": [
+    60
+  ],
+  "first_air_date": "2019-06-16",
+  "genres": [
+    {
+      "id": 18,
+      "name": "Drama"
+    }
+  ],
+  "homepage": "https://www.hbo.com/euphoria",
+  "id": 85552,
+  "in_production": true,
+  "languages": [
+    "en"
+  ],
+  "last_air_date": "2022-01-30",
+  "last_episode_to_air": {
+    "air_date": "2022-01-30",
+    "episode_number": 4,
+    "id": 3463605,
+    "name": "You Who Cannot See, Think of Those Who Can",
+    "overview": "At Maddy’s birthday party, relationships are celebrated and questioned. Meanwhile, Jules turns to Elliot for advice and Cal takes a trip down memory lane.",
+    "production_code": "",
+    "season_number": 2,
+    "still_path": "/nuTsLlLNacklbITyQPRvKOAtXlg.jpg",
+    "vote_average": 0.0,
+    "vote_count": 0
+  },
+  "name": "Euphoria",
+  "next_episode_to_air": {
+    "air_date": "2022-02-06",
+    "episode_number": 5,
+    "id": 3464329,
+    "name": "Stand Still Like the Hummingbird",
+    "overview": "Fate has a way of catching up with those who try to outrun it.",
+    "production_code": "",
+    "season_number": 2,
+    "still_path": null,
+    "vote_average": 0.0,
+    "vote_count": 0
+  },
+  "networks": [
+    {
+      "name": "HBO",
+      "id": 49,
+      "logo_path": "/tuomPhY2UtuPTqqFnKMVHvSb724.png",
+      "origin_country": "US"
+    }
+  ],
+  "number_of_episodes": 16,
+  "number_of_seasons": 2,
+  "origin_country": [
+    "US"
+  ],
+  "original_language": "en",
+  "original_name": "Euphoria",
+  "overview": "A group of high school students navigate love and friendships in a world of drugs, sex, trauma, and social media.",
+  "popularity": 4875.054,
+  "poster_path": "/jtnfNzqZwN4E32FGGxx1YZaBWWf.jpg",
+  "production_companies": [
+    {
+      "id": 41077,
+      "logo_path": "/1ZXsGaFPgrgS6ZZGS37AqD5uU12.png",
+      "name": "A24",
+      "origin_country": "US"
+    },
+    {
+      "id": 139809,
+      "logo_path": null,
+      "name": "The Reasonable Bunch",
+      "origin_country": ""
+    },
+    {
+      "id": 126587,
+      "logo_path": null,
+      "name": "Little Lamb Productions",
+      "origin_country": "US"
+    },
+    {
+      "id": 124433,
+      "logo_path": null,
+      "name": "DreamCrew",
+      "origin_country": "US"
+    }
+  ],
+  "production_countries": [
+    {
+      "iso_3166_1": "US",
+      "name": "United States of America"
+    }
+  ],
+  "seasons": [
+    {
+      "air_date": "2020-12-06",
+      "episode_count": 2,
+      "id": 166250,
+      "name": "Specials",
+      "overview": "",
+      "poster_path": "/6x31o4AjfVxakRJ0OQpFH8f9Kzb.jpg",
+      "season_number": 0
+    },
+    {
+      "air_date": "2019-06-16",
+      "episode_count": 8,
+      "id": 115613,
+      "name": "Season 1",
+      "overview": "",
+      "poster_path": "/5mi3aRl16yKmfpQJMzvqN5TXkdA.jpg",
+      "season_number": 1
+    },
+    {
+      "air_date": "2022-01-09",
+      "episode_count": 8,
+      "id": 220804,
+      "name": "Season 2",
+      "overview": "",
+      "poster_path": "/jtnfNzqZwN4E32FGGxx1YZaBWWf.jpg",
+      "season_number": 2
+    }
+  ],
+  "spoken_languages": [
+    {
+      "english_name": "English",
+      "iso_639_1": "en",
+      "name": "English"
+    }
+  ],
+  "status": "Returning Series",
+  "tagline": "Remember this feeling.",
+  "type": "Scripted",
+  "vote_average": 8.4,
+  "vote_count": 6020
+}
