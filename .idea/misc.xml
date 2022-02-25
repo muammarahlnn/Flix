@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/coding/github/Flix/app/src/main/res/drawable/bg_item_genre.xml" value="0.2755208333333333" />
+        <entry key="..\:/coding/github/Flix/app/src/main/res/drawable/ic_error.xml" value="0.2755208333333333" />
+        <entry key="..\:/coding/github/Flix/app/src/main/res/drawable/ic_loading.xml" value="0.2755208333333333" />
+        <entry key="..\:/coding/github/Flix/app/src/main/res/drawable/ic_refresh.xml" value="0.2755208333333333" />
+        <entry key="..\:/coding/github/Flix/app/src/main/res/layout/activity_detail.xml" value="0.264" />
+        <entry key="..\:/coding/github/Flix/app/src/main/res/layout/activity_home.xml" value="0.259375" />
+        <entry key="..\:/coding/github/Flix/app/src/main/res/layout/activity_movie_detail.xml" value="0.264" />
+        <entry key="..\:/coding/github/Flix/app/src/main/res/layout/activity_splash.xml" value="0.259375" />
+        <entry key="..\:/coding/github/Flix/app/src/main/res/layout/activity_tv_show_detail.xml" value="0.264" />
+        <entry key="..\:/coding/github/Flix/app/src/main/res/layout/fragment_film.xml" value="0.259375" />
+        <entry key="..\:/coding/github/Flix/app/src/main/res/layout/item_film.xml" value="0.259375" />
+        <entry key="..\:/coding/github/Flix/app/src/main/res/layout/item_genre.xml" value="0.259375" />
+        <entry key="..\:/coding/github/Flix/app/src/main/res/layout/toolbar_main.xml" value="0.259375" />
+        <entry key="app/src/main/res/drawable-v24/ic_broken_image_black.xml" value="0.35833333333333334" />
+        <entry key="app/src/main/res/drawable-v24/ic_error.xml" value="0.35833333333333334" />
+        <entry key="app/src/main/res/drawable/bg_border_gray.xml" value="0.20052083333333334" />
+        <entry key="app/src/main/res/drawable/bg_card_poster.xml" value="0.35833333333333334" />
+        <entry key="app/src/main/res/drawable/bg_circle_black.xml" value="0.35833333333333334" />
+        <entry key="app/src/main/res/drawable/bg_vote_item_films.xml" value="0.20052083333333334" />
+        <entry key="app/src/main/res/drawable/ic_arrow_back_yellow.xml" value="0.35833333333333334" />
+        <entry key="app/src/main/res/drawable/ic_broken_image.xml" value="0.35833333333333334" />
+        <entry key="app/src/main/res/drawable/ic_broken_image_black.xml" value="0.35833333333333334" />
+        <entry key="app/src/main/res/drawable/ic_error.xml" value="0.35833333333333334" />
+        <entry key="app/src/main/res/drawable/ic_loading.xml" value="0.35833333333333334" />
+        <entry key="app/src/main/res/drawable/ic_refresh_black.xml" value="0.35833333333333334" />
+        <entry key="app/src/main/res/drawable/ic_star_yellow.xml" value="0.20052083333333334" />
+        <entry key="app/src/main/res/layout/activity_detail.xml" value="0.3421875" />
+        <entry key="app/src/main/res/layout/activity_home.xml" value="0.27886323268206037" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.3421875" />
+        <entry key="app/src/main/res/layout/activity_splash.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/fragment_film.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/item_film.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/toolbar_main.xml" value="0.3421875" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="Android" />
+  </component>
+</project>

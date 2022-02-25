@@ -1,0 +1,390 @@
+{
+  "tv_shows": [
+    {
+      "backdrop_path": "/oKt4J3TFjWirVwBqoHyIvv5IImd.jpg",
+      "first_air_date": "2019-06-16",
+      "genre_ids": [
+        18
+      ],
+      "id": 85552,
+      "name": "Euphoria",
+      "origin_country": [
+        "US"
+      ],
+      "original_language": "en",
+      "original_name": "Euphoria",
+      "overview": "A group of high school students navigate love and friendships in a world of drugs, sex, trauma, and social media.",
+      "popularity": 4875.054,
+      "poster_path": "/jtnfNzqZwN4E32FGGxx1YZaBWWf.jpg",
+      "vote_average": 8.4,
+      "vote_count": 6019
+    },
+    {
+      "backdrop_path": "/ctxm191q5o3axFzQsvNPlbKoSYv.jpg",
+      "first_air_date": "2022-01-13",
+      "genre_ids": [
+        10759,
+        35,
+        10765
+      ],
+      "id": 110492,
+      "name": "Peacemaker",
+      "origin_country": [
+        "US"
+      ],
+      "original_language": "en",
+      "original_name": "Peacemaker",
+      "overview": "The continuing story of Peacemaker – a compellingly vainglorious man who believes in peace at any cost, no matter how many people he has to kill to get it – in the aftermath of the events of “The Suicide Squad.”",
+      "popularity": 2442.177,
+      "poster_path": "/hE3LRZAY84fG19a18pzpkZERjTE.jpg",
+      "vote_average": 8.6,
+      "vote_count": 448
+    },
+    {
+      "backdrop_path": "/sjx6zjQI2dLGtEL0HGWsnq6UyLU.jpg",
+      "first_air_date": "2021-12-29",
+      "genre_ids": [
+        10759,
+        10765
+      ],
+      "id": 115036,
+      "name": "The Book of Boba Fett",
+      "origin_country": [
+        "US"
+      ],
+      "original_language": "en",
+      "original_name": "The Book of Boba Fett",
+      "overview": "Legendary bounty hunter Boba Fett and mercenary Fennec Shand must navigate the galaxy’s underworld when they return to the sands of Tatooine to stake their claim on the territory once ruled by Jabba the Hutt and his crime syndicate.",
+      "popularity": 2397.209,
+      "poster_path": "/gNbdjDi1HamTCrfvM9JeA94bNi2.jpg",
+      "vote_average": 8.1,
+      "vote_count": 618
+    },
+    {
+      "backdrop_path": "/z18KvDvFftrNyAMPOVFHkt8Bj8E.jpg",
+      "first_air_date": "2002-09-08",
+      "genre_ids": [
+        10764,
+        10767
+      ],
+      "id": 153748,
+      "name": "Big Brother Famosos",
+      "origin_country": [
+        "PT"
+      ],
+      "original_language": "pt",
+      "original_name": "Big Brother Famosos",
+      "overview": "Big Brother Famosos is the celebrity version of Big Brother Portugal.",
+      "popularity": 1382.899,
+      "poster_path": "/ynFd1Xmr2r05qPqalNZnh2uxuJ0.jpg",
+      "vote_average": 4.5,
+      "vote_count": 8
+    },
+    {
+      "backdrop_path": "/r8CGqB8IJNbA1IruHWquS7YttNB.jpg",
+      "first_air_date": "1995-10-23",
+      "genre_ids": [
+        10766
+      ],
+      "id": 966,
+      "name": "Hollyoaks",
+      "origin_country": [
+        "GB"
+      ],
+      "original_language": "en",
+      "original_name": "Hollyoaks",
+      "overview": "The daily soap that follows the loves, lives and misdemeanours of a group of people living in the Chester village of Hollyoaks where anything could, and frequently does, happen...",
+      "popularity": 1864.891,
+      "poster_path": "/bpmLMZP3M1vLujPqHnOTnKVjRJY.jpg",
+      "vote_average": 5.2,
+      "vote_count": 36
+    },
+    {
+      "backdrop_path": "/ykbaElzavtSbsYG5KbG3pEpREtK.jpg",
+      "first_air_date": "2021-01-11",
+      "genre_ids": [
+        10764
+      ],
+      "id": 116416,
+      "name": "Big Brother 7/7",
+      "origin_country": [
+        "CA"
+      ],
+      "original_language": "fr",
+      "original_name": "Big Brother 7/7",
+      "overview": "",
+      "popularity": 1517.83,
+      "poster_path": "/iUYrQyv0p4UncFolsROm81VNbcB.jpg",
+      "vote_average": 5.1,
+      "vote_count": 4
+    },
+    {
+      "backdrop_path": "/vjcuLy14kxgxCaBToAudZWrGQQh.jpg",
+      "first_air_date": "2021-01-18",
+      "genre_ids": [
+        10764
+      ],
+      "id": 117031,
+      "name": "People Puzzler",
+      "origin_country": [],
+      "original_language": "en",
+      "original_name": "People Puzzler",
+      "overview": "Three lucky contestants put their pop culture knowledge to the test to complete iconic, People Puzzler crosswords. The player with the most points at the end of three rounds wins the game and goes on to play the \"Fast Puzzle Round\" for an enormous cash prize.",
+      "popularity": 1368.688,
+      "poster_path": "/gELQSCY5KKIGQAmOHbcgcRGNlp5.jpg",
+      "vote_average": 5.5,
+      "vote_count": 11
+    },
+    {
+      "backdrop_path": null,
+      "first_air_date": "1991-01-02",
+      "genre_ids": [
+        10767
+      ],
+      "id": 62992,
+      "name": "DAS!",
+      "origin_country": [
+        "DE"
+      ],
+      "original_language": "de",
+      "original_name": "DAS!",
+      "overview": "",
+      "popularity": 1031.112,
+      "poster_path": "/yMg0l6hxCnR94Fcl1F1IEkmG26V.jpg",
+      "vote_average": 1,
+      "vote_count": 2
+    },
+    {
+      "backdrop_path": "/8lBlBItnehgOAwFt0ezxlXuWeIO.jpg",
+      "first_air_date": "2021-11-08",
+      "genre_ids": [
+        10766,
+        18
+      ],
+      "id": 132375,
+      "name": "Um Lugar ao Sol",
+      "origin_country": [
+        "BR"
+      ],
+      "original_language": "pt",
+      "original_name": "Um Lugar ao Sol",
+      "overview": "",
+      "popularity": 950.005,
+      "poster_path": "/63qlVcvlVzOvMaFO8tFA2VG64Yc.jpg",
+      "vote_average": 5.6,
+      "vote_count": 7
+    },
+    {
+      "backdrop_path": "/4dqq8nB8xmdam9UoCDGSJ1dElE9.jpg",
+      "first_air_date": "2021-02-22",
+      "genre_ids": [],
+      "id": 6455,
+      "name": "Chain Reaction",
+      "origin_country": [
+        "US"
+      ],
+      "original_language": "en",
+      "original_name": "Chain Reaction",
+      "overview": "Chain Reaction is an American game show created by Bob Stewart, in which players compete to form chains composed of two-word phrases.\n\nThe show aired three separate runs: Bill Cullen hosted the original series on NBC from January 14 to June 20, 1980. The second version aired on the USA Network from September 29, 1986 to December 27, 1991 and was hosted first by Blake Emmons and later by Geoff Edwards. Another version, hosted by Dylan Lane, premiered on August 1, 2006 on GSN. This version aired its final original episode on June 9, 2007 but has continued to air in reruns since, currently airing Mondays through Fridays at 3:00 PM and 3:30 PM ET on GSN. Starting August 2, 2013, it will air Fridays at 8:00 PM to 10:00 PM on GSN.",
+      "popularity": 1308.835,
+      "poster_path": "/xhjoXm1WEvfQGYBGXKk8xk75z6s.jpg",
+      "vote_average": 1.5,
+      "vote_count": 2
+    },
+    {
+      "backdrop_path": "/l6zdjUDOaklBWfxqa7AtbLr2EnA.jpg",
+      "first_air_date": "2021-12-13",
+      "genre_ids": [
+        10751,
+        35,
+        18
+      ],
+      "id": 135753,
+      "name": "Love Twist",
+      "origin_country": [
+        "KR"
+      ],
+      "original_language": "ko",
+      "original_name": "사랑의 꽈배기",
+      "overview": "A drama depicting a sweet twist in love between the parents and children of three families around the love of two main characters.",
+      "popularity": 1289.425,
+      "poster_path": "/5bTF522eYn6g6r7aYqFpTZzmQq6.jpg",
+      "vote_average": 4.5,
+      "vote_count": 2
+    },
+    {
+      "backdrop_path": "/pkOSjcllDSs4WP9i8DGkw9VgF5Q.jpg",
+      "first_air_date": "2015-07-06",
+      "genre_ids": [
+        10764,
+        10751
+      ],
+      "id": 63452,
+      "name": "Wer weiß denn sowas?",
+      "origin_country": [
+        "DE"
+      ],
+      "original_language": "de",
+      "original_name": "Wer weiß denn sowas?",
+      "overview": "",
+      "popularity": 1182.532,
+      "poster_path": "/abKjah96esLWObidBcWmvKJv61E.jpg",
+      "vote_average": 7.7,
+      "vote_count": 9
+    },
+    {
+      "backdrop_path": "/qCvtJIFowYDzEKk69r2cogNeXp7.jpg",
+      "first_air_date": "2021-01-04",
+      "genre_ids": [
+        10764
+      ],
+      "id": 114885,
+      "name": "Big Brother",
+      "origin_country": [
+        "NL"
+      ],
+      "original_language": "nl",
+      "original_name": "Big Brother",
+      "overview": "",
+      "popularity": 1050.405,
+      "poster_path": "/zmXxCP0op3PoCSiqXkSKDySbxe8.jpg",
+      "vote_average": 9.7,
+      "vote_count": 3
+    },
+    {
+      "backdrop_path": "/o04Mu0fwUommEk500CvFECLZsKX.jpg",
+      "first_air_date": "2021-11-22",
+      "genre_ids": [
+        10766,
+        35
+      ],
+      "id": 139009,
+      "name": "Quanto Mais Vida, Melhor!",
+      "origin_country": [
+        "BR"
+      ],
+      "original_language": "pt",
+      "original_name": "Quanto Mais Vida, Melhor!",
+      "overview": "",
+      "popularity": 746.425,
+      "poster_path": "/ydtfMZMu04L5noElS35BespN8rV.jpg",
+      "vote_average": 8,
+      "vote_count": 1
+    },
+    {
+      "backdrop_path": null,
+      "first_air_date": "2021-11-15",
+      "genre_ids": [
+        18
+      ],
+      "id": 122551,
+      "name": "Viral Scandal",
+      "origin_country": [
+        "PH"
+      ],
+      "original_language": "tl",
+      "original_name": "Viral Scandal",
+      "overview": "The lives of a simple family becomes disrupted when a scandalous video involving their eldest daughter goes viral.",
+      "popularity": 928.179,
+      "poster_path": "/zPsJG3DRDeZZCoja9nnU6p4d67V.jpg",
+      "vote_average": 2,
+      "vote_count": 1
+    },
+    {
+      "backdrop_path": "/xBv1WIHACM1WN2BP0caJuROIx5T.jpg",
+      "first_air_date": "2021-12-20",
+      "genre_ids": [
+        10764
+      ],
+      "id": 153870,
+      "name": "Shark Tank India",
+      "origin_country": [
+        "IN"
+      ],
+      "original_language": "hi",
+      "original_name": "शार्क टैंक इंडिया",
+      "overview": "Aspiring entrepreneurs from India pitch their business models to a panel of investors and persuade them to invest money in their idea.",
+      "popularity": 824.208,
+      "poster_path": "/kDZhUEwqWrRkG6W2Y0WIYTstb0K.jpg",
+      "vote_average": 9.8,
+      "vote_count": 2
+    },
+    {
+      "backdrop_path": "/1CqkiWeuwlaMswG02q3mBmraiDM.jpg",
+      "first_air_date": "2021-12-09",
+      "genre_ids": [
+        35,
+        18
+      ],
+      "id": 116450,
+      "name": "And Just Like That…",
+      "origin_country": [
+        "US"
+      ],
+      "original_language": "en",
+      "original_name": "And Just Like That…",
+      "overview": "This new chapter of “Sex and the City” follows Carrie, Miranda and Charlotte as they navigate the journey from the complicated reality of life and friendship in their 30s to the even more complicated reality of life and friendship in their 50s.",
+      "popularity": 504.449,
+      "poster_path": "/ahFca8RIGGY0kWieDwHzybi0sT1.jpg",
+      "vote_average": 7.8,
+      "vote_count": 231
+    },
+    {
+      "backdrop_path": "/5ie8dU1MBhHP5I2t54YqWdttbsb.jpg",
+      "first_air_date": "2021-01-04",
+      "genre_ids": [
+        10766
+      ],
+      "id": 115810,
+      "name": "Amor Amor",
+      "origin_country": [
+        "PT"
+      ],
+      "original_language": "pt",
+      "original_name": "Amor Amor",
+      "overview": "This is the story of a woman who fell in love and was betrayed. Her beloved was successful at the expense of a song that stole from her, while she was forced to fight for survival, far from her homeland.\n\nIt is also the story of a girl forced to mature quickly, to raise her daughter, without knowing that, after all, it was not her daughter she was raising...",
+      "popularity": 675.023,
+      "poster_path": "/wksRAOMoyHDxJWSW6bG4MyECW9G.jpg",
+      "vote_average": 3.1,
+      "vote_count": 23
+    },
+    {
+      "backdrop_path": "/pkKUW6wk2yfPc66YF7647ARi6uv.jpg",
+      "first_air_date": "2009-10-05",
+      "genre_ids": [],
+      "id": 114439,
+      "name": "Let's Make a Deal",
+      "origin_country": [
+        "US"
+      ],
+      "original_language": "en",
+      "original_name": "Let's Make a Deal",
+      "overview": "Audience members dress up in outlandish costumes to get host Wayne Brady's attention in an attempt to make deals for trips, prizes, cars or cash, while trying to avoid the dreaded Zonks.",
+      "popularity": 696.112,
+      "poster_path": "/8lQkzJCwPpB0P6GieQeojUOW6PU.jpg",
+      "vote_average": 4.3,
+      "vote_count": 3
+    },
+    {
+      "backdrop_path": "/qqWn3Mov1hxtEcMK7gPvok1TO0E.jpg",
+      "first_air_date": "2021-01-10",
+      "genre_ids": [
+        10764
+      ],
+      "id": 113207,
+      "name": "Big Brother Célébrités",
+      "origin_country": [
+        "CA"
+      ],
+      "original_language": "fr",
+      "original_name": "Big Brother Célébrités",
+      "overview": "",
+      "popularity": 695.149,
+      "poster_path": "/rXJoUCx5wDxkeKhvw7hlH5KAliF.jpg",
+      "vote_average": 2,
+      "vote_count": 1
+    }
+  ],
+  "total_pages": 52,
+  "total_results": 1022
+}
