@@ -5,10 +5,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.paging.PagedList
 import com.ardnn.flix.data.FlixRepository
-import com.ardnn.flix.data.source.local.entity.TvShowEntity
-import com.ardnn.flix.utils.DataDummy
-import com.ardnn.flix.utils.PagedTestDataSources
-import com.ardnn.flix.utils.SortUtils
+import com.ardnn.flix.util.DataDummy
+import com.ardnn.flix.util.PagedTestDataSources
+import com.ardnn.flix.util.SortUtils
 import com.ardnn.flix.vo.Resource
 import com.nhaarman.mockitokotlin2.verify
 import org.junit.Assert.*

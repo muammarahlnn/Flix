@@ -4,30 +4,30 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.paging.PagedList
 import com.ardnn.flix.data.FlixRepository
-import com.ardnn.flix.data.source.local.entity.MovieDetailEntity
-import com.ardnn.flix.data.source.local.entity.TvShowDetailEntity
+import com.ardnn.flix.data.source.local.entity.MovieEntity
+import com.ardnn.flix.data.source.local.entity.TvShowEntity
 
 class FavoritesViewModel(private val flixRepository: FlixRepository) : ViewModel() {
 
     private var section = 0
 
-    fun getFavoriteMovies(): LiveData<PagedList<MovieDetailEntity>> =
+    fun getFavoriteMovies(): LiveData<PagedList<MovieEntity>> =
         flixRepository.getFavoriteMovies()
 
-    fun getFavoriteTvShows(): LiveData<PagedList<TvShowDetailEntity>> =
+    fun getFavoriteTvShows(): LiveData<PagedList<TvShowEntity>> =
         flixRepository.getFavoriteTvShows()
 
     fun setSection(section: Int) {
         this.section = section
     }
 
-    fun setIsFavoriteMovie(movieDetail: MovieDetailEntity) {
-        val newState = !movieDetail.isFavorite
-        flixRepository.setIsFavoriteMovieDetail(movieDetail, newState)
+    fun setIsFavoriteMovie(movie: MovieEntity) {
+        val newState = !movie.isFavorite
+        flixRepository.setIsFavoriteMovie(movie, newState)
     }
 
-    fun setIsFavoriteTvShow(tvShowDetail: TvShowDetailEntity) {
-        val newState = !tvShowDetail.isFavorite
-        flixRepository.setIsFavoriteTvShowDetail(tvShowDetail, newState)
+    fun setIsFavoriteTvShow(tvShow: TvShowEntity) {
+        val newState = !tvShow.isFavorite
+        flixRepository.setIsFavoriteTvShow(tvShow, newState)
     }
 }

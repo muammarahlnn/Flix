@@ -7,13 +7,14 @@ import android.view.*
 import androidx.fragment.app.Fragment
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
-import androidx.paging.PagedList
 import com.ardnn.flix.R
 import com.ardnn.flix.data.source.local.entity.TvShowEntity
+import com.ardnn.flix.data.source.local.entity.relation.SectionWithTvShows
 import com.ardnn.flix.databinding.FragmentFilmsBinding
-import com.ardnn.flix.ui.tvshow_detail.TvShowDetailActivity
-import com.ardnn.flix.utils.SingleClickListener
-import com.ardnn.flix.utils.SortUtils
+import com.ardnn.flix.ui.tvshowdetail.TvShowDetailActivity
+import com.ardnn.flix.util.PagedListDataSources
+import com.ardnn.flix.util.SingleClickListener
+import com.ardnn.flix.util.SortUtils
 import com.ardnn.flix.viewmodel.ViewModelFactory
 import com.ardnn.flix.vo.Resource
 import com.ardnn.flix.vo.Status
@@ -96,23 +97,23 @@ class TvShowsFragment : Fragment(), SingleClickListener<TvShowEntity> {
         }
 
         viewModel.setTvShowsSort(sort)
-        viewModel.getTvShows(page, sort).observe(viewLifecycleOwner, { tvShowsResource ->
-            if (tvShowsResource != null) {
-                setTvShows(tvShowsResource)
+        viewModel.getSectionWithTvShows(page, sort).observe(viewLifecycleOwner, { sectionWithTvShowsResource ->
+            if (sectionWithTvShowsResource != null) {
+                setTvShows(sectionWithTvShowsResource)
             }
         })
         return super.onOptionsItemSelected(item)
     }
 
     private fun subscribe() {
-        viewModel.getTvShows(page, SortUtils.DEFAULT).observe(viewLifecycleOwner, { tvShowsResource ->
-            if (tvShowsResource != null) {
-                setTvShows(tvShowsResource)
+        viewModel.getSectionWithTvShows(page, SortUtils.DEFAULT).observe(viewLifecycleOwner, { sectionWithTvShowsResource ->
+            if (sectionWithTvShowsResource != null) {
+                setTvShows(sectionWithTvShowsResource)
             }
         })
     }
 
-    private fun setTvShows(tvShowsResource: Resource<PagedList<TvShowEntity>>) {
+    private fun setTvShows(tvShowsResource: Resource<SectionWithTvShows>) {
         when (tvShowsResource.status) {
             Status.LOADING -> {
                 showLoading(true)
@@ -123,8 +124,10 @@ class TvShowsFragment : Fragment(), SingleClickListener<TvShowEntity> {
                     showLoading(false)
                     showAlert(false)
 
+                    val tvShows = tvShowsResource.data.tvShows
+                    val pagedTvShows = PagedListDataSources.snapshot(tvShows)
                     val adapter = TvShowsAdapter(this)
-                    adapter.submitList(tvShowsResource.data)
+                    adapter.submitList(pagedTvShows)
                     binding?.recyclerView?.adapter = adapter
                 }
             }

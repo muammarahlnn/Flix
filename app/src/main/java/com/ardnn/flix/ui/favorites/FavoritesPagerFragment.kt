@@ -7,7 +7,7 @@ import androidx.annotation.StringRes
 import androidx.viewpager2.widget.ViewPager2
 import com.ardnn.flix.R
 import com.ardnn.flix.databinding.FragmentFavoritesPagerBinding
-import com.ardnn.flix.utils.Helper
+import com.ardnn.flix.util.Helper
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 

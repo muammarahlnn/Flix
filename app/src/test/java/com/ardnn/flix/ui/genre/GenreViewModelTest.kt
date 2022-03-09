@@ -4,9 +4,9 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import com.ardnn.flix.data.FlixRepository
-import com.ardnn.flix.data.source.local.entity.relation.GenreWithMovieDetails
-import com.ardnn.flix.data.source.local.entity.relation.GenreWithTvShowDetails
-import com.ardnn.flix.utils.DataDummy
+import com.ardnn.flix.data.source.local.entity.relation.GenreWithMovies
+import com.ardnn.flix.data.source.local.entity.relation.GenreWithTvShows
+import com.ardnn.flix.util.DataDummy
 import com.nhaarman.mockitokotlin2.verify
 import org.junit.Assert.*
 
@@ -38,10 +38,10 @@ class GenreViewModelTest {
     private lateinit var flixRepository: FlixRepository
 
     @Mock
-    private lateinit var genreMoviesObserver: Observer<GenreWithMovieDetails>
+    private lateinit var genreMoviesObserver: Observer<GenreWithMovies>
 
     @Mock
-    private lateinit var genreTvShowsObserver: Observer<GenreWithTvShowDetails>
+    private lateinit var genreTvShowsObserver: Observer<GenreWithTvShows>
 
     @Before
     fun setUp() {
@@ -54,7 +54,7 @@ class GenreViewModelTest {
 
     @Test
     fun `getGenreWithMovies should be success`() {
-        val expected = MutableLiveData<GenreWithMovieDetails>()
+        val expected = MutableLiveData<GenreWithMovies>()
         expected.value = dataDummy.generateDummyGenreWithMovies()
 
         `when`(flixRepository.getGenreWithMovies(genreId))
@@ -70,7 +70,7 @@ class GenreViewModelTest {
 
     @Test
     fun `getGenreWithMovies should be success but data is empty`() {
-        val expected = MutableLiveData<GenreWithMovieDetails>()
+        val expected = MutableLiveData<GenreWithMovies>()
         expected.value = dataDummy.generateDummyGenreWithMovies(true)
 
         `when`(flixRepository.getGenreWithMovies(genreId))
@@ -85,7 +85,7 @@ class GenreViewModelTest {
 
     @Test
     fun `getGenreWithTvShows should be success`() {
-        val expected = MutableLiveData<GenreWithTvShowDetails>()
+        val expected = MutableLiveData<GenreWithTvShows>()
         expected.value = dataDummy.generateDummyGenreWithTvShows()
 
         `when`(flixRepository.getGenreWithTvShows(genreId))
@@ -101,7 +101,7 @@ class GenreViewModelTest {
 
     @Test
     fun `getGenreWithTvShows should be success but data is empty`() {
-        val expected = MutableLiveData<GenreWithTvShowDetails>()
+        val expected = MutableLiveData<GenreWithTvShows>()
         expected.value = dataDummy.generateDummyGenreWithTvShows(true)
 
         `when`(flixRepository.getGenreWithTvShows(genreId))

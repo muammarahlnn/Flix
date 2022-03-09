@@ -5,10 +5,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.paging.PagedList
 import com.ardnn.flix.data.FlixRepository
-import com.ardnn.flix.data.source.local.entity.MovieDetailEntity
-import com.ardnn.flix.data.source.local.entity.TvShowDetailEntity
-import com.ardnn.flix.utils.DataDummy
-import com.ardnn.flix.utils.PagedTestDataSources
+import com.ardnn.flix.data.source.local.entity.MovieEntity
+import com.ardnn.flix.data.source.local.entity.TvShowEntity
+import com.ardnn.flix.util.DataDummy
+import com.ardnn.flix.util.PagedTestDataSources
 import com.nhaarman.mockitokotlin2.verify
 import org.junit.Assert.*
 
@@ -36,10 +36,10 @@ class FavoritesViewModelTest {
     private lateinit var flixRepository: FlixRepository
 
     @Mock
-    private lateinit var favoriteMoviesObserver: Observer<PagedList<MovieDetailEntity>>
+    private lateinit var favoriteMoviesObserver: Observer<PagedList<MovieEntity>>
 
     @Mock
-    private lateinit var favoriteTvShowsObserver: Observer<PagedList<TvShowDetailEntity>>
+    private lateinit var favoriteTvShowsObserver: Observer<PagedList<TvShowEntity>>
 
     private lateinit var viewModel: FavoritesViewModel
     private lateinit var dataDummy: DataDummy
@@ -54,7 +54,7 @@ class FavoritesViewModelTest {
 
     @Test
     fun `getFavoriteMovies should be success`() {
-        val expected = MutableLiveData<PagedList<MovieDetailEntity>>()
+        val expected = MutableLiveData<PagedList<MovieEntity>>()
         expected.value = PagedTestDataSources.snapshot(dataDummy.generateDummyMovieDetailList())
 
         `when`(flixRepository.getFavoriteMovies())
@@ -72,7 +72,7 @@ class FavoritesViewModelTest {
 
     @Test
     fun `getFavoriteMovies should be success but data is empty`() {
-        val expected = MutableLiveData<PagedList<MovieDetailEntity>>()
+        val expected = MutableLiveData<PagedList<MovieEntity>>()
         expected.value = PagedTestDataSources.snapshot()
 
         `when`(flixRepository.getFavoriteMovies())
@@ -87,7 +87,7 @@ class FavoritesViewModelTest {
 
     @Test
     fun `getFavoriteTvShows should be success`() {
-        val expected = MutableLiveData<PagedList<TvShowDetailEntity>>()
+        val expected = MutableLiveData<PagedList<TvShowEntity>>()
         expected.value = PagedTestDataSources.snapshot(dataDummy.generateDummyTvShowDetailList())
 
         `when`(flixRepository.getFavoriteTvShows())
@@ -105,7 +105,7 @@ class FavoritesViewModelTest {
 
     @Test
     fun `getFavoriteTvShows should be success but data is empty`() {
-        val expected = MutableLiveData<PagedList<TvShowDetailEntity>>()
+        val expected = MutableLiveData<PagedList<TvShowEntity>>()
         expected.value = PagedTestDataSources.snapshot()
 
         `when`(flixRepository.getFavoriteTvShows())

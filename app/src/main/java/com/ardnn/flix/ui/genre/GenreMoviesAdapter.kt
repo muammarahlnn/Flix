@@ -7,13 +7,13 @@ import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.ardnn.flix.R
-import com.ardnn.flix.data.source.local.entity.MovieDetailEntity
+import com.ardnn.flix.data.source.local.entity.MovieEntity
 import com.ardnn.flix.data.source.remote.ImageSize
 import com.ardnn.flix.databinding.ItemFilmBinding
-import com.ardnn.flix.ui.movie_detail.MovieDetailActivity
-import com.ardnn.flix.utils.Helper
+import com.ardnn.flix.ui.moviedetail.MovieDetailActivity
+import com.ardnn.flix.util.Helper
 
-class GenreMoviesAdapter : PagedListAdapter<MovieDetailEntity, GenreMoviesAdapter.MovieViewHolder>(DIFF_CALLBACK) {
+class GenreMoviesAdapter : PagedListAdapter<MovieEntity, GenreMoviesAdapter.MovieViewHolder>(DIFF_CALLBACK) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
         val binding = ItemFilmBinding
@@ -31,44 +31,44 @@ class GenreMoviesAdapter : PagedListAdapter<MovieDetailEntity, GenreMoviesAdapte
     class MovieViewHolder(private val binding: ItemFilmBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun onBind(movieDetail: MovieDetailEntity) {
+        fun onBind(movie: MovieEntity) {
             with (binding) {
-                if (movieDetail.posterUrl.isNullOrEmpty()) {
+                if (movie.posterUrl.isNullOrEmpty()) {
                     ivPoster.setImageResource(R.drawable.ic_error)
                 } else {
                     Helper.setImageGlide(
                         itemView.context,
-                        movieDetail.getPosterUrl(ImageSize.W342),
+                        movie.getPosterUrl(ImageSize.W342),
                         ivPoster)
                 }
 
-                tvTitle.text = movieDetail.title ?: "-"
+                tvTitle.text = movie.title ?: "-"
                 tvYear.text =
-                    if (movieDetail.releaseDate.isNullOrEmpty()) "-"
-                    else movieDetail.releaseDate.toString().substring(0, 4)
-                tvRating.text = (movieDetail.rating ?: "-").toString()
+                    if (movie.releaseDate.isNullOrEmpty()) "-"
+                    else movie.releaseDate.toString().substring(0, 4)
+                tvRating.text = (movie.rating ?: "-").toString()
             }
 
             itemView.setOnClickListener {
                 val toMovieDetail = Intent(itemView.context, MovieDetailActivity::class.java)
-                toMovieDetail.putExtra(MovieDetailActivity.EXTRA_MOVIE_ID, movieDetail.id)
+                toMovieDetail.putExtra(MovieDetailActivity.EXTRA_MOVIE_ID, movie.id)
                 itemView.context.startActivity(toMovieDetail)
             }
         }
     }
 
     companion object {
-        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<MovieDetailEntity>() {
+        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<MovieEntity>() {
             override fun areItemsTheSame(
-                oldItem: MovieDetailEntity,
-                newItem: MovieDetailEntity
+                oldItem: MovieEntity,
+                newItem: MovieEntity
             ): Boolean {
                 return oldItem.id == newItem.id
             }
 
             override fun areContentsTheSame(
-                oldItem: MovieDetailEntity,
-                newItem: MovieDetailEntity
+                oldItem: MovieEntity,
+                newItem: MovieEntity
             ): Boolean {
                 return oldItem == newItem
             }

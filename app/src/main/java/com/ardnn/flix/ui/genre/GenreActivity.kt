@@ -1,12 +1,12 @@
 package com.ardnn.flix.ui.genre
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.ardnn.flix.R
 import com.ardnn.flix.databinding.ActivityGenreBinding
-import com.ardnn.flix.utils.PagedListDataSources
+import com.ardnn.flix.util.PagedListDataSources
 import com.ardnn.flix.viewmodel.ViewModelFactory
 
 class GenreActivity : AppCompatActivity() {
@@ -51,7 +51,7 @@ class GenreActivity : AppCompatActivity() {
         when (genreType) {
             getString(R.string.movies) -> {
                 viewModel.getGenreWithMovies().observe(this, { genreWithMovies ->
-                    val movies = genreWithMovies.movieDetails
+                    val movies = genreWithMovies.movies
                     val pagedMovies = PagedListDataSources.snapshot(movies)
                     val adapter = GenreMoviesAdapter()
                     adapter.submitList(pagedMovies)
@@ -60,7 +60,7 @@ class GenreActivity : AppCompatActivity() {
             }
             getString(R.string.tv_shows) -> {
                 viewModel.getGenreWithTvShows().observe(this, { genreWithTvShows ->
-                    val tvShows = genreWithTvShows.tvShowDetails
+                    val tvShows = genreWithTvShows.tvShows
                     val pagedTvShows = PagedListDataSources.snapshot(tvShows)
                     val adapter = GenreTvShowsAdapter()
                     adapter.submitList(pagedTvShows)

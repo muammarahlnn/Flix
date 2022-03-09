@@ -40,8 +40,4 @@
     <string name="iv_poster_desc">Poster image</string>
     <string name="iv_rating_desc">Image rating</string>
     <string name="app_logo_desc">Application logo image</string>
-    <string name="title_activity_temp_home">TempHomeActivity</string>
-    <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
 </resources>

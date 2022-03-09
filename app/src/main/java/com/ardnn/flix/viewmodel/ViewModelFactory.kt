@@ -7,9 +7,9 @@ import com.ardnn.flix.data.FlixRepository
 import com.ardnn.flix.di.Injection
 import com.ardnn.flix.ui.favorites.FavoritesViewModel
 import com.ardnn.flix.ui.genre.GenreViewModel
-import com.ardnn.flix.ui.movie_detail.MovieDetailViewModel
+import com.ardnn.flix.ui.moviedetail.MovieDetailViewModel
 import com.ardnn.flix.ui.movies.MoviesViewModel
-import com.ardnn.flix.ui.tvshow_detail.TvShowDetailViewModel
+import com.ardnn.flix.ui.tvshowdetail.TvShowDetailViewModel
 import com.ardnn.flix.ui.tvshows.TvShowsViewModel
 
 class ViewModelFactory private constructor(

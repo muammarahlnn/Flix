@@ -2,42 +2,41 @@ package com.ardnn.flix.data
 
 import androidx.lifecycle.LiveData
 import androidx.paging.PagedList
-import com.ardnn.flix.data.source.local.entity.MovieDetailEntity
 import com.ardnn.flix.data.source.local.entity.MovieEntity
-import com.ardnn.flix.data.source.local.entity.TvShowDetailEntity
 import com.ardnn.flix.data.source.local.entity.TvShowEntity
-import com.ardnn.flix.data.source.local.entity.relation.GenreWithMovieDetails
-import com.ardnn.flix.data.source.local.entity.relation.GenreWithTvShowDetails
-import com.ardnn.flix.data.source.local.entity.relation.MovieDetailWithGenres
-import com.ardnn.flix.data.source.local.entity.relation.TvShowDetailWithGenres
+import com.ardnn.flix.data.source.local.entity.relation.*
 import com.ardnn.flix.data.source.remote.ApiResponse
 import com.ardnn.flix.data.source.remote.response.CastResponse
 import com.ardnn.flix.vo.Resource
 
 interface IFlixRepository {
-    fun getMovies(page: Int, section: Int, filter: String): LiveData<Resource<PagedList<MovieEntity>>>
+    // === section ===================================================================
+    fun getSectionWithMovies(page: Int, section: Int, filter: String): LiveData<Resource<SectionWithMovies>>
 
-    fun getMovieDetailWithGenres(movieId: Int): LiveData<Resource<MovieDetailWithGenres>>
+    fun getSectionWithTvShows(page: Int, section: Int, filter: String): LiveData<Resource<SectionWithTvShows>>
+
+    // === movie ===================================================================
+    fun getMovieWithGenres(movieId: Int): LiveData<Resource<MovieWithGenres>>
+
+    fun getFavoriteMovies(): LiveData<PagedList<MovieEntity>>
 
     // not resource yet
     fun getMovieCredits(movieId: Int): LiveData<ApiResponse<List<CastResponse>>>
 
-    fun getTvShows(page: Int, section: Int, filter: String): LiveData<Resource<PagedList<TvShowEntity>>>
+    fun setIsFavoriteMovie(movie: MovieEntity, state: Boolean)
 
-    fun getTvShowDetailWithGenres(tvShowId: Int): LiveData<Resource<TvShowDetailWithGenres>>
+    // === tv show ===================================================================
+    fun getTvShowWithGenres(tvShowId: Int): LiveData<Resource<TvShowWithGenres>>
+
+    fun getFavoriteTvShows(): LiveData<PagedList<TvShowEntity>>
 
     // not resource yet
     fun getTvShowCredits(tvShowId: Int): LiveData<ApiResponse<List<CastResponse>>>
 
-    fun getFavoriteMovies(): LiveData<PagedList<MovieDetailEntity>>
+    fun setIsFavoriteTvShow(tvShow: TvShowEntity, state: Boolean)
 
-    fun getFavoriteTvShows(): LiveData<PagedList<TvShowDetailEntity>>
+    // === genre ===================================================================
+    fun getGenreWithMovies(genreId: Int): LiveData<GenreWithMovies>
 
-    fun getGenreWithMovies(genreId: Int): LiveData<GenreWithMovieDetails>
-
-    fun getGenreWithTvShows(genreId: Int): LiveData<GenreWithTvShowDetails>
-
-    fun setIsFavoriteMovieDetail(movieDetail: MovieDetailEntity, state: Boolean)
-
-    fun setIsFavoriteTvShowDetail(tvShowDetail: TvShowDetailEntity, state: Boolean)
+    fun getGenreWithTvShows(genreId: Int): LiveData<GenreWithTvShows>
 }

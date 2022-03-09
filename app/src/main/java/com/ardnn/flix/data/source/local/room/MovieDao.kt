@@ -3,35 +3,34 @@ package com.ardnn.flix.data.source.local.room
 import androidx.lifecycle.LiveData
 import androidx.paging.DataSource
 import androidx.room.*
-import androidx.sqlite.db.SupportSQLiteQuery
-import com.ardnn.flix.data.source.local.entity.MovieDetailEntity
 import com.ardnn.flix.data.source.local.entity.MovieEntity
-import com.ardnn.flix.data.source.local.entity.relation.MovieDetailGenreCrossRef
-import com.ardnn.flix.data.source.local.entity.relation.MovieDetailWithGenres
+import com.ardnn.flix.data.source.local.entity.relation.MovieGenreCrossRef
+import com.ardnn.flix.data.source.local.entity.relation.MovieWithGenres
 
 @Dao
 interface MovieDao {
-    @Transaction
-    @RawQuery(observedEntities = [MovieEntity::class])
-    fun getMovies(query: SupportSQLiteQuery): DataSource.Factory<Int, MovieEntity>
 
     @Transaction
-    @Query("SELECT * FROM movie_detail_entities where is_favorite = 1")
-    fun getFavoriteMovies(): DataSource.Factory<Int, MovieDetailEntity>
+    @Query("SELECT * FROM movie_detail_entities WHERE movie_id = :movieId")
+    fun getMovie(movieId: Int): MovieEntity
 
     @Transaction
-    @Query("SELECT * FROM movie_detail_entities WHERE movie_id = :id")
-    fun getMovieDetailWithGenres(id: Int): LiveData<MovieDetailWithGenres>
+    @Query("SELECT * FROM movie_detail_entities WHERE is_favorite = 1")
+    fun getFavoriteMovies(): DataSource.Factory<Int, MovieEntity>
+
+    @Transaction
+    @Query("SELECT * FROM movie_detail_entities WHERE movie_id = :movieId")
+    fun getMovieWithGenres(movieId: Int): LiveData<MovieWithGenres>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertMovies(movies: List<MovieEntity>)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertMovieDetail(movieDetail: MovieDetailEntity)
+    fun insertMovie(movie: MovieEntity)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertMovieDetailGenreCrossRef(crossRef: MovieDetailGenreCrossRef)
+    fun insertMovieGenreCrossRef(crossRef: MovieGenreCrossRef)
 
     @Update
-    fun updateMovieDetail(movieDetail: MovieDetailEntity)
+    fun updateMovie(movie: MovieEntity)
 }

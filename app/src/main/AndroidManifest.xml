@@ -15,10 +15,10 @@
             android:name=".ui.genre.GenreActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.tvshow_detail.TvShowDetailActivity"
+            android:name=".ui.tvshowdetail.TvShowDetailActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.movie_detail.MovieDetailActivity"
+            android:name=".ui.moviedetail.MovieDetailActivity"
             android:exported="false" />
         <activity
             android:name=".ui.splash.SplashActivity"

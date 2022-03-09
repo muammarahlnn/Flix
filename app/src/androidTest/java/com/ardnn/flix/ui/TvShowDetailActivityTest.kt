@@ -10,7 +10,7 @@ import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import com.ardnn.flix.R
 import com.ardnn.flix.ui.home.HomeActivity
-import com.ardnn.flix.utils.EspressoIdlingResource
+import com.ardnn.flix.util.EspressoIdlingResource
 import org.hamcrest.core.AllOf
 
 import org.junit.After

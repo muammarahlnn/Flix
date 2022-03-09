@@ -4,20 +4,18 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.DataSource
 import com.ardnn.flix.data.source.local.LocalDataSource
-import com.ardnn.flix.data.source.local.entity.MovieDetailEntity
 import com.ardnn.flix.data.source.local.entity.MovieEntity
-import com.ardnn.flix.data.source.local.entity.TvShowDetailEntity
 import com.ardnn.flix.data.source.local.entity.TvShowEntity
-import com.ardnn.flix.data.source.local.entity.relation.GenreWithMovieDetails
-import com.ardnn.flix.data.source.local.entity.relation.GenreWithTvShowDetails
-import com.ardnn.flix.data.source.local.entity.relation.MovieDetailWithGenres
-import com.ardnn.flix.data.source.local.entity.relation.TvShowDetailWithGenres
+import com.ardnn.flix.data.source.local.entity.relation.GenreWithMovies
+import com.ardnn.flix.data.source.local.entity.relation.GenreWithTvShows
+import com.ardnn.flix.data.source.local.entity.relation.MovieWithGenres
+import com.ardnn.flix.data.source.local.entity.relation.TvShowWithGenres
 import com.ardnn.flix.data.source.remote.datasource.RemoteDataSource
 import com.ardnn.flix.data.source.remote.response.MovieDetailResponse
 import com.ardnn.flix.data.source.remote.response.MovieResponse
 import com.ardnn.flix.data.source.remote.response.TvShowDetailResponse
 import com.ardnn.flix.data.source.remote.response.TvShowResponse
-import com.ardnn.flix.utils.*
+import com.ardnn.flix.util.*
 import com.ardnn.flix.vo.Resource
 import com.nhaarman.mockitokotlin2.verify
 import org.junit.Assert.assertEquals
@@ -91,7 +89,7 @@ class FlixRepositoryTest {
 
     @Test
     fun getFavoriteMovies() {
-        val dataSourceFactory = mock(DataSource.Factory::class.java) as DataSource.Factory<Int, MovieDetailEntity>
+        val dataSourceFactory = mock(DataSource.Factory::class.java) as DataSource.Factory<Int, MovieEntity>
         `when`(local.getFavoriteMovies()).thenReturn(dataSourceFactory)
         flixRepository.getFavoriteMovies()
 
@@ -104,7 +102,7 @@ class FlixRepositoryTest {
 
     @Test
     fun getMovieDetailWithGenres() {
-        val dummyEntity = MutableLiveData<MovieDetailWithGenres>()
+        val dummyEntity = MutableLiveData<MovieWithGenres>()
         dummyEntity.value = dataDummy.generateDummyMovieDetailWithGenres()
         `when`(local.getMovieDetailWithGenres(movieId)).thenReturn(dummyEntity)
 
@@ -132,7 +130,7 @@ class FlixRepositoryTest {
 
     @Test
     fun getFavoriteTvShows() {
-        val dataSourceFactory = mock(DataSource.Factory::class.java) as DataSource.Factory<Int, TvShowDetailEntity>
+        val dataSourceFactory = mock(DataSource.Factory::class.java) as DataSource.Factory<Int, TvShowEntity>
         `when`(local.getFavoriteTvShows()).thenReturn(dataSourceFactory)
         flixRepository.getFavoriteTvShows()
 
@@ -145,7 +143,7 @@ class FlixRepositoryTest {
 
     @Test
     fun getTvShowDetailWithGenres() {
-        val dummyEntity = MutableLiveData<TvShowDetailWithGenres>()
+        val dummyEntity = MutableLiveData<TvShowWithGenres>()
         dummyEntity.value = dataDummy.generateDummyTvShowDetailWithGenres()
         `when`(local.getTvShowDetailWithGenres(tvShowId)).thenReturn(dummyEntity)
 
@@ -159,7 +157,7 @@ class FlixRepositoryTest {
 
     @Test
     fun getGenreWithMovies() {
-        val dummyEntity = MutableLiveData<GenreWithMovieDetails>()
+        val dummyEntity = MutableLiveData<GenreWithMovies>()
         dummyEntity.value = dataDummy.generateDummyGenreWithMovies()
         `when`(local.getGenreWithMovies(genreId)).thenReturn(dummyEntity)
 
@@ -173,7 +171,7 @@ class FlixRepositoryTest {
 
     @Test
     fun getGenreWithTvShows() {
-        val dummyEntity = MutableLiveData<GenreWithTvShowDetails>()
+        val dummyEntity = MutableLiveData<GenreWithTvShows>()
         dummyEntity.value = dataDummy.generateDummyGenreWithTvShows()
         `when`(local.getGenreWithTvShows(genreId)).thenReturn(dummyEntity)
 

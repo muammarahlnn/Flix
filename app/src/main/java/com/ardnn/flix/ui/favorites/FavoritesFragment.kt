@@ -9,8 +9,8 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ardnn.flix.R
-import com.ardnn.flix.data.source.local.entity.MovieDetailEntity
-import com.ardnn.flix.data.source.local.entity.TvShowDetailEntity
+import com.ardnn.flix.data.source.local.entity.MovieEntity
+import com.ardnn.flix.data.source.local.entity.TvShowEntity
 import com.ardnn.flix.databinding.FragmentFavoritesBinding
 import com.ardnn.flix.viewmodel.ViewModelFactory
 import com.google.android.material.snackbar.Snackbar
@@ -75,7 +75,7 @@ class FavoritesFragment : Fragment() {
         }
     }
 
-    private fun setFavoriteMovies(favoriteMovies: PagedList<MovieDetailEntity>) {
+    private fun setFavoriteMovies(favoriteMovies: PagedList<MovieEntity>) {
         favoriteMoviesAdapter = FavoriteMoviesAdapter()
         favoriteMoviesAdapter.submitList(favoriteMovies)
         binding?.recyclerView?.adapter = favoriteMoviesAdapter
@@ -83,7 +83,7 @@ class FavoritesFragment : Fragment() {
         showAlert(favoriteMovies.isEmpty(), getString(R.string.movies))
     }
 
-    private fun setFavoriteTvShows(favoriteTvShows: PagedList<TvShowDetailEntity>) {
+    private fun setFavoriteTvShows(favoriteTvShows: PagedList<TvShowEntity>) {
         favoriteTvShowsAdapter = FavoriteTvShowsAdapter()
         favoriteTvShowsAdapter.submitList(favoriteTvShows)
         binding?.recyclerView?.adapter = favoriteTvShowsAdapter

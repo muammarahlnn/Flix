@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import com.ardnn.flix.data.source.remote.ApiResponse
 import com.ardnn.flix.data.source.remote.StatusResponse
-import com.ardnn.flix.utils.AppExecutors
+import com.ardnn.flix.util.AppExecutors
 import com.ardnn.flix.vo.Resource
 
 abstract class NetworkBoundResource<ResultType, RequestType>(private val executors: AppExecutors) {

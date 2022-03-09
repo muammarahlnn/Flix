@@ -9,7 +9,7 @@ import com.ardnn.flix.data.source.local.entity.relation.*
 import com.ardnn.flix.data.source.remote.ApiResponse
 import com.ardnn.flix.data.source.remote.datasource.RemoteDataSource
 import com.ardnn.flix.data.source.remote.response.*
-import com.ardnn.flix.utils.AppExecutors
+import com.ardnn.flix.util.AppExecutors
 import com.ardnn.flix.vo.Resource
 
 class FakeFlixRepository(
@@ -60,7 +60,7 @@ class FakeFlixRepository(
         }.asLiveData()
     }
 
-    override fun getFavoriteMovies(): LiveData<PagedList<MovieDetailEntity>> {
+    override fun getFavoriteMovies(): LiveData<PagedList<MovieEntity>> {
         val config = PagedList.Config.Builder()
             .setEnablePlaceholders(false)
             .setInitialLoadSizeHint(4)
@@ -69,12 +69,12 @@ class FakeFlixRepository(
         return LivePagedListBuilder(localDataSource.getFavoriteMovies(), config).build()
     }
 
-    override fun getMovieDetailWithGenres(movieId: Int): LiveData<Resource<MovieDetailWithGenres>> {
-        return object : NetworkBoundResource<MovieDetailWithGenres, MovieDetailResponse>(appExecutors) {
-            override fun loadFromDB(): LiveData<MovieDetailWithGenres> =
+    override fun getMovieDetailWithGenres(movieId: Int): LiveData<Resource<MovieWithGenres>> {
+        return object : NetworkBoundResource<MovieWithGenres, MovieDetailResponse>(appExecutors) {
+            override fun loadFromDB(): LiveData<MovieWithGenres> =
                 localDataSource.getMovieDetailWithGenres(movieId)
 
-            override fun shouldFetch(movieDetailWithGenres: MovieDetailWithGenres?): Boolean =
+            override fun shouldFetch(movieDetailWithGenres: MovieWithGenres?): Boolean =
                 movieDetailWithGenres == null
 
             override fun createCall(): LiveData<ApiResponse<MovieDetailResponse>> =
@@ -82,7 +82,7 @@ class FakeFlixRepository(
 
             override fun saveCallResult(movieDetailResponse: MovieDetailResponse) {
                 // insert movie detail
-                val movieDetailEntity = MovieDetailEntity(
+                val movieDetailEntity = MovieEntity(
                     movieDetailResponse.id,
                     movieDetailResponse.title,
                     movieDetailResponse.overview,
@@ -101,7 +101,7 @@ class FakeFlixRepository(
                 // insert movie detail genre cross ref
                 val tempMovieId = movieDetailResponse.id
                 for (genre in genresEntity) {
-                    val crossRef = MovieDetailGenreCrossRef(tempMovieId, genre.id)
+                    val crossRef = MovieGenreCrossRef(tempMovieId, genre.id)
                     localDataSource.insertMovieDetailGenreCrossRef(crossRef)
                 }
             }
@@ -155,7 +155,7 @@ class FakeFlixRepository(
         }.asLiveData()
     }
 
-    override fun getFavoriteTvShows(): LiveData<PagedList<TvShowDetailEntity>> {
+    override fun getFavoriteTvShows(): LiveData<PagedList<TvShowEntity>> {
         val config = PagedList.Config.Builder()
             .setEnablePlaceholders(false)
             .setInitialLoadSizeHint(4)
@@ -164,12 +164,12 @@ class FakeFlixRepository(
         return LivePagedListBuilder(localDataSource.getFavoriteTvShows(), config).build()
     }
 
-    override fun getTvShowDetailWithGenres(tvShowId: Int): LiveData<Resource<TvShowDetailWithGenres>> {
-        return object : NetworkBoundResource<TvShowDetailWithGenres, TvShowDetailResponse>(appExecutors) {
-            override fun loadFromDB(): LiveData<TvShowDetailWithGenres> =
+    override fun getTvShowDetailWithGenres(tvShowId: Int): LiveData<Resource<TvShowWithGenres>> {
+        return object : NetworkBoundResource<TvShowWithGenres, TvShowDetailResponse>(appExecutors) {
+            override fun loadFromDB(): LiveData<TvShowWithGenres> =
                 localDataSource.getTvShowDetailWithGenres(tvShowId)
 
-            override fun shouldFetch(tvShowDetailWithGenres: TvShowDetailWithGenres?): Boolean =
+            override fun shouldFetch(tvShowDetailWithGenres: TvShowWithGenres?): Boolean =
                 tvShowDetailWithGenres == null
 
             override fun createCall(): LiveData<ApiResponse<TvShowDetailResponse>> =
@@ -181,7 +181,7 @@ class FakeFlixRepository(
                     if (tvShowDetailResponse.runtimes.isNullOrEmpty()) null
                     else tvShowDetailResponse.runtimes?.get(0)
 
-                val tvShowDetailEntity = TvShowDetailEntity(
+                val tvShowDetailEntity = TvShowEntity(
                     tvShowDetailResponse.id,
                     tvShowDetailResponse.title,
                     tvShowDetailResponse.overview,
@@ -203,7 +203,7 @@ class FakeFlixRepository(
                 // insert tv show detail genres cross ref
                 val tempTvShowId = tvShowDetailResponse.id
                 for (genre in genresEntity) {
-                    val crossRef = TvShowDetailGenreCrossRef(tempTvShowId, genre.id)
+                    val crossRef = TvShowGenreCrossRef(tempTvShowId, genre.id)
                     localDataSource.insertTvShowDetailGenreCrossRef(crossRef)
                 }
             }
@@ -215,21 +215,21 @@ class FakeFlixRepository(
         return remoteDataSource.getTvShowCredits(tvShowId)
     }
 
-    override fun getGenreWithMovies(genreId: Int): LiveData<GenreWithMovieDetails> {
+    override fun getGenreWithMovies(genreId: Int): LiveData<GenreWithMovies> {
         return localDataSource.getGenreWithMovies(genreId)
     }
 
-    override fun getGenreWithTvShows(genreId: Int): LiveData<GenreWithTvShowDetails> {
+    override fun getGenreWithTvShows(genreId: Int): LiveData<GenreWithTvShows> {
         return localDataSource.getGenreWithTvShows(genreId)
     }
 
-    override fun setIsFavoriteMovieDetail(movieDetail: MovieDetailEntity, state: Boolean) {
+    override fun setIsFavoriteMovieDetail(movieDetail: MovieEntity, state: Boolean) {
         appExecutors.diskIO().execute {
             localDataSource.setIsFavoriteMovieDetail(movieDetail, state)
         }
     }
 
-    override fun setIsFavoriteTvShowDetail(tvShowDetail: TvShowDetailEntity, state: Boolean) {
+    override fun setIsFavoriteTvShowDetail(tvShowDetail: TvShowEntity, state: Boolean) {
         appExecutors.diskIO().execute {
             localDataSource.setIsFavoriteTvShowDetail(tvShowDetail, state)
         }

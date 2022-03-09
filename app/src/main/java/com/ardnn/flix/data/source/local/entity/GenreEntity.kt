@@ -7,6 +7,7 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "genre_entities")
 data class GenreEntity(
+
     @PrimaryKey(autoGenerate = false)
     @NonNull
     @ColumnInfo(name = "genre_id")

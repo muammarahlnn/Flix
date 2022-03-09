@@ -9,8 +9,8 @@ import com.ardnn.flix.R
 import com.ardnn.flix.data.source.local.entity.TvShowEntity
 import com.ardnn.flix.data.source.remote.ImageSize
 import com.ardnn.flix.databinding.ItemFilmBinding
-import com.ardnn.flix.utils.Helper
-import com.ardnn.flix.utils.SingleClickListener
+import com.ardnn.flix.util.Helper
+import com.ardnn.flix.util.SingleClickListener
 
 class TvShowsAdapter(
     private val clickListener: SingleClickListener<TvShowEntity>

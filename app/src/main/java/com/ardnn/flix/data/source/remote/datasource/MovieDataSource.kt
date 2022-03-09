@@ -6,7 +6,7 @@ import com.ardnn.flix.BuildConfig
 import com.ardnn.flix.data.source.remote.ApiResponse
 import com.ardnn.flix.data.source.remote.response.*
 import com.ardnn.flix.data.source.remote.service.MovieApiService
-import com.ardnn.flix.utils.EspressoIdlingResource
+import com.ardnn.flix.util.EspressoIdlingResource
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

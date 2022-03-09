@@ -9,7 +9,7 @@ import com.ardnn.flix.data.source.remote.datasource.MovieDataSource
 import com.ardnn.flix.data.source.remote.datasource.PersonDataSource
 import com.ardnn.flix.data.source.remote.datasource.RemoteDataSource
 import com.ardnn.flix.data.source.remote.datasource.TvShowDataSource
-import com.ardnn.flix.utils.AppExecutors
+import com.ardnn.flix.util.AppExecutors
 
 object Injection {
     fun provideRepository(context: Context): FlixRepository {
@@ -23,6 +23,7 @@ object Injection {
         val localDataSource = LocalDataSource.getInstance(
             database.movieDao(),
             database.tvShowDao(),
+            database.sectionDao(),
             database.genreDao()
         )
         val appExecutors = AppExecutors()

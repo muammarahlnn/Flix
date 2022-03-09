@@ -4,16 +4,17 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.*
-import androidx.fragment.app.Fragment
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.paging.PagedList
 import com.ardnn.flix.R
 import com.ardnn.flix.data.source.local.entity.MovieEntity
+import com.ardnn.flix.data.source.local.entity.relation.SectionWithMovies
 import com.ardnn.flix.databinding.FragmentFilmsBinding
-import com.ardnn.flix.ui.movie_detail.MovieDetailActivity
-import com.ardnn.flix.utils.SingleClickListener
-import com.ardnn.flix.utils.SortUtils
+import com.ardnn.flix.ui.moviedetail.MovieDetailActivity
+import com.ardnn.flix.util.PagedListDataSources
+import com.ardnn.flix.util.SingleClickListener
+import com.ardnn.flix.util.SortUtils
 import com.ardnn.flix.viewmodel.ViewModelFactory
 import com.ardnn.flix.vo.Resource
 import com.ardnn.flix.vo.Status
@@ -96,7 +97,7 @@ class MoviesFragment : Fragment(), SingleClickListener<MovieEntity> {
         }
 
         viewModel.setMoviesSort(sort)
-        viewModel.getMovies(page, sort).observe(viewLifecycleOwner, { moviesResource ->
+        viewModel.getSectionWithMovies(page, sort).observe(viewLifecycleOwner, { moviesResource ->
             if (moviesResource != null) {
                 setMovies(moviesResource)
             }
@@ -107,14 +108,14 @@ class MoviesFragment : Fragment(), SingleClickListener<MovieEntity> {
     }
 
     private fun subscribe() {
-        viewModel.getMovies(page, SortUtils.DEFAULT).observe(viewLifecycleOwner, { moviesResource ->
-            if (moviesResource != null) {
-                setMovies(moviesResource)
+        viewModel.getSectionWithMovies(page, SortUtils.DEFAULT).observe(viewLifecycleOwner, { sectionWithMoviesResource ->
+            if (sectionWithMoviesResource != null) {
+                setMovies(sectionWithMoviesResource)
             }
         })
     }
 
-    private fun setMovies(moviesResource: Resource<PagedList<MovieEntity>>) {
+    private fun setMovies(moviesResource: Resource<SectionWithMovies>) {
         when (moviesResource.status) {
             Status.LOADING -> {
                 showLoading(true)
@@ -125,8 +126,10 @@ class MoviesFragment : Fragment(), SingleClickListener<MovieEntity> {
                     showLoading(false)
                     showAlert(false)
 
+                    val movies = moviesResource.data.movies
+                    val pagedMovies = PagedListDataSources.snapshot(movies)
                     val adapter = MoviesAdapter(this)
-                    adapter.submitList(moviesResource.data)
+                    adapter.submitList(pagedMovies)
                     binding?.recyclerView?.adapter = adapter
                 }
             }

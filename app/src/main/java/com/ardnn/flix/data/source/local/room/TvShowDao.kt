@@ -3,35 +3,35 @@ package com.ardnn.flix.data.source.local.room
 import androidx.lifecycle.LiveData
 import androidx.paging.DataSource
 import androidx.room.*
-import androidx.sqlite.db.SupportSQLiteQuery
-import com.ardnn.flix.data.source.local.entity.TvShowDetailEntity
 import com.ardnn.flix.data.source.local.entity.TvShowEntity
-import com.ardnn.flix.data.source.local.entity.relation.TvShowDetailGenreCrossRef
-import com.ardnn.flix.data.source.local.entity.relation.TvShowDetailWithGenres
+import com.ardnn.flix.data.source.local.entity.relation.TvShowGenreCrossRef
+import com.ardnn.flix.data.source.local.entity.relation.TvShowWithGenres
 
 @Dao
 interface TvShowDao {
+
     @Transaction
-    @RawQuery(observedEntities = [TvShowEntity::class])
-    fun getTvShows(query: SupportSQLiteQuery): DataSource.Factory<Int, TvShowEntity>
+    @Query("SELECT * FROM tv_show_detail_entities WHERE tv_show_id = :tvShowId")
+    fun getTvShow(tvShowId: Int): TvShowEntity
 
     @Transaction
     @Query("SELECT * FROM tv_show_detail_entities where is_favorite = 1")
-    fun getFavoriteTvShows(): DataSource.Factory<Int, TvShowDetailEntity>
+    fun getFavoriteTvShows(): DataSource.Factory<Int, TvShowEntity>
 
     @Transaction
-    @Query("SELECT * FROM tv_show_detail_entities WHERE tv_show_id = :id")
-    fun getTvShowDetailWithGenres(id: Int): LiveData<TvShowDetailWithGenres>
+    @Query("SELECT * FROM tv_show_detail_entities WHERE tv_show_id = :tvShowId")
+    fun getTvShowWithGenres(tvShowId: Int): LiveData<TvShowWithGenres>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertTvShows(tvShows: List<TvShowEntity>)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertTvShowDetail(tvShowDetail: TvShowDetailEntity)
+    fun insertTvShow(tvShow: TvShowEntity)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertTvShowDetailGenreCrossRef(crossRef: TvShowDetailGenreCrossRef)
+    fun insertTvShowGenreCrossRef(crossRef: TvShowGenreCrossRef)
 
     @Update
-    fun updateTvShowDetail(tvShowDetail: TvShowDetailEntity)
+    fun updateTvShow(tvShow: TvShowEntity)
+
 }

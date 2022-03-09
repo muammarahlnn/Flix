@@ -6,78 +6,111 @@ import com.ardnn.flix.data.source.local.entity.*
 import com.ardnn.flix.data.source.local.entity.relation.*
 import com.ardnn.flix.data.source.local.room.GenreDao
 import com.ardnn.flix.data.source.local.room.MovieDao
+import com.ardnn.flix.data.source.local.room.SectionDao
 import com.ardnn.flix.data.source.local.room.TvShowDao
-import com.ardnn.flix.utils.SortUtils
+import com.ardnn.flix.util.SortUtils
 
-class LocalDataSource
-private constructor(
+class LocalDataSource private constructor(
     private val movieDao: MovieDao,
     private val tvShowDao: TvShowDao,
-    private val genreDao: GenreDao) {
+    private val sectionDao: SectionDao,
+    private val genreDao: GenreDao
+) {
 
     // === movie dao ===================================================================
-    fun getMovies(section: Int, filter: String): DataSource.Factory<Int, MovieEntity> {
-        val query = SortUtils.getSortedQuery(SortUtils.MOVIES, section, filter)
-        return movieDao.getMovies(query)
-    }
+    fun getMovie(movieId: Int): MovieEntity =
+        movieDao.getMovie(movieId)
 
-    fun getFavoriteMovies(): DataSource.Factory<Int, MovieDetailEntity> =
+    fun getFavoriteMovies(): DataSource.Factory<Int, MovieEntity> =
         movieDao.getFavoriteMovies()
 
-    fun getMovieDetailWithGenres(id: Int): LiveData<MovieDetailWithGenres> =
-        movieDao.getMovieDetailWithGenres(id)
+    fun getMovieWithGenres(movieId: Int): LiveData<MovieWithGenres> =
+        movieDao.getMovieWithGenres(movieId)
 
     fun insertMovies(movies: List<MovieEntity>) {
         movieDao.insertMovies(movies)
     }
 
-    fun insertMovieDetail(movieDetail: MovieDetailEntity) {
-        movieDao.insertMovieDetail(movieDetail)
+    fun insertMovie(movie: MovieEntity) {
+        movieDao.insertMovie(movie)
     }
 
-    fun insertMovieDetailGenreCrossRef(crossRef: MovieDetailGenreCrossRef) {
-        movieDao.insertMovieDetailGenreCrossRef(crossRef)
+    fun insertMovieGenreCrossRef(crossRef: MovieGenreCrossRef) {
+        movieDao.insertMovieGenreCrossRef(crossRef)
     }
 
-    fun setIsFavoriteMovieDetail(movieDetail: MovieDetailEntity, newState: Boolean) {
-        movieDetail.isFavorite = newState
-        movieDao.updateMovieDetail(movieDetail)
+    fun updateMovie(movie: MovieEntity) {
+        movieDao.updateMovie(movie)
+    }
+
+    fun setIsFavoriteMovie(movie: MovieEntity, newState: Boolean) {
+        movie.isFavorite = newState
+        updateMovie(movie)
     }
 
     // === tv show dao ===================================================================
-    fun getTvShows(section: Int, filter: String): DataSource.Factory<Int, TvShowEntity> {
-        val query = SortUtils.getSortedQuery(SortUtils.TV_SHOWS, section, filter)
-        return tvShowDao.getTvShows(query)
-    }
+    fun getTvShow(tvShowId: Int): TvShowEntity =
+        tvShowDao.getTvShow(tvShowId)
 
-    fun getFavoriteTvShows(): DataSource.Factory<Int, TvShowDetailEntity> =
+    fun getFavoriteTvShows(): DataSource.Factory<Int, TvShowEntity> =
         tvShowDao.getFavoriteTvShows()
 
-    fun getTvShowDetailWithGenres(id: Int): LiveData<TvShowDetailWithGenres> =
-        tvShowDao.getTvShowDetailWithGenres(id)
+    fun getTvShowWithGenres(tvShowId: Int): LiveData<TvShowWithGenres> =
+        tvShowDao.getTvShowWithGenres(tvShowId)
 
     fun insertTvShows(tvShows: List<TvShowEntity>) {
         tvShowDao.insertTvShows(tvShows)
     }
 
-    fun insertTvShowDetail(tvShowDetail: TvShowDetailEntity) {
-        tvShowDao.insertTvShowDetail(tvShowDetail)
+    fun insertTvShow(tvShow: TvShowEntity) {
+        tvShowDao.insertTvShow(tvShow)
     }
 
-    fun insertTvShowDetailGenreCrossRef(crossRef: TvShowDetailGenreCrossRef) =
-        tvShowDao.insertTvShowDetailGenreCrossRef(crossRef)
+    fun insertTvShowGenreCrossRef(crossRef: TvShowGenreCrossRef) =
+        tvShowDao.insertTvShowGenreCrossRef(crossRef)
 
-    fun setIsFavoriteTvShowDetail(tvShowDetail: TvShowDetailEntity, newState: Boolean) {
-        tvShowDetail.isFavorite = newState
-        tvShowDao.updateTvShowDetail(tvShowDetail)
+    fun updateTvShow(tvShow: TvShowEntity) {
+        tvShowDao.updateTvShow(tvShow)
+    }
+
+    fun setIsFavoriteTvShow(tvShow: TvShowEntity, newState: Boolean) {
+        tvShow.isFavorite = newState
+        updateTvShow(tvShow)
+    }
+
+    // === section dao ===================================================================
+    fun getSectionWithMovies(section: Int, filter: String): LiveData<SectionWithMovies> {
+        val query = SortUtils.getSortedSection(SortUtils.MOVIES, section, filter)
+        return sectionDao.getSectionWithMovies(query)
+    }
+
+    fun getSectionWithTvShows(section: Int, filter: String): LiveData<SectionWithTvShows> {
+        val query = SortUtils.getSortedSection(SortUtils.TV_SHOWS, section, filter)
+        return sectionDao.getSectionWithTvShows(query)
+    }
+
+    fun insertSectionMovie(sectionMovie: SectionMovieEntity) {
+        sectionDao.insertSectionMovie(sectionMovie)
+    }
+
+    fun insertSectionTvShow(sectionTvShow: SectionTvShowEntity) {
+        sectionDao.insertSectionTvShow(sectionTvShow)
+    }
+
+    fun insertSectionMovieCrossRef(crossRef: SectionMovieCrossRef) {
+        sectionDao.insertSectionMovieCrossRef(crossRef)
+    }
+
+    fun insertSectionTvShowCrossRef(crossRef: SectionTvShowCrossRef) {
+        sectionDao.insertSectionTvShowCrossRef(crossRef)
     }
 
     // === genre dao ===================================================================
-    fun getGenreWithMovies(id: Int): LiveData<GenreWithMovieDetails> =
-        genreDao.getGenreWithMovies(id)
+    fun getGenreWithMovies(genreId: Int): LiveData<GenreWithMovies> =
+        genreDao.getGenreWithMovies(genreId)
 
-    fun getGenreWithTvShows(id: Int): LiveData<GenreWithTvShowDetails> =
-        genreDao.getGenreWithTvShows(id)
+    fun getGenreWithTvShows(genreId: Int): LiveData<GenreWithTvShows> =
+        genreDao.getGenreWithTvShows(genreId)
 
     fun insertGenre(genres: List<GenreEntity>) {
         genreDao.insertGenre(genres)
@@ -89,8 +122,9 @@ private constructor(
         fun getInstance(
             movieDao: MovieDao,
             tvShowDao: TvShowDao,
+            sectionDao: SectionDao,
             genreDao: GenreDao
         ): LocalDataSource =
-            INSTANCE ?: LocalDataSource(movieDao, tvShowDao, genreDao)
+            INSTANCE ?: LocalDataSource(movieDao, tvShowDao, sectionDao, genreDao)
     }
 }
