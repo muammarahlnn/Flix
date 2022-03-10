@@ -9,8 +9,8 @@ import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import com.ardnn.flix.R
-import com.ardnn.flix.ui.home.HomeActivity
-import com.ardnn.flix.util.EspressoIdlingResource
+import com.ardnn.flix.MainActivity
+import com.ardnn.flix.core.util.EspressoIdlingResource
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
@@ -19,7 +19,7 @@ import org.junit.Test
 class GenreActivityTest {
 
     @get:Rule
-    var activityRule = ActivityScenarioRule(HomeActivity::class.java)
+    var activityRule = ActivityScenarioRule(MainActivity::class.java)
 
     private val listSize = 5
 

@@ -12,16 +12,16 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Flix">
         <activity
-            android:name=".ui.genre.GenreActivity"
+            android:name="com.ardnn.flix.genre.GenreActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.tvshowdetail.TvShowDetailActivity"
+            android:name="com.ardnn.flix.tvshowdetail.TvShowDetailActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.moviedetail.MovieDetailActivity"
+            android:name="com.ardnn.flix.moviedetail.MovieDetailActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.splash.SplashActivity"
+            android:name="com.ardnn.flix.splash.SplashActivity"
             android:exported="true"
             android:theme="@style/Theme.Splash">
             <intent-filter>
@@ -31,7 +31,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.home.HomeActivity"
+            android:name="com.ardnn.flix.MainActivity"
             android:exported="true" />
     </application>
 

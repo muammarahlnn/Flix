@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="@color/black_background"
     android:paddingHorizontal="16dp"
-    tools:context=".ui.favorites.FavoritesFragment">
+    tools:context="com.ardnn.flix.favorites.FavoritesFragment">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
