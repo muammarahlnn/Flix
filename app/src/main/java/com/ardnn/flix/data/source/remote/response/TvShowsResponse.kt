@@ -24,5 +24,8 @@ data class TvShowResponse(
     val rating: Float? = null,
 
     @field:SerializedName("popularity")
-    val popularity: Float? = null
+    val popularity: Float? = null,
+
+    @field:SerializedName("genre_ids")
+    val genreIds: List<Int>? = null
 )

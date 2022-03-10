@@ -116,6 +116,10 @@ class LocalDataSource private constructor(
         genreDao.insertGenre(genres)
     }
 
+    fun updateGenre(genre: GenreEntity) {
+        genreDao.updateGenre(genre)
+    }
+
     companion object {
         private var INSTANCE: LocalDataSource? = null
 

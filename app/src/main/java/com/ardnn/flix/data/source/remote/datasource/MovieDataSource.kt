@@ -2,7 +2,7 @@ package com.ardnn.flix.data.source.remote.datasource
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.ardnn.flix.BuildConfig
+import com.ardnn.flix.data.source.remote.ApiConfig
 import com.ardnn.flix.data.source.remote.ApiResponse
 import com.ardnn.flix.data.source.remote.response.*
 import com.ardnn.flix.data.source.remote.service.MovieApiService
@@ -20,7 +20,7 @@ class MovieDataSource(
         EspressoIdlingResource.increment()
 
         val resultMovieDetail = MutableLiveData<ApiResponse<MovieDetailResponse>>()
-        apiService.getMovieDetails(id, API_KEY)
+        apiService.getMovieDetails(id, ApiConfig.API_KEY)
             .enqueue(object : Callback<MovieDetailResponse> {
                 override fun onResponse(
                     call: Call<MovieDetailResponse>,
@@ -61,7 +61,7 @@ class MovieDataSource(
         EspressoIdlingResource.increment()
 
         val resultMovies = MutableLiveData<ApiResponse<List<MovieResponse>>>()
-        apiService.getNowPlayingMovies(API_KEY, page)
+        apiService.getNowPlayingMovies(ApiConfig.API_KEY, page)
             .enqueue(object : Callback<MoviesResponse> {
                 override fun onResponse(
                     call: Call<MoviesResponse>,
@@ -103,7 +103,7 @@ class MovieDataSource(
         EspressoIdlingResource.increment()
 
         val resultMovies = MutableLiveData<ApiResponse<List<MovieResponse>>>()
-        apiService.getUpcomingMovies(API_KEY, page)
+        apiService.getUpcomingMovies(ApiConfig.API_KEY, page)
             .enqueue(object : Callback<MoviesResponse> {
                 override fun onResponse(
                     call: Call<MoviesResponse>,
@@ -145,7 +145,7 @@ class MovieDataSource(
         EspressoIdlingResource.increment()
 
         val resultMovies = MutableLiveData<ApiResponse<List<MovieResponse>>>()
-        apiService.getPopularMovies(API_KEY, page)
+        apiService.getPopularMovies(ApiConfig.API_KEY, page)
             .enqueue(object : Callback<MoviesResponse> {
                 override fun onResponse(
                     call: Call<MoviesResponse>,
@@ -187,7 +187,7 @@ class MovieDataSource(
         EspressoIdlingResource.increment()
 
         val resultMovies = MutableLiveData<ApiResponse<List<MovieResponse>>>()
-        apiService.getTopRatedMovies(API_KEY, page)
+        apiService.getTopRatedMovies(ApiConfig.API_KEY, page)
             .enqueue(object : Callback<MoviesResponse> {
                 override fun onResponse(
                     call: Call<MoviesResponse>,
@@ -228,7 +228,7 @@ class MovieDataSource(
         EspressoIdlingResource.increment()
 
         val resultCredits = MutableLiveData<ApiResponse<List<CastResponse>>>()
-        apiService.getMovieCredits(id, API_KEY)
+        apiService.getMovieCredits(id, ApiConfig.API_KEY)
             .enqueue(object : Callback<CreditsResponse> {
                 override fun onResponse(
                     call: Call<CreditsResponse>,
@@ -262,10 +262,6 @@ class MovieDataSource(
             })
 
         return resultCredits
-    }
-
-    companion object {
-        private const val API_KEY = BuildConfig.API_KEY
     }
 
 }

@@ -58,6 +58,17 @@ class FlixRepository private constructor(
                 val moviesEntity = castMovieList(data)
                 localDataSource.insertMovies(moviesEntity)
 
+                // insert movie genre cross ref
+                for (movie in data) {
+                    val genreIds = movie.genreIds
+                    if (genreIds != null) {
+                        for (genreId in genreIds) {
+                            val crossRef = MovieGenreCrossRef(movie.id, genreId)
+                            localDataSource.insertMovieGenreCrossRef(crossRef)
+                        }
+                    }
+                }
+
                 // insert section
                 val sections = arrayOf("Now Playing", "Upcoming", "Popular", "Top Rated")
                 val sectionEntity = SectionMovieEntity(section, sections[section])
@@ -112,6 +123,17 @@ class FlixRepository private constructor(
                 val tvShowsEntity = castTvShowList(data)
                 localDataSource.insertTvShows(tvShowsEntity)
 
+                // insert tv show genre cross ref
+                for (tvShow in data) {
+                    val genreIds = tvShow.genreIds
+                    if (genreIds != null) {
+                        for (genreId in genreIds) {
+                            val crossRef = TvShowGenreCrossRef(tvShow.id, genreId)
+                            localDataSource.insertTvShowGenreCrossRef(crossRef)
+                        }
+                    }
+                }
+
                 // insert section
                 val sections = arrayOf("Airing Today", "On The Air", "Popular", "Top Rated")
                 val sectionEntity = SectionTvShowEntity(section, sections[section])
@@ -144,7 +166,6 @@ class FlixRepository private constructor(
 
 
             override fun saveCallResult(data: MovieDetailResponse) {
-                Log.d("Flix Repository", "save call result: ${data.title}")
 
                 // get and update movie detail
                 val movieDetail = localDataSource.getMovie(data.id)

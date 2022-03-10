@@ -2,7 +2,7 @@ package com.ardnn.flix.data.source.remote.datasource
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.ardnn.flix.BuildConfig
+import com.ardnn.flix.data.source.remote.ApiConfig
 import com.ardnn.flix.data.source.remote.ApiResponse
 import com.ardnn.flix.data.source.remote.response.*
 import com.ardnn.flix.data.source.remote.service.TvShowApiService
@@ -19,7 +19,7 @@ class TvShowDataSource(
         EspressoIdlingResource.increment()
 
         val resultTvShowDetail = MutableLiveData<ApiResponse<TvShowDetailResponse>>()
-        apiService.getTvShowDetails(id, API_KEY)
+        apiService.getTvShowDetails(id, ApiConfig.API_KEY)
             .enqueue(object : Callback<TvShowDetailResponse> {
                 override fun onResponse(
                     call: Call<TvShowDetailResponse>,
@@ -61,7 +61,7 @@ class TvShowDataSource(
         EspressoIdlingResource.increment()
 
         val resultTvShows = MutableLiveData<ApiResponse<List<TvShowResponse>>>()
-        apiService.getAiringTodayTvShows(API_KEY, page)
+        apiService.getAiringTodayTvShows(ApiConfig.API_KEY, page)
             .enqueue(object : Callback<TvShowsResponse> {
                 override fun onResponse(
                     call: Call<TvShowsResponse>,
@@ -103,7 +103,7 @@ class TvShowDataSource(
         EspressoIdlingResource.increment()
 
         val resultTvShows = MutableLiveData<ApiResponse<List<TvShowResponse>>>()
-        apiService.getOnTheAirTvShows(API_KEY, page)
+        apiService.getOnTheAirTvShows(ApiConfig.API_KEY, page)
             .enqueue(object : Callback<TvShowsResponse> {
                 override fun onResponse(
                     call: Call<TvShowsResponse>,
@@ -145,7 +145,7 @@ class TvShowDataSource(
         EspressoIdlingResource.increment()
 
         val resultTvShows = MutableLiveData<ApiResponse<List<TvShowResponse>>>()
-        apiService.getPopularTvShows(API_KEY, page)
+        apiService.getPopularTvShows(ApiConfig.API_KEY, page)
             .enqueue(object : Callback<TvShowsResponse> {
                 override fun onResponse(
                     call: Call<TvShowsResponse>,
@@ -187,7 +187,7 @@ class TvShowDataSource(
         EspressoIdlingResource.increment()
 
         val resultTvShows = MutableLiveData<ApiResponse<List<TvShowResponse>>>()
-        apiService.getTopRatedTvShows(API_KEY, page)
+        apiService.getTopRatedTvShows(ApiConfig.API_KEY, page)
             .enqueue(object : Callback<TvShowsResponse> {
                 override fun onResponse(
                     call: Call<TvShowsResponse>,
@@ -228,7 +228,7 @@ class TvShowDataSource(
         EspressoIdlingResource.increment()
 
         val resultCredits = MutableLiveData<ApiResponse<List<CastResponse>>>()
-        apiService.getTvShowCredits(id, API_KEY)
+        apiService.getTvShowCredits(id, ApiConfig.API_KEY)
             .enqueue(object : Callback<CreditsResponse> {
                 override fun onResponse(
                     call: Call<CreditsResponse>,
@@ -265,7 +265,4 @@ class TvShowDataSource(
         return resultCredits
     }
 
-    companion object {
-        private const val API_KEY = BuildConfig.API_KEY
-    }
 }

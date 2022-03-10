@@ -18,4 +18,7 @@ interface GenreDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertGenre(genres: List<GenreEntity>)
+
+    @Update
+    fun updateGenre(genre: GenreEntity)
 }

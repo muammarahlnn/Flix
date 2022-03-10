@@ -2,7 +2,7 @@ package com.ardnn.flix.data.source.remote.datasource
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.ardnn.flix.BuildConfig
+import com.ardnn.flix.data.source.remote.ApiConfig
 import com.ardnn.flix.data.source.remote.ApiResponse
 import com.ardnn.flix.data.source.remote.response.PersonResponse
 import com.ardnn.flix.data.source.remote.service.PersonApiService
@@ -19,7 +19,7 @@ class PersonDataSource(
         EspressoIdlingResource.increment()
 
         val resultPersonDetail = MutableLiveData<ApiResponse<PersonResponse>>()
-        apiService.getPersonDetail(id, API_KEY)
+        apiService.getPersonDetail(id, ApiConfig.API_KEY)
             .enqueue(object : Callback<PersonResponse> {
                 override fun onResponse(
                     call: Call<PersonResponse>,
@@ -64,9 +64,5 @@ class PersonDataSource(
             })
 
         return resultPersonDetail
-    }
-
-    companion object {
-        private const val API_KEY = BuildConfig.API_KEY
     }
 }
