@@ -22,4 +22,7 @@ data class MovieResponse(
 
     @field:SerializedName("vote_average")
     val rating: Float? = null,
+
+    @field:SerializedName("popularity")
+    val popularity: Float? = null
 )

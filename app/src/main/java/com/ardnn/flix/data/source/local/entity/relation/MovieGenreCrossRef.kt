@@ -4,7 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 
 @Entity(
-    tableName = "movie_detail_genre_cross_ref",
+    tableName = "movie_genre_cross_ref",
     primaryKeys = ["movie_id", "genre_id"])
 data class MovieGenreCrossRef(
     @ColumnInfo(name = "movie_id")

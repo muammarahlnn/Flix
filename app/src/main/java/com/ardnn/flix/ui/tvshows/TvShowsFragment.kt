@@ -4,12 +4,11 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.*
-import androidx.fragment.app.Fragment
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.ardnn.flix.R
 import com.ardnn.flix.data.source.local.entity.TvShowEntity
-import com.ardnn.flix.data.source.local.entity.relation.SectionWithTvShows
 import com.ardnn.flix.databinding.FragmentFilmsBinding
 import com.ardnn.flix.ui.tvshowdetail.TvShowDetailActivity
 import com.ardnn.flix.util.PagedListDataSources
@@ -113,7 +112,7 @@ class TvShowsFragment : Fragment(), SingleClickListener<TvShowEntity> {
         })
     }
 
-    private fun setTvShows(tvShowsResource: Resource<SectionWithTvShows>) {
+    private fun setTvShows(tvShowsResource: Resource<List<TvShowEntity>>) {
         when (tvShowsResource.status) {
             Status.LOADING -> {
                 showLoading(true)
@@ -124,7 +123,7 @@ class TvShowsFragment : Fragment(), SingleClickListener<TvShowEntity> {
                     showLoading(false)
                     showAlert(false)
 
-                    val tvShows = tvShowsResource.data.tvShows
+                    val tvShows = tvShowsResource.data
                     val pagedTvShows = PagedListDataSources.snapshot(tvShows)
                     val adapter = TvShowsAdapter(this)
                     adapter.submitList(pagedTvShows)

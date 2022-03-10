@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey
 import com.ardnn.flix.data.source.remote.Const
 import com.ardnn.flix.data.source.remote.ImageSize
 
-@Entity(tableName = "movie_detail_entities")
+@Entity(tableName = "movie_entities")
 data class MovieEntity(
 
     @PrimaryKey
@@ -29,6 +29,9 @@ data class MovieEntity(
 
     @ColumnInfo(name = "rating")
     var rating: Float? = null,
+
+    @ColumnInfo(name = "popularity")
+    var popularity: Float? = null,
 
     @ColumnInfo(name = "poster_url")
     var posterUrl: String? = null,

@@ -9,7 +9,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.ardnn.flix.R
 import com.ardnn.flix.data.source.local.entity.MovieEntity
-import com.ardnn.flix.data.source.local.entity.relation.SectionWithMovies
 import com.ardnn.flix.databinding.FragmentFilmsBinding
 import com.ardnn.flix.ui.moviedetail.MovieDetailActivity
 import com.ardnn.flix.util.PagedListDataSources
@@ -115,7 +114,7 @@ class MoviesFragment : Fragment(), SingleClickListener<MovieEntity> {
         })
     }
 
-    private fun setMovies(moviesResource: Resource<SectionWithMovies>) {
+    private fun setMovies(moviesResource: Resource<List<MovieEntity>>) {
         when (moviesResource.status) {
             Status.LOADING -> {
                 showLoading(true)
@@ -126,7 +125,7 @@ class MoviesFragment : Fragment(), SingleClickListener<MovieEntity> {
                     showLoading(false)
                     showAlert(false)
 
-                    val movies = moviesResource.data.movies
+                    val movies = moviesResource.data
                     val pagedMovies = PagedListDataSources.snapshot(movies)
                     val adapter = MoviesAdapter(this)
                     adapter.submitList(pagedMovies)

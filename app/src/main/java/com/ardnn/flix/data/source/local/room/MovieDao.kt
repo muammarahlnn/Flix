@@ -11,15 +11,15 @@ import com.ardnn.flix.data.source.local.entity.relation.MovieWithGenres
 interface MovieDao {
 
     @Transaction
-    @Query("SELECT * FROM movie_detail_entities WHERE movie_id = :movieId")
+    @Query("SELECT * FROM movie_entities WHERE movie_id = :movieId")
     fun getMovie(movieId: Int): MovieEntity
 
     @Transaction
-    @Query("SELECT * FROM movie_detail_entities WHERE is_favorite = 1")
+    @Query("SELECT * FROM movie_entities WHERE is_favorite = 1")
     fun getFavoriteMovies(): DataSource.Factory<Int, MovieEntity>
 
     @Transaction
-    @Query("SELECT * FROM movie_detail_entities WHERE movie_id = :movieId")
+    @Query("SELECT * FROM movie_entities WHERE movie_id = :movieId")
     fun getMovieWithGenres(movieId: Int): LiveData<MovieWithGenres>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

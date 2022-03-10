@@ -11,9 +11,9 @@ import com.ardnn.flix.vo.Resource
 
 interface IFlixRepository {
     // === section ===================================================================
-    fun getSectionWithMovies(page: Int, section: Int, filter: String): LiveData<Resource<SectionWithMovies>>
+    fun getSectionWithMovies(page: Int, section: Int, filter: String): LiveData<Resource<List<MovieEntity>>>
 
-    fun getSectionWithTvShows(page: Int, section: Int, filter: String): LiveData<Resource<SectionWithTvShows>>
+    fun getSectionWithTvShows(page: Int, section: Int, filter: String): LiveData<Resource<List<TvShowEntity>>>
 
     // === movie ===================================================================
     fun getMovieWithGenres(movieId: Int): LiveData<Resource<MovieWithGenres>>

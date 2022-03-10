@@ -23,14 +23,14 @@ class FlixRepository private constructor(
         page: Int,
         section: Int,
         filter: String
-    ): LiveData<Resource<SectionWithMovies>> {
-        return object : NetworkBoundResource<SectionWithMovies, List<MovieResponse>>(appExecutors) {
-            override fun loadFromDB(): LiveData<SectionWithMovies> {
+    ): LiveData<Resource<List<MovieEntity>>> {
+        return object : NetworkBoundResource<List<MovieEntity>, List<MovieResponse>>(appExecutors) {
+            override fun loadFromDB(): LiveData<List<MovieEntity>> {
                 return localDataSource.getSectionWithMovies(section, filter)
             }
 
-            override fun shouldFetch(data: SectionWithMovies?): Boolean {
-                return data == null
+            override fun shouldFetch(data: List<MovieEntity>?): Boolean {
+                return data.isNullOrEmpty()
             }
 
             override fun createCall(): LiveData<ApiResponse<List<MovieResponse>>> {
@@ -77,14 +77,14 @@ class FlixRepository private constructor(
         page: Int,
         section: Int,
         filter: String
-    ): LiveData<Resource<SectionWithTvShows>> {
-        return object : NetworkBoundResource<SectionWithTvShows, List<TvShowResponse>>(appExecutors) {
-            override fun loadFromDB(): LiveData<SectionWithTvShows> {
+    ): LiveData<Resource<List<TvShowEntity>>> {
+        return object : NetworkBoundResource<List<TvShowEntity>, List<TvShowResponse>>(appExecutors) {
+            override fun loadFromDB(): LiveData<List<TvShowEntity>> {
                 return localDataSource.getSectionWithTvShows(section, filter)
             }
 
-            override fun shouldFetch(data: SectionWithTvShows?): Boolean {
-                return data == null
+            override fun shouldFetch(data: List<TvShowEntity>?): Boolean {
+                return data.isNullOrEmpty()
             }
 
             override fun createCall(): LiveData<ApiResponse<List<TvShowResponse>>> {
@@ -279,7 +279,8 @@ class FlixRepository private constructor(
                 title = movie.title,
                 releaseDate = movie.releaseDate,
                 posterUrl = movie.posterUrl,
-                rating = movie.rating
+                rating = movie.rating,
+                popularity = movie.popularity
             )
             movies.add(tempMovie)
         }
@@ -295,7 +296,8 @@ class FlixRepository private constructor(
                 title = tvShow.title,
                 firstAirDate = tvShow.firstAirDate,
                 posterUrl = tvShow.posterUrl,
-                rating = tvShow.rating
+                rating = tvShow.rating,
+                popularity = tvShow.popularity
             )
             tvShows.add(tempTvShow)
         }

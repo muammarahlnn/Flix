@@ -79,12 +79,12 @@ class LocalDataSource private constructor(
     }
 
     // === section dao ===================================================================
-    fun getSectionWithMovies(section: Int, filter: String): LiveData<SectionWithMovies> {
+    fun getSectionWithMovies(section: Int, filter: String): LiveData<List<MovieEntity>> {
         val query = SortUtils.getSortedSection(SortUtils.MOVIES, section, filter)
         return sectionDao.getSectionWithMovies(query)
     }
 
-    fun getSectionWithTvShows(section: Int, filter: String): LiveData<SectionWithTvShows> {
+    fun getSectionWithTvShows(section: Int, filter: String): LiveData<List<TvShowEntity>> {
         val query = SortUtils.getSortedSection(SortUtils.TV_SHOWS, section, filter)
         return sectionDao.getSectionWithTvShows(query)
     }

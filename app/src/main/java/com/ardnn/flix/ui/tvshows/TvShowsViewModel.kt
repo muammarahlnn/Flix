@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.ardnn.flix.data.FlixRepository
-import com.ardnn.flix.data.source.local.entity.relation.SectionWithTvShows
+import com.ardnn.flix.data.source.local.entity.TvShowEntity
 import com.ardnn.flix.vo.Resource
 
 class TvShowsViewModel(private val flixRepository: FlixRepository) : ViewModel() {
@@ -15,7 +15,7 @@ class TvShowsViewModel(private val flixRepository: FlixRepository) : ViewModel()
     private val _tvShowsSort = MutableLiveData(sortArr)
     val tvShowsSort: LiveData<Array<String>> = _tvShowsSort
 
-    fun getSectionWithTvShows(page: Int, filter: String): LiveData<Resource<SectionWithTvShows>> =
+    fun getSectionWithTvShows(page: Int, filter: String): LiveData<Resource<List<TvShowEntity>>> =
         flixRepository.getSectionWithTvShows(page, section, filter)
 
     fun setSection(section: Int) {

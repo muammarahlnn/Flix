@@ -11,15 +11,15 @@ import com.ardnn.flix.data.source.local.entity.relation.TvShowWithGenres
 interface TvShowDao {
 
     @Transaction
-    @Query("SELECT * FROM tv_show_detail_entities WHERE tv_show_id = :tvShowId")
+    @Query("SELECT * FROM tv_show_entities WHERE tv_show_id = :tvShowId")
     fun getTvShow(tvShowId: Int): TvShowEntity
 
     @Transaction
-    @Query("SELECT * FROM tv_show_detail_entities where is_favorite = 1")
+    @Query("SELECT * FROM tv_show_entities where is_favorite = 1")
     fun getFavoriteTvShows(): DataSource.Factory<Int, TvShowEntity>
 
     @Transaction
-    @Query("SELECT * FROM tv_show_detail_entities WHERE tv_show_id = :tvShowId")
+    @Query("SELECT * FROM tv_show_entities WHERE tv_show_id = :tvShowId")
     fun getTvShowWithGenres(tvShowId: Int): LiveData<TvShowWithGenres>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
