@@ -111,13 +111,15 @@ class TvShowDetailActivity : AppCompatActivity(), View.OnClickListener,
             Helper.setImageGlide(
                 this@TvShowDetailActivity,
                 tvShow.posterUrl,
-                ivPoster)
+                ivPoster
+            )
             ivPoster.tag = tvShow.posterUrl
 
             Helper.setImageGlide(
                 this@TvShowDetailActivity,
                 tvShow.wallpaperUrl,
-                ivWallpaper)
+                ivWallpaper
+            )
             ivWallpaper.tag = tvShow.wallpaperUrl
 
             val isFavorite = tvShow.isFavorite
@@ -127,17 +129,14 @@ class TvShowDetailActivity : AppCompatActivity(), View.OnClickListener,
             )
 
             // set detail
-            tvTitle.text = Helper.checkNullOrEmptyString(tvShow.title)
-            tvEpisodes.text = (tvShow.numberOfEpisodes ?: "-").toString()
-            tvSeasons.text = (tvShow.numberOfSeasons ?: "-").toString()
-            tvRuntime.text =
-                if (tvShow.runtime != null)
-                    getString(R.string.minutes, tvShow.runtime)
-                else "-"
-            tvRating.text = (tvShow.rating ?: "-").toString()
-            tvFirstAiring.text = Helper.convertToDate(Helper.checkNullOrEmptyString(tvShow.firstAirDate))
-            tvLastAiring.text = Helper.convertToDate(Helper.checkNullOrEmptyString(tvShow.lastAirDate))
-            tvSynopsis.text = Helper.checkNullOrEmptyString(tvShow.overview)
+            tvTitle.text = Helper.setTextString(tvShow.title)
+            tvEpisodes.text = Helper.setTextNum(tvShow.numberOfEpisodes)
+            tvSeasons.text = Helper.setTextNum(tvShow.numberOfSeasons)
+            tvRuntime.text = Helper.setTextNum(tvShow.runtime)
+            tvRating.text = Helper.setTextFloat(tvShow.rating)
+            tvFirstAiring.text = Helper.setTextDate(tvShow.firstAirDate)
+            tvLastAiring.text = Helper.setTextDate(tvShow.lastAirDate)
+            tvSynopsis.text = Helper.setTextString(tvShow.overview)
 
             // set recyclerview genre items
             val genreAdapter = GenreAdapter(tvShow.genres, this@TvShowDetailActivity)

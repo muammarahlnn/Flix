@@ -6,7 +6,6 @@ import android.view.ViewGroup
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.ardnn.flix.R
 import com.ardnn.flix.core.domain.model.TvShow
 import com.ardnn.flix.core.util.Helper
 import com.ardnn.flix.databinding.ItemFavoriteBinding
@@ -35,20 +34,15 @@ class FavoriteTvShowsAdapter : PagedListAdapter<TvShow, FavoriteTvShowsAdapter.T
 
         fun onBind(tvShow: TvShow) {
             with (binding) {
-                if (tvShow.posterUrl.isNullOrEmpty()) {
-                    ivPoster.setImageResource(R.drawable.ic_error)
-                } else {
-                    Helper.setImageGlide(
-                        itemView.context,
-                        tvShow.posterUrl,
-                        ivPoster)
-                }
+                Helper.setImageGlide(
+                    itemView.context,
+                    tvShow.posterUrl,
+                    ivPoster
+                )
 
-                tvTitle.text = tvShow.title ?: "-"
-                tvYear.text =
-                    if (tvShow.firstAirDate.isNullOrEmpty()) "-"
-                    else tvShow.firstAirDate.toString().substring(0, 4)
-                tvRating.text = (tvShow.rating ?: "-").toString()
+                tvTitle.text = Helper.setTextString(tvShow.title)
+                tvYear.text = Helper.setTextYear(tvShow.firstAirDate)
+                tvRating.text = Helper.setTextFloat(tvShow.rating)
             }
             // click listener
             itemView.setOnClickListener {

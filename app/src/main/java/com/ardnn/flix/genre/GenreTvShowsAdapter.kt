@@ -32,20 +32,15 @@ class GenreTvShowsAdapter : PagedListAdapter<TvShow, GenreTvShowsAdapter.TvShowV
 
         fun onBind(tvShow: TvShow) {
             with (binding) {
-                if (tvShow.posterUrl.isNullOrEmpty()) {
-                    ivPoster.setImageResource(R.drawable.ic_error)
-                } else {
-                    Helper.setImageGlide(
-                        itemView.context,
-                        tvShow.posterUrl,
-                        ivPoster)
-                }
+                Helper.setImageGlide(
+                    itemView.context,
+                    tvShow.posterUrl,
+                    ivPoster
+                )
 
-                tvTitle.text = tvShow.title ?: "-"
-                tvYear.text =
-                    if (tvShow.firstAirDate.isNullOrEmpty()) "-"
-                    else tvShow.firstAirDate.toString().substring(0, 4)
-                tvRating.text = (tvShow.rating ?: "-").toString()
+                tvTitle.text = Helper.setTextString(tvShow.title)
+                tvYear.text = Helper.setTextYear(tvShow.firstAirDate)
+                tvRating.text = Helper.setTextFloat(tvShow.rating)
             }
 
             itemView.setOnClickListener {

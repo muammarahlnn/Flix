@@ -28,5 +28,5 @@ data class MovieDetailResponse(
     val wallpaperUrl: String? = null,
 
     @field:SerializedName("genres")
-    val genreList: List<GenreResponse> = listOf()
+    val genreList: List<GenreResponse>? = null
 )

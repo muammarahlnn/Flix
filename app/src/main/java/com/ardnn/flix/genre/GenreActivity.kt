@@ -15,6 +15,7 @@ class GenreActivity : AppCompatActivity() {
     private lateinit var binding: ActivityGenreBinding
 
     private var genreType = ""
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityGenreBinding.inflate(layoutInflater)

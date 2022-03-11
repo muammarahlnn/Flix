@@ -16,37 +16,37 @@ data class TvShowEntity(
     val id: Int,
 
     @ColumnInfo(name = "title")
-    var title: String? = null,
+    var title: String = "",
 
     @ColumnInfo(name = "overview")
-    var overview: String? = null,
+    var overview: String = "",
 
     @ColumnInfo(name = "first_air_date")
-    var firstAirDate: String? = null,
+    var firstAirDate: String = "",
 
     @ColumnInfo(name = "last_air_date")
-    var lastAirDate: String? = null,
+    var lastAirDate: String = "",
 
     @ColumnInfo(name = "runtime")
-    var runtime: Int? = null,
+    var runtime: Int = 0,
 
     @ColumnInfo(name = "rating")
-    var rating: Float? = null,
+    var rating: Float = 0f,
 
     @ColumnInfo(name = "popularity")
-    var popularity: Float? = null,
+    var popularity: Float = 0f,
 
     @ColumnInfo(name = "poster_url")
-    var posterUrl: String? = null,
+    var posterUrl: String = "",
 
     @ColumnInfo(name = "wallpaper_url")
-    var wallpaperUrl: String? = null,
+    var wallpaperUrl: String = "",
 
     @ColumnInfo(name = "number_of_episodes")
-    var numberOfEpisodes: Int? = null,
+    var numberOfEpisodes: Int = 0,
 
     @ColumnInfo(name = "number_of_seasons")
-    var numberOfSeasons: Int? = null,
+    var numberOfSeasons: Int = 0,
 ) {
     @ColumnInfo(name = "is_favorite")
     var isFavorite: Boolean = false

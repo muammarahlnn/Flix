@@ -19,7 +19,7 @@ data class TvShowDetailResponse(
     val lastAirDate: String? = null,
 
     @field:SerializedName("episode_run_time")
-    val runtimes: List<Int>? = listOf(),
+    val runtimes: List<Int>? = null,
 
     @field:SerializedName("vote_average")
     val rating: Float? = null,
@@ -37,5 +37,5 @@ data class TvShowDetailResponse(
     val numberOfSeasons: Int? = null,
 
     @field:SerializedName("genres")
-    val genreList: List<GenreResponse> = listOf(),
+    val genreList: List<GenreResponse>? = null,
 )

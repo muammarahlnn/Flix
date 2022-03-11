@@ -16,28 +16,28 @@ data class MovieEntity(
     val id: Int,
 
     @ColumnInfo(name = "title")
-    var title: String? = null,
+    var title: String = "",
 
     @ColumnInfo(name = "overview")
-    var overview: String? = null,
+    var overview: String = "",
 
     @ColumnInfo(name = "release_date")
-    var releaseDate: String? = null,
+    var releaseDate: String = "",
 
     @ColumnInfo(name = "runtime")
-    var runtime: Int? = null,
+    var runtime: Int = 0,
 
     @ColumnInfo(name = "rating")
-    var rating: Float? = null,
+    var rating: Float = 0f,
 
     @ColumnInfo(name = "popularity")
-    var popularity: Float? = null,
+    var popularity: Float = 0f,
 
     @ColumnInfo(name = "poster_url")
-    var posterUrl: String? = null,
+    var posterUrl: String = "",
 
     @ColumnInfo(name = "wallpaper_url")
-    var wallpaperUrl: String? = null,
+    var wallpaperUrl: String = "",
 ) {
     @ColumnInfo(name = "is_favorite")
     var isFavorite: Boolean = false

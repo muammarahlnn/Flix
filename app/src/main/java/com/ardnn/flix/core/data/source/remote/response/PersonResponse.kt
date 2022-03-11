@@ -28,5 +28,5 @@ data class PersonResponse(
     val biography: String? = null,
 
     @field:SerializedName("also_known_as")
-    val akaList: List<String>? = listOf()
+    val akaList: List<String>? = null
 )

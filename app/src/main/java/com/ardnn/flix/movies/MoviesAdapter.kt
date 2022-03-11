@@ -33,20 +33,15 @@ class MoviesAdapter(
 
         fun onBind(movie: Movie) {
             with (binding) {
-                if (movie.posterUrl.isNullOrEmpty()) {
-                    ivPoster.setImageResource(R.drawable.ic_error)
-                } else {
-                    Helper.setImageGlide(
-                        itemView.context,
-                        movie.posterUrl,
-                        ivPoster)
-                }
+                Helper.setImageGlide(
+                    itemView.context,
+                    movie.posterUrl,
+                    ivPoster
+                )
 
-                tvTitle.text = movie.title ?: "-"
-                tvYear.text =
-                    if (movie.releaseDate.isNullOrEmpty()) "-"
-                    else movie.releaseDate.toString().substring(0, 4)
-                tvRating.text = (movie.rating ?: "-").toString()
+                tvTitle.text = Helper.setTextString(movie.title)
+                tvYear.text = Helper.setTextYear(movie.releaseDate)
+                tvRating.text = Helper.setTextFloat(movie.rating)
             }
 
             itemView.setOnClickListener {

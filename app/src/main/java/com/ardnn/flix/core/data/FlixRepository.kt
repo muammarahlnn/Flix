@@ -176,22 +176,24 @@ class FlixRepository private constructor(
             override fun saveCallResult(data: MovieDetailResponse) {
                 // get and update movie detail
                 val movieDetail = localDataSource.getMovie(data.id)
-                movieDetail.overview = data.overview
-                movieDetail.runtime = data.runtime
-                movieDetail.wallpaperUrl = data.wallpaperUrl
+                movieDetail.overview = data.overview ?: ""
+                movieDetail.runtime = data.runtime ?: 0
+                movieDetail.wallpaperUrl = data.wallpaperUrl ?: ""
                 movieDetail.isDetailFetched = true
 
                 localDataSource.updateMovie(movieDetail)
 
-                // insert genres
-                val genresEntity = DataMapper.mapGenreResponsesToEntities(data.genreList)
-                localDataSource.insertGenre(genresEntity)
+                data.genreList?.let {
+                    // insert genres
+                    val genresEntity = DataMapper.mapGenreResponsesToEntities(data.genreList)
+                    localDataSource.insertGenre(genresEntity)
 
-                // insert movie detail genre cross ref
-                val tempMovieId = data.id
-                for (genre in genresEntity) {
-                    val crossRef = MovieGenreCrossRef(tempMovieId, genre.id)
-                    localDataSource.insertMovieGenreCrossRef(crossRef)
+                    // insert movie detail genre cross ref
+                    val tempMovieId = data.id
+                    for (genre in genresEntity) {
+                        val crossRef = MovieGenreCrossRef(tempMovieId, genre.id)
+                        localDataSource.insertMovieGenreCrossRef(crossRef)
+                    }
                 }
             }
 
@@ -234,27 +236,29 @@ class FlixRepository private constructor(
             override fun saveCallResult(data: TvShowDetailResponse) {
                 // get and update tv show detail
                 val tvShowDetail = localDataSource.getTvShow(data.id)
-                tvShowDetail.overview = data.overview
-                tvShowDetail.lastAirDate = data.lastAirDate
+                tvShowDetail.overview = data.overview ?: ""
+                tvShowDetail.lastAirDate = data.lastAirDate ?: ""
                 tvShowDetail.runtime =
-                    if (data.runtimes.isNullOrEmpty()) null
+                    if (data.runtimes.isNullOrEmpty()) 0
                     else data.runtimes[0]
-                tvShowDetail.wallpaperUrl = data.wallpaperUrl
-                tvShowDetail.numberOfEpisodes = data.numberOfEpisodes
-                tvShowDetail.numberOfSeasons = data.numberOfSeasons
+                tvShowDetail.wallpaperUrl = data.wallpaperUrl ?: ""
+                tvShowDetail.numberOfEpisodes = data.numberOfEpisodes ?: 0
+                tvShowDetail.numberOfSeasons = data.numberOfSeasons ?: 0
                 tvShowDetail.isDetailFetched = true
 
                 localDataSource.updateTvShow(tvShowDetail)
 
-                // insert genres
-                val genresEntity = DataMapper.mapGenreResponsesToEntities(data.genreList)
-                localDataSource.insertGenre(genresEntity)
+                data.genreList?.let {
+                    // insert genres
+                    val genresEntity = DataMapper.mapGenreResponsesToEntities(data.genreList)
+                    localDataSource.insertGenre(genresEntity)
 
-                // insert tv show genres cross ref
-                val tempTvShowId = data.id
-                for (genre in genresEntity) {
-                    val crossRef = TvShowGenreCrossRef(tempTvShowId, genre.id)
-                    localDataSource.insertTvShowGenreCrossRef(crossRef)
+                    // insert tv show genres cross ref
+                    val tempTvShowId = data.id
+                    for (genre in genresEntity) {
+                        val crossRef = TvShowGenreCrossRef(tempTvShowId, genre.id)
+                        localDataSource.insertTvShowGenreCrossRef(crossRef)
+                    }
                 }
             }
 

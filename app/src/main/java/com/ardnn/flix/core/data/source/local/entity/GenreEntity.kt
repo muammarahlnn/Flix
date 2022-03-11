@@ -14,5 +14,5 @@ data class GenreEntity(
     val id: Int,
 
     @ColumnInfo(name = "name")
-    val name: String? = null
+    var name: String = ""
 )

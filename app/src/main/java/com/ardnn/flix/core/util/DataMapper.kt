@@ -21,11 +21,11 @@ object DataMapper {
         return input.map {
             MovieEntity(
                 id = it.id,
-                title = it.title,
-                releaseDate = it.releaseDate,
-                posterUrl = it.posterUrl,
-                rating = it.rating,
-                popularity = it.popularity
+                title = it.title ?: "",
+                releaseDate = it.releaseDate ?: "",
+                posterUrl = it.posterUrl ?: "",
+                rating = it.rating ?: 0f,
+                popularity = it.popularity ?: 0f
             )
         }
     }
@@ -34,11 +34,11 @@ object DataMapper {
         return input.map {
             TvShowEntity(
                 id = it.id,
-                title = it.title,
-                firstAirDate = it.firstAirDate,
-                posterUrl = it.posterUrl,
-                rating = it.rating,
-                popularity = it.popularity
+                title = it.title ?: "",
+                firstAirDate = it.firstAirDate ?: "",
+                posterUrl = it.posterUrl ?: "",
+                rating = it.rating ?: 0f,
+                popularity = it.popularity ?: 0f
             )
         }
     }
@@ -47,7 +47,7 @@ object DataMapper {
         return input.map {
             GenreEntity(
                 id = it.id,
-                name = it.name
+                name = it.name ?: ""
             )
         }
     }

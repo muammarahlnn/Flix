@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName
 
 data class TvShowsResponse(
     @field:SerializedName("results")
-    val tvShows: List<TvShowResponse> = listOf()
+    val tvShows: List<TvShowResponse>? = null
 )
 
 data class TvShowResponse(

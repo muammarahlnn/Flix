@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.ardnn.flix.core.domain.model.Genre
+import com.ardnn.flix.core.util.Helper
 import com.ardnn.flix.core.util.SingleClickListener
 import com.ardnn.flix.databinding.ItemGenreBinding
 
@@ -31,7 +32,7 @@ class GenreAdapter(
 
         fun onBind(genre: Genre) {
             with(binding) {
-                tvName.text = genre.name
+                tvName.text = Helper.setTextString(genre.name)
             }
             itemView.setOnClickListener {
                 clickListener.onItemClicked(genre)

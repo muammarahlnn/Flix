@@ -11,6 +11,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.tabs.TabLayout
 
 object Helper {
+
     fun equalingEachTabWidth(tabLayout: TabLayout) {
         val slidingTab: ViewGroup = tabLayout.getChildAt(0) as ViewGroup
         for (i in 0 until tabLayout.tabCount) {
@@ -21,15 +22,34 @@ object Helper {
         }
     }
 
-    fun setImageGlide(context: Context, url: String?, imageView: ImageView) {
-        Glide.with(context)
-            .load(url)
-            .apply(RequestOptions.placeholderOf(R.drawable.ic_error))
-            .into(imageView)
+    fun setImageGlide(context: Context, url: String, imageView: ImageView) {
+        if (url.isEmpty()) {
+            imageView.setImageResource(R.drawable.ic_error)
+        } else {
+            Glide.with(context)
+                .load(url)
+                .apply(RequestOptions.placeholderOf(R.drawable.ic_error))
+                .into(imageView)
+        }
     }
 
-    fun convertToDate(date: String?): String {
-        if (date.isNullOrEmpty() || date == "-") return "-"
+    fun setTextString(text: String): String =
+        if (text.isEmpty()) "-" else text
+
+    fun setTextNum(num: Int): String =
+        if (num == 0) "-" else num.toString()
+
+    fun setTextFloat(num: Float): String =
+        if (num == 0f) "-" else num.toString()
+
+    fun setTextYear(date: String): String =
+        if (date.isEmpty()) "-" else date.substring(0, 4)
+
+    fun setTextDate(date: String): String =
+        if (date.isEmpty()) "-" else convertToDate(date)
+
+    private fun convertToDate(date: String): String {
+        if (date.isEmpty()) return "-"
 
         val months = listOf("",
             "January", "February", "March", "April",
@@ -48,9 +68,5 @@ object Helper {
         }
 
         return "$day $month, $year"
-    }
-
-    fun checkNullOrEmptyString(string: String?): String {
-        return if (string.isNullOrEmpty()) "-" else string
     }
 }

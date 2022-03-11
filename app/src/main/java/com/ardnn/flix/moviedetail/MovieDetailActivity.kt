@@ -110,13 +110,15 @@ class MovieDetailActivity : AppCompatActivity(), View.OnClickListener,
             Helper.setImageGlide(
                 this@MovieDetailActivity,
                 movie.posterUrl,
-                ivPoster)
+                ivPoster
+            )
             ivPoster.tag = movie.posterUrl
 
             Helper.setImageGlide(
                 this@MovieDetailActivity,
                 movie.wallpaperUrl,
-                ivWallpaper)
+                ivWallpaper
+            )
             ivWallpaper.tag = movie.wallpaperUrl
 
             val isFavorite = movie.isFavorite
@@ -126,14 +128,11 @@ class MovieDetailActivity : AppCompatActivity(), View.OnClickListener,
             )
 
             // set detail
-            tvTitle.text = Helper.checkNullOrEmptyString(movie.title)
-            tvReleaseDate.text = Helper.convertToDate(Helper.checkNullOrEmptyString(movie.releaseDate))
-            tvRuntime.text =
-                if (movie.runtime != null)
-                    getString(R.string.minutes, movie.runtime)
-                else "-"
-            tvRating.text = (movie.rating ?: "-").toString()
-            tvSynopsis.text = Helper.checkNullOrEmptyString(movie.overview)
+            tvTitle.text = Helper.setTextString(movie.title)
+            tvReleaseDate.text = Helper.setTextDate(movie.releaseDate)
+            tvRuntime.text = Helper.setTextNum(movie.runtime)
+            tvRating.text = Helper.setTextFloat(movie.rating)
+            tvSynopsis.text = Helper.setTextString(movie.overview)
 
             // set recyclerview genre items
             val genreAdapter = GenreAdapter(movie.genres, this@MovieDetailActivity)
