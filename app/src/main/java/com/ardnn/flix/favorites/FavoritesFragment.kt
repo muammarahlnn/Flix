@@ -1,18 +1,20 @@
 package com.ardnn.flix.favorites
 
 import android.os.Bundle
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.paging.PagedList
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ardnn.flix.R
-import com.ardnn.flix.core.data.source.local.entity.MovieEntity
-import com.ardnn.flix.core.data.source.local.entity.TvShowEntity
-import com.ardnn.flix.databinding.FragmentFavoritesBinding
+import com.ardnn.flix.core.domain.model.Movie
+import com.ardnn.flix.core.domain.model.TvShow
+import com.ardnn.flix.core.util.PagedListDataSources
 import com.ardnn.flix.core.viewmodel.ViewModelFactory
+import com.ardnn.flix.databinding.FragmentFavoritesBinding
 import com.google.android.material.snackbar.Snackbar
 
 class FavoritesFragment : Fragment() {
@@ -75,17 +77,19 @@ class FavoritesFragment : Fragment() {
         }
     }
 
-    private fun setFavoriteMovies(favoriteMovies: PagedList<MovieEntity>) {
+    private fun setFavoriteMovies(favoriteMovies: List<Movie>) {
+        val pagedFavoriteMovies = PagedListDataSources.snapshot(favoriteMovies)
         favoriteMoviesAdapter = FavoriteMoviesAdapter()
-        favoriteMoviesAdapter.submitList(favoriteMovies)
+        favoriteMoviesAdapter.submitList(pagedFavoriteMovies)
         binding?.recyclerView?.adapter = favoriteMoviesAdapter
 
         showAlert(favoriteMovies.isEmpty(), getString(R.string.movies))
     }
 
-    private fun setFavoriteTvShows(favoriteTvShows: PagedList<TvShowEntity>) {
+    private fun setFavoriteTvShows(favoriteTvShows: List<TvShow>) {
+        val pagedFavoriteTvShows = PagedListDataSources.snapshot(favoriteTvShows)
         favoriteTvShowsAdapter = FavoriteTvShowsAdapter()
-        favoriteTvShowsAdapter.submitList(favoriteTvShows)
+        favoriteTvShowsAdapter.submitList(pagedFavoriteTvShows)
         binding?.recyclerView?.adapter = favoriteTvShowsAdapter
 
         showAlert(favoriteTvShows.isEmpty(), getString(R.string.tv_shows))

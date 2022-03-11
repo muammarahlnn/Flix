@@ -8,13 +8,14 @@ import com.ardnn.flix.core.data.FlixRepository
 import com.ardnn.flix.core.data.source.local.entity.relation.MovieWithGenres
 import com.ardnn.flix.core.data.source.remote.ApiResponse
 import com.ardnn.flix.core.data.source.remote.response.CastResponse
+import com.ardnn.flix.core.domain.model.Movie
 import com.ardnn.flix.core.vo.Resource
 
 class MovieDetailViewModel(private val flixRepository: FlixRepository) : ViewModel() {
 
     val movieId = MutableLiveData<Int>()
 
-    var movie: LiveData<Resource<MovieWithGenres>> =
+    var movie: LiveData<Resource<Movie>> =
         Transformations.switchMap(movieId) {
             flixRepository.getMovieWithGenres(it)
         }
@@ -38,10 +39,10 @@ class MovieDetailViewModel(private val flixRepository: FlixRepository) : ViewMod
     fun setIsFavorite() {
         val movieResource = movie.value
         if (movieResource != null) {
-            val movieEntity = movieResource.data
-            if (movieEntity != null) {
-                val newState = !movieEntity.movie.isFavorite
-                flixRepository.setIsFavoriteMovie(movieEntity.movie, newState)
+            val movie = movieResource.data
+            if (movie != null) {
+                val newState = !movie.isFavorite
+                flixRepository.setIsFavoriteMovie(movie, newState)
             }
         }
     }

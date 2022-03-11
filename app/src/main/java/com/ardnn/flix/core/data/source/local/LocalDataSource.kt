@@ -21,7 +21,7 @@ class LocalDataSource private constructor(
     fun getMovie(movieId: Int): MovieEntity =
         movieDao.getMovie(movieId)
 
-    fun getFavoriteMovies(): DataSource.Factory<Int, MovieEntity> =
+    fun getFavoriteMovies(): LiveData<List<MovieEntity>> =
         movieDao.getFavoriteMovies()
 
     fun getMovieWithGenres(movieId: Int): LiveData<MovieWithGenres> =
@@ -52,7 +52,7 @@ class LocalDataSource private constructor(
     fun getTvShow(tvShowId: Int): TvShowEntity =
         tvShowDao.getTvShow(tvShowId)
 
-    fun getFavoriteTvShows(): DataSource.Factory<Int, TvShowEntity> =
+    fun getFavoriteTvShows(): LiveData<List<TvShowEntity>> =
         tvShowDao.getFavoriteTvShows()
 
     fun getTvShowWithGenres(tvShowId: Int): LiveData<TvShowWithGenres> =

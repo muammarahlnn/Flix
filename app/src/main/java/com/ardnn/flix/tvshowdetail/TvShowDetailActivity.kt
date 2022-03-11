@@ -9,23 +9,22 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ardnn.flix.R
-import com.ardnn.flix.core.data.source.local.entity.GenreEntity
-import com.ardnn.flix.core.data.source.local.entity.relation.TvShowWithGenres
-import com.ardnn.flix.core.data.source.remote.ImageSize
-import com.ardnn.flix.databinding.ActivityTvShowDetailBinding
-import com.ardnn.flix.genre.GenreActivity
-import com.ardnn.flix.moviedetail.GenreAdapter
+import com.ardnn.flix.core.domain.model.Genre
+import com.ardnn.flix.core.domain.model.TvShow
 import com.ardnn.flix.core.util.Helper
 import com.ardnn.flix.core.util.SingleClickListener
 import com.ardnn.flix.core.viewmodel.ViewModelFactory
 import com.ardnn.flix.core.vo.Status
+import com.ardnn.flix.databinding.ActivityTvShowDetailBinding
+import com.ardnn.flix.genre.GenreActivity
+import com.ardnn.flix.moviedetail.GenreAdapter
 
 class TvShowDetailActivity : AppCompatActivity(), View.OnClickListener,
-    SingleClickListener<GenreEntity> {
+    SingleClickListener<Genre> {
 
     private lateinit var viewModel: TvShowDetailViewModel
     private lateinit var binding: ActivityTvShowDetailBinding
-    private lateinit var tvShowWithGenres: TvShowWithGenres
+    private lateinit var tvShow: TvShow
 
     private var isSynopsisExtended = false
 
@@ -70,7 +69,7 @@ class TvShowDetailActivity : AppCompatActivity(), View.OnClickListener,
                             showLoading(false)
                             showAlert(false)
 
-                            tvShowWithGenres = tvShowResource.data
+                            tvShow = tvShowResource.data
                             setTvShowDetailToWidgets()
                         }
                     }
@@ -108,18 +107,16 @@ class TvShowDetailActivity : AppCompatActivity(), View.OnClickListener,
 
     private fun setTvShowDetailToWidgets() {
         with (binding) {
-            val tvShow = tvShowWithGenres.tvShow
-
             // set images
             Helper.setImageGlide(
                 this@TvShowDetailActivity,
-                tvShow.getPosterUrl(ImageSize.W342),
+                tvShow.posterUrl,
                 ivPoster)
             ivPoster.tag = tvShow.posterUrl
 
             Helper.setImageGlide(
                 this@TvShowDetailActivity,
-                tvShow.getWallpaperUrl(ImageSize.W500),
+                tvShow.wallpaperUrl,
                 ivWallpaper)
             ivWallpaper.tag = tvShow.wallpaperUrl
 
@@ -143,7 +140,7 @@ class TvShowDetailActivity : AppCompatActivity(), View.OnClickListener,
             tvSynopsis.text = Helper.checkNullOrEmptyString(tvShow.overview)
 
             // set recyclerview genre items
-            val genreAdapter = GenreAdapter(tvShowWithGenres.genres, this@TvShowDetailActivity)
+            val genreAdapter = GenreAdapter(tvShow.genres, this@TvShowDetailActivity)
             rvGenre.adapter = genreAdapter
         }
     }
@@ -175,7 +172,6 @@ class TvShowDetailActivity : AppCompatActivity(), View.OnClickListener,
             }
             R.id.btnFavorite -> {
                 viewModel.setIsFavorite()
-                val tvShow = tvShowWithGenres.tvShow
                 if (!tvShow.isFavorite) {
                     Toast.makeText(
                         this,
@@ -197,7 +193,7 @@ class TvShowDetailActivity : AppCompatActivity(), View.OnClickListener,
         }
     }
 
-    override fun onItemClicked(item: GenreEntity) {
+    override fun onItemClicked(item: Genre) {
         // to genre activity
         val toGenre = Intent(this, GenreActivity::class.java)
         toGenre.putExtra(GenreActivity.EXTRA_GENRE_ID, item.id)

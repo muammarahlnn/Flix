@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.ardnn.flix.core.data.FlixRepository
 import com.ardnn.flix.core.data.source.local.entity.MovieEntity
+import com.ardnn.flix.core.domain.model.Movie
 import com.ardnn.flix.core.vo.Resource
 
 class MoviesViewModel(private val flixRepository: FlixRepository) : ViewModel() {
@@ -15,7 +16,7 @@ class MoviesViewModel(private val flixRepository: FlixRepository) : ViewModel() 
     private val _moviesSort = MutableLiveData(sortArr)
     val moviesSort: LiveData<Array<String>> = _moviesSort
 
-    fun getSectionWithMovies(page: Int, filter: String): LiveData<Resource<List<MovieEntity>>> =
+    fun getSectionWithMovies(page: Int, filter: String): LiveData<Resource<List<Movie>>> =
         flixRepository.getSectionWithMovies(page, section, filter)
 
     fun setSection(section: Int) {

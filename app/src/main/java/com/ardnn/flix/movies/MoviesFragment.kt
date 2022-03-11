@@ -8,17 +8,17 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.ardnn.flix.R
-import com.ardnn.flix.core.data.source.local.entity.MovieEntity
-import com.ardnn.flix.databinding.FragmentFilmsBinding
-import com.ardnn.flix.moviedetail.MovieDetailActivity
+import com.ardnn.flix.core.domain.model.Movie
 import com.ardnn.flix.core.util.PagedListDataSources
 import com.ardnn.flix.core.util.SingleClickListener
 import com.ardnn.flix.core.util.SortUtils
 import com.ardnn.flix.core.viewmodel.ViewModelFactory
 import com.ardnn.flix.core.vo.Resource
 import com.ardnn.flix.core.vo.Status
+import com.ardnn.flix.databinding.FragmentFilmsBinding
+import com.ardnn.flix.moviedetail.MovieDetailActivity
 
-class MoviesFragment : Fragment(), SingleClickListener<MovieEntity> {
+class MoviesFragment : Fragment(), SingleClickListener<Movie> {
 
     private lateinit var viewModel: MoviesViewModel
     private var _binding: FragmentFilmsBinding? = null
@@ -114,7 +114,7 @@ class MoviesFragment : Fragment(), SingleClickListener<MovieEntity> {
         })
     }
 
-    private fun setMovies(moviesResource: Resource<List<MovieEntity>>) {
+    private fun setMovies(moviesResource: Resource<List<Movie>>) {
         when (moviesResource.status) {
             Status.LOADING -> {
                 showLoading(true)
@@ -163,7 +163,7 @@ class MoviesFragment : Fragment(), SingleClickListener<MovieEntity> {
         }
     }
 
-    override fun onItemClicked(item: MovieEntity) {
+    override fun onItemClicked(item: Movie) {
         val toMovieDetail = Intent(requireActivity(), MovieDetailActivity::class.java)
         toMovieDetail.putExtra(MovieDetailActivity.EXTRA_MOVIE_ID, item.id)
         startActivity(toMovieDetail)

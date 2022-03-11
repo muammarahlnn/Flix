@@ -6,15 +6,14 @@ import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.ardnn.flix.R
-import com.ardnn.flix.core.data.source.local.entity.MovieEntity
-import com.ardnn.flix.core.data.source.remote.ImageSize
-import com.ardnn.flix.databinding.ItemFilmBinding
+import com.ardnn.flix.core.domain.model.Movie
 import com.ardnn.flix.core.util.Helper
 import com.ardnn.flix.core.util.SingleClickListener
+import com.ardnn.flix.databinding.ItemFilmBinding
 
 class MoviesAdapter(
-    private val clickListener: SingleClickListener<MovieEntity>
-) : PagedListAdapter<MovieEntity, MoviesAdapter.MovieViewHolder>(DIFF_CALLBACK) {
+    private val clickListener: SingleClickListener<Movie>
+) : PagedListAdapter<Movie, MoviesAdapter.MovieViewHolder>(DIFF_CALLBACK) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
         val binding = ItemFilmBinding
@@ -32,14 +31,14 @@ class MoviesAdapter(
     inner class MovieViewHolder(private val binding: ItemFilmBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun onBind(movie: MovieEntity) {
+        fun onBind(movie: Movie) {
             with (binding) {
                 if (movie.posterUrl.isNullOrEmpty()) {
                     ivPoster.setImageResource(R.drawable.ic_error)
                 } else {
                     Helper.setImageGlide(
                         itemView.context,
-                        movie.getPosterUrl(ImageSize.W342),
+                        movie.posterUrl,
                         ivPoster)
                 }
 
@@ -57,12 +56,12 @@ class MoviesAdapter(
     }
 
     companion object {
-        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<MovieEntity>() {
-            override fun areItemsTheSame(oldItem: MovieEntity, newItem: MovieEntity): Boolean {
+        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<Movie>() {
+            override fun areItemsTheSame(oldItem: Movie, newItem: Movie): Boolean {
                 return oldItem.id == newItem.id
             }
 
-            override fun areContentsTheSame(oldItem: MovieEntity, newItem: MovieEntity): Boolean {
+            override fun areContentsTheSame(oldItem: Movie, newItem: Movie): Boolean {
                 return oldItem == newItem
             }
 

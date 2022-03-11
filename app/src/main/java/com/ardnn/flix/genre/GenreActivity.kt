@@ -50,8 +50,8 @@ class GenreActivity : AppCompatActivity() {
     private fun subscribe() {
         when (genreType) {
             getString(R.string.movies) -> {
-                viewModel.getGenreWithMovies().observe(this, { genreWithMovies ->
-                    val movies = genreWithMovies.movies
+                viewModel.getGenreWithMovies().observe(this, { genre ->
+                    val movies = genre.movies
                     val pagedMovies = PagedListDataSources.snapshot(movies)
                     val adapter = GenreMoviesAdapter()
                     adapter.submitList(pagedMovies)
@@ -59,8 +59,8 @@ class GenreActivity : AppCompatActivity() {
                 })
             }
             getString(R.string.tv_shows) -> {
-                viewModel.getGenreWithTvShows().observe(this, { genreWithTvShows ->
-                    val tvShows = genreWithTvShows.tvShows
+                viewModel.getGenreWithTvShows().observe(this, { genre ->
+                    val tvShows = genre.tvShows
                     val pagedTvShows = PagedListDataSources.snapshot(tvShows)
                     val adapter = GenreTvShowsAdapter()
                     adapter.submitList(pagedTvShows)

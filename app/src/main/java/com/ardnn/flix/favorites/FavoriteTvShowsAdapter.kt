@@ -7,13 +7,12 @@ import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.ardnn.flix.R
-import com.ardnn.flix.core.data.source.local.entity.TvShowEntity
-import com.ardnn.flix.core.data.source.remote.ImageSize
+import com.ardnn.flix.core.domain.model.TvShow
+import com.ardnn.flix.core.util.Helper
 import com.ardnn.flix.databinding.ItemFavoriteBinding
 import com.ardnn.flix.tvshowdetail.TvShowDetailActivity
-import com.ardnn.flix.core.util.Helper
 
-class FavoriteTvShowsAdapter : PagedListAdapter<TvShowEntity, FavoriteTvShowsAdapter.TvShowViewHolder>(DIFF_CALLBACK) {
+class FavoriteTvShowsAdapter : PagedListAdapter<TvShow, FavoriteTvShowsAdapter.TvShowViewHolder>(DIFF_CALLBACK) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TvShowViewHolder {
         val binding = ItemFavoriteBinding
@@ -28,20 +27,20 @@ class FavoriteTvShowsAdapter : PagedListAdapter<TvShowEntity, FavoriteTvShowsAda
         }
     }
 
-    fun getSwipedData(swipedPosition: Int): TvShowEntity? =
+    fun getSwipedData(swipedPosition: Int): TvShow? =
         getItem(swipedPosition)
 
     class TvShowViewHolder(private val binding: ItemFavoriteBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun onBind(tvShow: TvShowEntity) {
+        fun onBind(tvShow: TvShow) {
             with (binding) {
                 if (tvShow.posterUrl.isNullOrEmpty()) {
                     ivPoster.setImageResource(R.drawable.ic_error)
                 } else {
                     Helper.setImageGlide(
                         itemView.context,
-                        tvShow.getPosterUrl(ImageSize.W200),
+                        tvShow.posterUrl,
                         ivPoster)
                 }
 
@@ -61,17 +60,17 @@ class FavoriteTvShowsAdapter : PagedListAdapter<TvShowEntity, FavoriteTvShowsAda
     }
 
     companion object {
-        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<TvShowEntity>() {
+        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<TvShow>() {
             override fun areItemsTheSame(
-                oldItem: TvShowEntity,
-                newItem: TvShowEntity
+                oldItem: TvShow,
+                newItem: TvShow
             ): Boolean {
                 return oldItem.id == newItem.id
             }
 
             override fun areContentsTheSame(
-                oldItem: TvShowEntity,
-                newItem: TvShowEntity
+                oldItem: TvShow,
+                newItem: TvShow
             ): Boolean {
                 return oldItem == newItem
             }

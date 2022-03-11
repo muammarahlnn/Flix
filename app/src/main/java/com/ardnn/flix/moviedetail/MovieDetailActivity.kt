@@ -9,22 +9,21 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ardnn.flix.R
-import com.ardnn.flix.core.data.source.local.entity.GenreEntity
-import com.ardnn.flix.core.data.source.local.entity.relation.MovieWithGenres
-import com.ardnn.flix.core.data.source.remote.ImageSize
-import com.ardnn.flix.databinding.ActivityMovieDetailBinding
-import com.ardnn.flix.genre.GenreActivity
+import com.ardnn.flix.core.domain.model.Genre
+import com.ardnn.flix.core.domain.model.Movie
 import com.ardnn.flix.core.util.Helper
 import com.ardnn.flix.core.util.SingleClickListener
 import com.ardnn.flix.core.viewmodel.ViewModelFactory
 import com.ardnn.flix.core.vo.Status
+import com.ardnn.flix.databinding.ActivityMovieDetailBinding
+import com.ardnn.flix.genre.GenreActivity
 
 class MovieDetailActivity : AppCompatActivity(), View.OnClickListener,
-    SingleClickListener<GenreEntity> {
+    SingleClickListener<Genre> {
 
     private lateinit var viewModel: MovieDetailViewModel
     private lateinit var binding: ActivityMovieDetailBinding
-    private lateinit var movieWithGenres: MovieWithGenres
+    private lateinit var movie: Movie
 
     private var isSynopsisExtended = false
 
@@ -69,7 +68,7 @@ class MovieDetailActivity : AppCompatActivity(), View.OnClickListener,
                             showLoading(false)
                             showAlert(false)
 
-                            movieWithGenres = movieDetailResource.data
+                            movie = movieDetailResource.data
                             setMovieDetailToWidgets()
                         }
                     }
@@ -107,17 +106,16 @@ class MovieDetailActivity : AppCompatActivity(), View.OnClickListener,
 
     private fun setMovieDetailToWidgets() {
         with (binding) {
-            val movie = movieWithGenres.movie
             // set images
             Helper.setImageGlide(
                 this@MovieDetailActivity,
-                movie.getPosterUrl(ImageSize.W342),
+                movie.posterUrl,
                 ivPoster)
             ivPoster.tag = movie.posterUrl
 
             Helper.setImageGlide(
                 this@MovieDetailActivity,
-                movie.getWallpaperUrl(ImageSize.W500),
+                movie.wallpaperUrl,
                 ivWallpaper)
             ivWallpaper.tag = movie.wallpaperUrl
 
@@ -138,7 +136,7 @@ class MovieDetailActivity : AppCompatActivity(), View.OnClickListener,
             tvSynopsis.text = Helper.checkNullOrEmptyString(movie.overview)
 
             // set recyclerview genre items
-            val genreAdapter = GenreAdapter(movieWithGenres.genres, this@MovieDetailActivity)
+            val genreAdapter = GenreAdapter(movie.genres, this@MovieDetailActivity)
             rvGenre.adapter = genreAdapter
         }
     }
@@ -171,7 +169,6 @@ class MovieDetailActivity : AppCompatActivity(), View.OnClickListener,
             }
             R.id.btnFavorite -> {
                 viewModel.setIsFavorite()
-                val movie = movieWithGenres.movie
                 if (!movie.isFavorite) {
                     Toast.makeText(
                         this,
@@ -193,7 +190,7 @@ class MovieDetailActivity : AppCompatActivity(), View.OnClickListener,
         }
     }
 
-    override fun onItemClicked(item: GenreEntity) {
+    override fun onItemClicked(item: Genre) {
         // to genre activity
         val toGenre = Intent(this, GenreActivity::class.java)
         toGenre.putExtra(GenreActivity.EXTRA_GENRE_ID, item.id)

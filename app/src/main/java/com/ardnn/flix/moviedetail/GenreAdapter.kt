@@ -3,13 +3,13 @@ package com.ardnn.flix.moviedetail
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.ardnn.flix.core.data.source.local.entity.GenreEntity
-import com.ardnn.flix.databinding.ItemGenreBinding
+import com.ardnn.flix.core.domain.model.Genre
 import com.ardnn.flix.core.util.SingleClickListener
+import com.ardnn.flix.databinding.ItemGenreBinding
 
 class GenreAdapter(
-    private val genreList: List<GenreEntity>,
-    private val clickListener: SingleClickListener<GenreEntity>
+    private val genreList: List<Genre>,
+    private val clickListener: SingleClickListener<Genre>
 ) : RecyclerView.Adapter<GenreAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -29,7 +29,7 @@ class GenreAdapter(
     inner class ViewHolder(private val binding: ItemGenreBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun onBind(genre: GenreEntity) {
+        fun onBind(genre: Genre) {
             with(binding) {
                 tvName.text = genre.name
             }

@@ -8,20 +8,21 @@ import com.ardnn.flix.core.data.FlixRepository
 import com.ardnn.flix.core.data.source.local.entity.relation.TvShowWithGenres
 import com.ardnn.flix.core.data.source.remote.ApiResponse
 import com.ardnn.flix.core.data.source.remote.response.CastResponse
+import com.ardnn.flix.core.domain.model.TvShow
 import com.ardnn.flix.core.vo.Resource
 
 class TvShowDetailViewModel(private val flixRepository: FlixRepository) : ViewModel() {
 
     val tvShowId = MutableLiveData<Int>()
 
-    var tvShow: LiveData<Resource<TvShowWithGenres>> =
+    var tvShow: LiveData<Resource<TvShow>> =
         Transformations.switchMap(tvShowId) {
             flixRepository.getTvShowWithGenres(it)
         }
 
     var tvShowCredits: LiveData<ApiResponse<List<CastResponse>>> =
-        Transformations.switchMap(tvShowId) { mTvShowId ->
-            flixRepository.getTvShowCredits(mTvShowId)
+        Transformations.switchMap(tvShowId) {
+            flixRepository.getTvShowCredits(it)
         }
 
     private val _isSynopsisExtended = MutableLiveData(false)
@@ -36,12 +37,12 @@ class TvShowDetailViewModel(private val flixRepository: FlixRepository) : ViewMo
     }
 
     fun setIsFavorite() {
-        val tvShowDetailResource = tvShow.value
-        if (tvShowDetailResource != null) {
-            val tvShowDetailEntity = tvShowDetailResource.data
-            if (tvShowDetailEntity != null) {
-                val newState = !tvShowDetailEntity.tvShow.isFavorite
-                flixRepository.setIsFavoriteTvShow(tvShowDetailEntity.tvShow, newState)
+        val tvShowResource = tvShow.value
+        if (tvShowResource != null) {
+            val tvShow = tvShowResource.data
+            if (tvShow != null) {
+                val newState = !tvShow.isFavorite
+                flixRepository.setIsFavoriteTvShow(tvShow, newState)
             }
         }
     }

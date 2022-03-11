@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.ardnn.flix.R
 import com.ardnn.flix.core.data.source.local.entity.TvShowEntity
+import com.ardnn.flix.core.domain.model.TvShow
 import com.ardnn.flix.databinding.FragmentFilmsBinding
 import com.ardnn.flix.tvshowdetail.TvShowDetailActivity
 import com.ardnn.flix.core.util.PagedListDataSources
@@ -18,7 +19,7 @@ import com.ardnn.flix.core.viewmodel.ViewModelFactory
 import com.ardnn.flix.core.vo.Resource
 import com.ardnn.flix.core.vo.Status
 
-class TvShowsFragment : Fragment(), SingleClickListener<TvShowEntity> {
+class TvShowsFragment : Fragment(), SingleClickListener<TvShow> {
 
     private lateinit var viewModel: TvShowsViewModel
     private var _binding: FragmentFilmsBinding? = null
@@ -112,7 +113,7 @@ class TvShowsFragment : Fragment(), SingleClickListener<TvShowEntity> {
         })
     }
 
-    private fun setTvShows(tvShowsResource: Resource<List<TvShowEntity>>) {
+    private fun setTvShows(tvShowsResource: Resource<List<TvShow>>) {
         when (tvShowsResource.status) {
             Status.LOADING -> {
                 showLoading(true)
@@ -160,7 +161,7 @@ class TvShowsFragment : Fragment(), SingleClickListener<TvShowEntity> {
         }
     }
 
-    override fun onItemClicked(item: TvShowEntity) {
+    override fun onItemClicked(item: TvShow) {
         val toTvShowDetail = Intent(requireActivity(), TvShowDetailActivity::class.java)
         toTvShowDetail.putExtra(TvShowDetailActivity.EXTRA_TV_SHOW_ID, item.id)
         startActivity(toTvShowDetail)

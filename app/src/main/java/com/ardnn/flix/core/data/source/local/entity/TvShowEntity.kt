@@ -5,7 +5,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.ardnn.flix.core.data.source.remote.Const
-import com.ardnn.flix.core.data.source.remote.ImageSize
+import com.ardnn.flix.core.data.source.remote.ImageSizeTMDB
 
 @Entity(tableName = "tv_show_entities")
 data class TvShowEntity(
@@ -54,11 +54,11 @@ data class TvShowEntity(
     @ColumnInfo(name = "is_detail_fetched")
     var isDetailFetched: Boolean = false
 
-    fun getPosterUrl(size: ImageSize): String {
+    fun getPosterUrl(size: ImageSizeTMDB): String {
         return "${Const.IMG_URL}${size.getValue()}$posterUrl"
     }
 
-    fun getWallpaperUrl(size: ImageSize): String {
+    fun getWallpaperUrl(size: ImageSizeTMDB): String {
         return "${Const.IMG_URL}${size.getValue()}$wallpaperUrl"
     }
 }

@@ -7,13 +7,12 @@ import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.ardnn.flix.R
-import com.ardnn.flix.core.data.source.local.entity.TvShowEntity
-import com.ardnn.flix.core.data.source.remote.ImageSize
+import com.ardnn.flix.core.domain.model.TvShow
+import com.ardnn.flix.core.util.Helper
 import com.ardnn.flix.databinding.ItemFilmBinding
 import com.ardnn.flix.tvshowdetail.TvShowDetailActivity
-import com.ardnn.flix.core.util.Helper
 
-class GenreTvShowsAdapter : PagedListAdapter<TvShowEntity, GenreTvShowsAdapter.TvShowViewHolder>(DIFF_CALLBACK) {
+class GenreTvShowsAdapter : PagedListAdapter<TvShow, GenreTvShowsAdapter.TvShowViewHolder>(DIFF_CALLBACK) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TvShowViewHolder {
         val binding = ItemFilmBinding
@@ -31,14 +30,14 @@ class GenreTvShowsAdapter : PagedListAdapter<TvShowEntity, GenreTvShowsAdapter.T
     class TvShowViewHolder(private val binding: ItemFilmBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun onBind(tvShow: TvShowEntity) {
+        fun onBind(tvShow: TvShow) {
             with (binding) {
                 if (tvShow.posterUrl.isNullOrEmpty()) {
                     ivPoster.setImageResource(R.drawable.ic_error)
                 } else {
                     Helper.setImageGlide(
                         itemView.context,
-                        tvShow.getPosterUrl(ImageSize.W342),
+                        tvShow.posterUrl,
                         ivPoster)
                 }
 
@@ -59,17 +58,17 @@ class GenreTvShowsAdapter : PagedListAdapter<TvShowEntity, GenreTvShowsAdapter.T
 
 
     companion object {
-        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<TvShowEntity>() {
+        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<TvShow>() {
             override fun areItemsTheSame(
-                oldItem: TvShowEntity,
-                newItem: TvShowEntity
+                oldItem: TvShow,
+                newItem: TvShow
             ): Boolean {
                 return oldItem.id == newItem.id
             }
 
             override fun areContentsTheSame(
-                oldItem: TvShowEntity,
-                newItem: TvShowEntity
+                oldItem: TvShow,
+                newItem: TvShow
             ): Boolean {
                 return oldItem == newItem
             }
