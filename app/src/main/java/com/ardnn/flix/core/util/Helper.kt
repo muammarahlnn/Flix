@@ -48,6 +48,9 @@ object Helper {
     fun setTextDate(date: String): String =
         if (date.isEmpty()) "-" else convertToDate(date)
 
+    fun setTextRuntime(context: Context, num: Int): String =
+        if (num == 0) "-" else context.getString(R.string.minutes, num)
+
     private fun convertToDate(date: String): String {
         if (date.isEmpty()) return "-"
 

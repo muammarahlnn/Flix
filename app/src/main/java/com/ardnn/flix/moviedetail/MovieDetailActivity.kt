@@ -130,7 +130,7 @@ class MovieDetailActivity : AppCompatActivity(), View.OnClickListener,
             // set detail
             tvTitle.text = Helper.setTextString(movie.title)
             tvReleaseDate.text = Helper.setTextDate(movie.releaseDate)
-            tvRuntime.text = Helper.setTextNum(movie.runtime)
+            tvRuntime.text = Helper.setTextRuntime(this@MovieDetailActivity, movie.runtime)
             tvRating.text = Helper.setTextFloat(movie.rating)
             tvSynopsis.text = Helper.setTextString(movie.overview)
 

@@ -132,7 +132,7 @@ class TvShowDetailActivity : AppCompatActivity(), View.OnClickListener,
             tvTitle.text = Helper.setTextString(tvShow.title)
             tvEpisodes.text = Helper.setTextNum(tvShow.numberOfEpisodes)
             tvSeasons.text = Helper.setTextNum(tvShow.numberOfSeasons)
-            tvRuntime.text = Helper.setTextNum(tvShow.runtime)
+            tvRuntime.text = Helper.setTextRuntime(this@TvShowDetailActivity, tvShow.runtime)
             tvRating.text = Helper.setTextFloat(tvShow.rating)
             tvFirstAiring.text = Helper.setTextDate(tvShow.firstAirDate)
             tvLastAiring.text = Helper.setTextDate(tvShow.lastAirDate)
