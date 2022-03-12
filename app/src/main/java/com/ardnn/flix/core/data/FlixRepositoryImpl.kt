@@ -12,15 +12,16 @@ import com.ardnn.flix.core.data.source.remote.response.*
 import com.ardnn.flix.core.domain.model.Genre
 import com.ardnn.flix.core.domain.model.Movie
 import com.ardnn.flix.core.domain.model.TvShow
+import com.ardnn.flix.core.domain.repository.FlixRepository
 import com.ardnn.flix.core.util.AppExecutors
 import com.ardnn.flix.core.util.DataMapper
 import com.ardnn.flix.core.vo.Resource
 
-class FlixRepository private constructor(
+class FlixRepositoryImpl private constructor(
     private val remoteDataSource: RemoteDataSource,
     private val localDataSource: LocalDataSource,
     private val appExecutors: AppExecutors
-) : IFlixRepository {
+) : FlixRepository {
 
     override fun getSectionWithMovies(
         page: Int,
@@ -296,15 +297,15 @@ class FlixRepository private constructor(
 
     companion object {
         @Volatile
-        private var instance: FlixRepository? = null
+        private var instance: FlixRepositoryImpl? = null
 
         fun getInstance(
             remoteData: RemoteDataSource,
             localData: LocalDataSource,
             appExecutors: AppExecutors
-        ): FlixRepository =
+        ): FlixRepositoryImpl =
             instance ?: synchronized(this) {
-                instance ?: FlixRepository(remoteData, localData, appExecutors).apply {
+                instance ?: FlixRepositoryImpl(remoteData, localData, appExecutors).apply {
                     instance = this
                 }
             }

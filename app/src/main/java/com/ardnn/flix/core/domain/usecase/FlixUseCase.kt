@@ -1,4 +1,4 @@
-package com.ardnn.flix.core.data
+package com.ardnn.flix.core.domain.usecase
 
 import androidx.lifecycle.LiveData
 import com.ardnn.flix.core.data.source.remote.ApiResponse
@@ -8,7 +8,7 @@ import com.ardnn.flix.core.domain.model.Movie
 import com.ardnn.flix.core.domain.model.TvShow
 import com.ardnn.flix.core.vo.Resource
 
-interface IFlixRepository {
+interface FlixUseCase {
     // === section ===================================================================
     fun getSectionWithMovies(page: Int, section: Int, filter: String): LiveData<Resource<List<Movie>>>
 

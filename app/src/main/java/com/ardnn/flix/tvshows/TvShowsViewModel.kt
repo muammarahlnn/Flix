@@ -3,12 +3,11 @@ package com.ardnn.flix.tvshows
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.ardnn.flix.core.data.FlixRepository
-import com.ardnn.flix.core.data.source.local.entity.TvShowEntity
 import com.ardnn.flix.core.domain.model.TvShow
+import com.ardnn.flix.core.domain.usecase.FlixUseCase
 import com.ardnn.flix.core.vo.Resource
 
-class TvShowsViewModel(private val flixRepository: FlixRepository) : ViewModel() {
+class TvShowsViewModel(private val flixUseCase: FlixUseCase) : ViewModel() {
 
     private var section = 0
 
@@ -17,7 +16,7 @@ class TvShowsViewModel(private val flixRepository: FlixRepository) : ViewModel()
     val tvShowsSort: LiveData<Array<String>> = _tvShowsSort
 
     fun getSectionWithTvShows(page: Int, filter: String): LiveData<Resource<List<TvShow>>> =
-        flixRepository.getSectionWithTvShows(page, section, filter)
+        flixUseCase.getSectionWithTvShows(page, section, filter)
 
     fun setSection(section: Int) {
         this.section = section

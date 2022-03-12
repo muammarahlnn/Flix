@@ -2,19 +2,19 @@ package com.ardnn.flix.favorites
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import com.ardnn.flix.core.data.FlixRepository
 import com.ardnn.flix.core.domain.model.Movie
 import com.ardnn.flix.core.domain.model.TvShow
+import com.ardnn.flix.core.domain.usecase.FlixUseCase
 
-class FavoritesViewModel(private val flixRepository: FlixRepository) : ViewModel() {
+class FavoritesViewModel(private val flixUseCase: FlixUseCase) : ViewModel() {
 
     private var section = 0
 
     fun getFavoriteMovies(): LiveData<List<Movie>> =
-        flixRepository.getFavoriteMovies()
+        flixUseCase.getFavoriteMovies()
 
     fun getFavoriteTvShows(): LiveData<List<TvShow>> =
-        flixRepository.getFavoriteTvShows()
+        flixUseCase.getFavoriteTvShows()
 
     fun setSection(section: Int) {
         this.section = section
@@ -22,11 +22,11 @@ class FavoritesViewModel(private val flixRepository: FlixRepository) : ViewModel
 
     fun setIsFavoriteMovie(movie: Movie) {
         val newState = !movie.isFavorite
-        flixRepository.setIsFavoriteMovie(movie, newState)
+        flixUseCase.setIsFavoriteMovie(movie, newState)
     }
 
     fun setIsFavoriteTvShow(tvShow: TvShow) {
         val newState = !tvShow.isFavorite
-        flixRepository.setIsFavoriteTvShow(tvShow, newState)
+        flixUseCase.setIsFavoriteTvShow(tvShow, newState)
     }
 }

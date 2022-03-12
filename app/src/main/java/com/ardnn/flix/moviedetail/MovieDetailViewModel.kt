@@ -4,25 +4,24 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
-import com.ardnn.flix.core.data.FlixRepository
-import com.ardnn.flix.core.data.source.local.entity.relation.MovieWithGenres
 import com.ardnn.flix.core.data.source.remote.ApiResponse
 import com.ardnn.flix.core.data.source.remote.response.CastResponse
 import com.ardnn.flix.core.domain.model.Movie
+import com.ardnn.flix.core.domain.usecase.FlixUseCase
 import com.ardnn.flix.core.vo.Resource
 
-class MovieDetailViewModel(private val flixRepository: FlixRepository) : ViewModel() {
+class MovieDetailViewModel(private val flixUseCase: FlixUseCase) : ViewModel() {
 
     val movieId = MutableLiveData<Int>()
 
     var movie: LiveData<Resource<Movie>> =
         Transformations.switchMap(movieId) {
-            flixRepository.getMovieWithGenres(it)
+            flixUseCase.getMovieWithGenres(it)
         }
 
     var movieCredits: LiveData<ApiResponse<List<CastResponse>>> =
         Transformations.switchMap(movieId) {
-            flixRepository.getMovieCredits(it)
+            flixUseCase.getMovieCredits(it)
         }
 
     private val _isSynopsisExtended = MutableLiveData(false)
@@ -42,7 +41,7 @@ class MovieDetailViewModel(private val flixRepository: FlixRepository) : ViewMod
             val movie = movieResource.data
             if (movie != null) {
                 val newState = !movie.isFavorite
-                flixRepository.setIsFavoriteMovie(movie, newState)
+                flixUseCase.setIsFavoriteMovie(movie, newState)
             }
         }
     }

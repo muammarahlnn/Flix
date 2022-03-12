@@ -4,7 +4,7 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.paging.PagedList
-import com.ardnn.flix.core.data.FlixRepository
+import com.ardnn.flix.core.data.FlixRepositoryImpl
 import com.ardnn.flix.core.util.DataDummy
 import com.ardnn.flix.core.util.PagedTestDataSources
 import com.ardnn.flix.core.util.SortUtils
@@ -33,7 +33,7 @@ class MoviesViewModelTest {
     var mockitoRule: MockitoRule = MockitoJUnit.rule()
 
     @Mock
-    private lateinit var flixRepository: FlixRepository
+    private lateinit var flixRepository: FlixRepositoryImpl
 
     @Mock
     private lateinit var observer: Observer<Resource<PagedList<MovieEntity>>>

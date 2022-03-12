@@ -4,7 +4,7 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.paging.PagedList
-import com.ardnn.flix.core.data.FlixRepository
+import com.ardnn.flix.core.data.FlixRepositoryImpl
 import com.ardnn.flix.core.data.source.local.entity.MovieEntity
 import com.ardnn.flix.core.data.source.local.entity.TvShowEntity
 import com.ardnn.flix.core.util.DataDummy
@@ -33,7 +33,7 @@ class FavoritesViewModelTest {
     var mockitoRule: MockitoRule = MockitoJUnit.rule()
 
     @Mock
-    private lateinit var flixRepository: FlixRepository
+    private lateinit var flixRepository: FlixRepositoryImpl
 
     @Mock
     private lateinit var favoriteMoviesObserver: Observer<PagedList<MovieEntity>>

@@ -9,6 +9,7 @@ import com.ardnn.flix.core.data.source.local.entity.relation.*
 import com.ardnn.flix.core.data.source.remote.ApiResponse
 import com.ardnn.flix.core.data.source.remote.datasource.RemoteDataSource
 import com.ardnn.flix.core.data.source.remote.response.*
+import com.ardnn.flix.core.domain.repository.FlixRepository
 import com.ardnn.flix.core.util.AppExecutors
 import com.ardnn.flix.core.vo.Resource
 
@@ -16,7 +17,7 @@ class FakeFlixRepository(
     private val remoteDataSource: RemoteDataSource,
     private val localDataSource: LocalDataSource,
     private val appExecutors: AppExecutors
-) : IFlixRepository{
+) : FlixRepository {
 
     override fun getMovies(page: Int, section: Int, filter: String): LiveData<Resource<PagedList<MovieEntity>>> {
         return object : NetworkBoundResource<PagedList<MovieEntity>, List<MovieResponse>>(appExecutors) {

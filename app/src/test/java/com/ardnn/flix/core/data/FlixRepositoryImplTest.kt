@@ -32,7 +32,7 @@ import org.robolectric.RobolectricTestRunner
 import org.robolectric.RuntimeEnvironment
 
 @RunWith(RobolectricTestRunner::class)
-class FlixRepositoryTest {
+class FlixRepositoryImplTest {
 
     @get:Rule
     var instantTaskExecutorRule = InstantTaskExecutorRule()

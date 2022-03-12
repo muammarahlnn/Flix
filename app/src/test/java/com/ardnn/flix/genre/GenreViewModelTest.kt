@@ -3,7 +3,7 @@ package com.ardnn.flix.genre
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
-import com.ardnn.flix.core.data.FlixRepository
+import com.ardnn.flix.core.data.FlixRepositoryImpl
 import com.ardnn.flix.core.data.source.local.entity.relation.GenreWithMovies
 import com.ardnn.flix.core.data.source.local.entity.relation.GenreWithTvShows
 import com.ardnn.flix.core.util.DataDummy
@@ -35,7 +35,7 @@ class GenreViewModelTest {
     var mockitoRule: MockitoRule = MockitoJUnit.rule()
 
     @Mock
-    private lateinit var flixRepository: FlixRepository
+    private lateinit var flixRepository: FlixRepositoryImpl
 
     @Mock
     private lateinit var genreMoviesObserver: Observer<GenreWithMovies>
