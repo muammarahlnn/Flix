@@ -9,6 +9,7 @@ import com.ardnn.flix.core.data.source.local.room.MovieDao
 import com.ardnn.flix.core.data.source.local.room.SectionDao
 import com.ardnn.flix.core.data.source.local.room.TvShowDao
 import com.ardnn.flix.core.util.SortUtils
+import io.reactivex.Flowable
 
 class LocalDataSource private constructor(
     private val movieDao: MovieDao,
@@ -21,10 +22,10 @@ class LocalDataSource private constructor(
     fun getMovie(movieId: Int): MovieEntity =
         movieDao.getMovie(movieId)
 
-    fun getFavoriteMovies(): LiveData<List<MovieEntity>> =
+    fun getFavoriteMovies(): Flowable<List<MovieEntity>> =
         movieDao.getFavoriteMovies()
 
-    fun getMovieWithGenres(movieId: Int): LiveData<MovieWithGenres> =
+    fun getMovieWithGenres(movieId: Int): Flowable<MovieWithGenres> =
         movieDao.getMovieWithGenres(movieId)
 
     fun insertMovies(movies: List<MovieEntity>) {
@@ -52,10 +53,10 @@ class LocalDataSource private constructor(
     fun getTvShow(tvShowId: Int): TvShowEntity =
         tvShowDao.getTvShow(tvShowId)
 
-    fun getFavoriteTvShows(): LiveData<List<TvShowEntity>> =
+    fun getFavoriteTvShows(): Flowable<List<TvShowEntity>> =
         tvShowDao.getFavoriteTvShows()
 
-    fun getTvShowWithGenres(tvShowId: Int): LiveData<TvShowWithGenres> =
+    fun getTvShowWithGenres(tvShowId: Int): Flowable<TvShowWithGenres> =
         tvShowDao.getTvShowWithGenres(tvShowId)
 
     fun insertTvShows(tvShows: List<TvShowEntity>) {
@@ -79,12 +80,12 @@ class LocalDataSource private constructor(
     }
 
     // === section dao ===================================================================
-    fun getSectionWithMovies(section: Int, filter: String): LiveData<List<MovieEntity>> {
+    fun getSectionWithMovies(section: Int, filter: String): Flowable<List<MovieEntity>> {
         val query = SortUtils.getSortedSection(SortUtils.MOVIES, section, filter)
         return sectionDao.getSectionWithMovies(query)
     }
 
-    fun getSectionWithTvShows(section: Int, filter: String): LiveData<List<TvShowEntity>> {
+    fun getSectionWithTvShows(section: Int, filter: String): Flowable<List<TvShowEntity>> {
         val query = SortUtils.getSortedSection(SortUtils.TV_SHOWS, section, filter)
         return sectionDao.getSectionWithTvShows(query)
     }
@@ -106,10 +107,10 @@ class LocalDataSource private constructor(
     }
 
     // === genre dao ===================================================================
-    fun getGenreWithMovies(genreId: Int): LiveData<GenreWithMovies> =
+    fun getGenreWithMovies(genreId: Int): Flowable<GenreWithMovies> =
         genreDao.getGenreWithMovies(genreId)
 
-    fun getGenreWithTvShows(genreId: Int): LiveData<GenreWithTvShows> =
+    fun getGenreWithTvShows(genreId: Int): Flowable<GenreWithTvShows> =
         genreDao.getGenreWithTvShows(genreId)
 
     fun insertGenre(genres: List<GenreEntity>) {

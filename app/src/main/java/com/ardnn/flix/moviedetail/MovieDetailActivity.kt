@@ -14,7 +14,7 @@ import com.ardnn.flix.core.domain.model.Movie
 import com.ardnn.flix.core.util.Helper
 import com.ardnn.flix.core.util.SingleClickListener
 import com.ardnn.flix.core.viewmodel.ViewModelFactory
-import com.ardnn.flix.core.vo.Status
+import com.ardnn.flix.core.vo.Resource
 import com.ardnn.flix.databinding.ActivityMovieDetailBinding
 import com.ardnn.flix.genre.GenreActivity
 
@@ -59,11 +59,11 @@ class MovieDetailActivity : AppCompatActivity(), View.OnClickListener,
     private fun subscribe() {
         viewModel.movie.observe(this, { movieDetailResource ->
             if (movieDetailResource != null) {
-                when (movieDetailResource.status) {
-                    Status.LOADING -> {
+                when (movieDetailResource) {
+                    is Resource.Loading -> {
                         showLoading(true)
                     }
-                    Status.SUCCESS -> {
+                    is Resource.Success -> {
                         if (movieDetailResource.data != null) {
                             showLoading(false)
                             showAlert(false)
@@ -72,7 +72,7 @@ class MovieDetailActivity : AppCompatActivity(), View.OnClickListener,
                             setMovieDetailToWidgets()
                         }
                     }
-                    Status.ERROR -> {
+                    is Resource.Error -> {
                         showLoading(false)
                         showAlert(true)
 
@@ -80,13 +80,6 @@ class MovieDetailActivity : AppCompatActivity(), View.OnClickListener,
                         Toast.makeText(applicationContext, "An error occurred", Toast.LENGTH_SHORT).show()
                     }
                 }
-            }
-        })
-
-        viewModel.movieCredits.observe(this, { movieCredits ->
-            val credits = movieCredits.body
-            for (credit in credits) {
-                Log.d(TAG, credit.name.toString())
             }
         })
 

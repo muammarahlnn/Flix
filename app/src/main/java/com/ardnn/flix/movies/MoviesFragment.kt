@@ -14,13 +14,13 @@ import com.ardnn.flix.core.util.SingleClickListener
 import com.ardnn.flix.core.util.SortUtils
 import com.ardnn.flix.core.viewmodel.ViewModelFactory
 import com.ardnn.flix.core.vo.Resource
-import com.ardnn.flix.core.vo.Status
 import com.ardnn.flix.databinding.FragmentFilmsBinding
 import com.ardnn.flix.moviedetail.MovieDetailActivity
 
 class MoviesFragment : Fragment(), SingleClickListener<Movie> {
 
     private lateinit var viewModel: MoviesViewModel
+    private lateinit var movieAdapter: TempMoviesAdapter
     private var _binding: FragmentFilmsBinding? = null
     private val binding get() = _binding
 
@@ -44,6 +44,14 @@ class MoviesFragment : Fragment(), SingleClickListener<Movie> {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         if (activity != null) {
+
+            movieAdapter = TempMoviesAdapter()
+            movieAdapter.onItemClick = { selectedData ->
+                val intent = Intent(activity, MovieDetailActivity::class.java)
+                intent.putExtra(MovieDetailActivity.EXTRA_MOVIE_ID, selectedData.id)
+                startActivity(intent)
+            }
+
             // initialize view model
             val factory = ViewModelFactory.getInstance(requireActivity())
             viewModel = ViewModelProvider(this, factory)[MoviesViewModel::class.java]
@@ -54,6 +62,11 @@ class MoviesFragment : Fragment(), SingleClickListener<Movie> {
 
             // subscribe view model
             subscribe()
+
+            with(binding?.recyclerView) {
+                this?.setHasFixedSize(true)
+                this?.adapter = movieAdapter
+            }
         }
     }
 
@@ -115,24 +128,27 @@ class MoviesFragment : Fragment(), SingleClickListener<Movie> {
     }
 
     private fun setMovies(moviesResource: Resource<List<Movie>>) {
-        when (moviesResource.status) {
-            Status.LOADING -> {
+        when (moviesResource) {
+            is Resource.Loading -> {
                 showLoading(true)
                 showAlert(false)
             }
-            Status.SUCCESS -> {
-                if (moviesResource.data != null) {
-                    showLoading(false)
-                    showAlert(false)
+            is Resource.Success -> {
+                Log.d(TAG, "Success")
+                Log.d(TAG, "Empty == ${moviesResource.data?.isEmpty()}")
+                Log.d(TAG, "Success -> IN")
+                showLoading(false)
+                showAlert(false)
 
-                    val movies = moviesResource.data
-                    val pagedMovies = PagedListDataSources.snapshot(movies)
-                    val adapter = MoviesAdapter(this)
-                    adapter.submitList(pagedMovies)
-                    binding?.recyclerView?.adapter = adapter
-                }
+                movieAdapter.setData(moviesResource.data)
+
+//                val movies = moviesResource.data as List<Movie>
+//                val pagedMovies = PagedListDataSources.snapshot(movies)
+//                val adapter = MoviesAdapter(this)
+//                adapter.submitList(pagedMovies)
+//                binding?.recyclerView?.adapter = adapter
             }
-            Status.ERROR -> {
+            is Resource.Error -> {
                 showLoading(false)
                 showAlert(true)
 

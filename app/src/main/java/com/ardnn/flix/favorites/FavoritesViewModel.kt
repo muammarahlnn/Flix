@@ -1,6 +1,7 @@
 package com.ardnn.flix.favorites
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.LiveDataReactiveStreams
 import androidx.lifecycle.ViewModel
 import com.ardnn.flix.core.domain.model.Movie
 import com.ardnn.flix.core.domain.model.TvShow
@@ -11,10 +12,10 @@ class FavoritesViewModel(private val flixUseCase: FlixUseCase) : ViewModel() {
     private var section = 0
 
     fun getFavoriteMovies(): LiveData<List<Movie>> =
-        flixUseCase.getFavoriteMovies()
+        LiveDataReactiveStreams.fromPublisher(flixUseCase.getFavoriteMovies())
 
     fun getFavoriteTvShows(): LiveData<List<TvShow>> =
-        flixUseCase.getFavoriteTvShows()
+        LiveDataReactiveStreams.fromPublisher(flixUseCase.getFavoriteTvShows())
 
     fun setSection(section: Int) {
         this.section = section

@@ -14,7 +14,7 @@ import com.ardnn.flix.core.domain.model.TvShow
 import com.ardnn.flix.core.util.Helper
 import com.ardnn.flix.core.util.SingleClickListener
 import com.ardnn.flix.core.viewmodel.ViewModelFactory
-import com.ardnn.flix.core.vo.Status
+import com.ardnn.flix.core.vo.Resource
 import com.ardnn.flix.databinding.ActivityTvShowDetailBinding
 import com.ardnn.flix.genre.GenreActivity
 import com.ardnn.flix.moviedetail.GenreAdapter
@@ -60,11 +60,11 @@ class TvShowDetailActivity : AppCompatActivity(), View.OnClickListener,
     private fun subscribe() {
         viewModel.tvShow.observe(this, { tvShowResource ->
             if (tvShowResource != null) {
-                when (tvShowResource.status) {
-                    Status.LOADING -> {
+                when (tvShowResource) {
+                    is Resource.Loading -> {
                         showLoading(true)
                     }
-                    Status.SUCCESS -> {
+                    is Resource.Success -> {
                         if (tvShowResource.data != null) {
                             showLoading(false)
                             showAlert(false)
@@ -73,7 +73,7 @@ class TvShowDetailActivity : AppCompatActivity(), View.OnClickListener,
                             setTvShowDetailToWidgets()
                         }
                     }
-                    Status.ERROR -> {
+                    is Resource.Error -> {
                         showLoading(false)
                         showAlert(true)
 
@@ -82,13 +82,6 @@ class TvShowDetailActivity : AppCompatActivity(), View.OnClickListener,
                             .show()
                     }
                 }
-            }
-        })
-
-        viewModel.tvShowCredits.observe(this, { tvShowCredits ->
-            val credits = tvShowCredits.body
-            for (credit in credits) {
-                Log.d(TAG, credit.name.toString())
             }
         })
 

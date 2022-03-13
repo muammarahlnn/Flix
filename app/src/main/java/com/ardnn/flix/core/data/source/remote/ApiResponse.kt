@@ -1,18 +1,7 @@
 package com.ardnn.flix.core.data.source.remote
 
-class ApiResponse<T>(
-    val status: StatusResponse,
-    val body: T,
-    val message: String?
-) {
-    companion object {
-        fun <T> success(body: T): ApiResponse<T> =
-            ApiResponse(StatusResponse.SUCCESS, body, null)
-
-        fun <T> empty(message: String, body: T): ApiResponse<T> =
-            ApiResponse(StatusResponse.EMPTY, body, message)
-
-        fun <T> error(message: String, body: T): ApiResponse<T> =
-            ApiResponse(StatusResponse.ERROR, body, message)
-    }
+sealed class ApiResponse<out R> {
+    data class Success<out T>(val data: T) : ApiResponse<T>()
+    data class Error(val errorMessage: String) : ApiResponse<Nothing>()
+    object Empty : ApiResponse<Nothing>()
 }

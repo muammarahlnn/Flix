@@ -1,82 +1,97 @@
 package com.ardnn.flix.core.data
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MediatorLiveData
+import android.annotation.SuppressLint
 import com.ardnn.flix.core.data.source.remote.ApiResponse
-import com.ardnn.flix.core.data.source.remote.StatusResponse
-import com.ardnn.flix.core.util.AppExecutors
 import com.ardnn.flix.core.vo.Resource
+import io.reactivex.BackpressureStrategy
+import io.reactivex.Flowable
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.schedulers.Schedulers
+import io.reactivex.subjects.PublishSubject
 
-abstract class NetworkBoundResource<ResultType, RequestType>(private val executors: AppExecutors) {
+@SuppressLint("CheckResult")
+abstract class NetworkBoundResource<ResultType, RequestType> {
 
-    private val result = MediatorLiveData<Resource<ResultType>>()
+    private val result = PublishSubject.create<Resource<ResultType>>()
+    private val compositeDisposable =  CompositeDisposable()
 
     init {
-        result.value = Resource.loading(null)
-
         @Suppress("LeakingThis")
         val dbSource = loadFromDB()
-
-        result.addSource(dbSource) { data ->
-            result.removeSource(dbSource)
-            if (shouldFetch(data)) {
-                fetchFromNetwork(dbSource)
-            } else {
-                result.addSource(dbSource) { newData ->
-                    result.value = Resource.success(newData)
+        val db = dbSource
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .take(1)
+            .subscribe { value ->
+                dbSource.unsubscribeOn(Schedulers.io())
+                if (shouldFetch(value)) {
+                    fetchFromNetwork()
+                } else {
+                    result.onNext(Resource.Success(value))
                 }
             }
-        }
+
+        compositeDisposable.add(db)
     }
 
     protected fun onFetchFailed() {}
 
-    protected abstract fun loadFromDB(): LiveData<ResultType>
+    protected abstract fun loadFromDB(): Flowable<ResultType>
 
     protected abstract fun shouldFetch(data: ResultType?): Boolean
 
-    protected abstract fun createCall(): LiveData<ApiResponse<RequestType>>
+    protected abstract fun createCall(): Flowable<ApiResponse<RequestType>>
 
     protected abstract fun saveCallResult(data: RequestType)
 
-    private fun fetchFromNetwork(dbSource: LiveData<ResultType>) {
+    private fun fetchFromNetwork() {
         val apiResponse = createCall()
 
-        result.addSource(dbSource) { newData ->
-            result.value = Resource.loading(newData)
-        }
+        result.onNext(Resource.Loading(null))
+        val response = apiResponse
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .take(1)
+            .doOnComplete {
+                compositeDisposable.dispose()
+            }
+            .subscribe { response ->
+                when (response) {
+                    is ApiResponse.Success -> {
+                        saveCallResult(response.data)
 
-        result.addSource(apiResponse) { response ->
-            result.removeSource(apiResponse)
-            result.removeSource(dbSource)
-
-            when (response.status) {
-                StatusResponse.SUCCESS -> {
-                    executors.diskIO().execute {
-                        saveCallResult(response.body)
-                        executors.mainThread().execute {
-                            result.addSource(loadFromDB()) { newData ->
-                                result.value = Resource.success(newData)
+                        val dbSource = loadFromDB()
+                        dbSource
+                            .subscribeOn(Schedulers.computation())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .take(1)
+                            .subscribe {
+                                dbSource.unsubscribeOn(Schedulers.io())
+                                result.onNext(Resource.Success(it))
                             }
-                        }
                     }
-                }
-                StatusResponse.EMPTY -> {
-                    executors.mainThread().execute {
-                        result.addSource(loadFromDB()) { newData ->
-                            result.value = Resource.success(newData)
-                        }
+                    is ApiResponse.Empty -> {
+                        val dbSource = loadFromDB()
+                        dbSource
+                            .subscribeOn(Schedulers.computation())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .take(1)
+                            .subscribe {
+                                dbSource.unsubscribeOn(Schedulers.io())
+                                result.onNext(Resource.Success(it))
+                            }
                     }
-                }
-                StatusResponse.ERROR -> {
-                    onFetchFailed()
-                    result.addSource(dbSource) { newData ->
-                        result.value = Resource.error(response.message, newData)
+                    is ApiResponse.Error -> {
+                        onFetchFailed()
+                        result.onNext(Resource.Error(response.errorMessage, null))
                     }
                 }
             }
-        }
+
+        compositeDisposable.add(response)
     }
 
-    fun asLiveData(): LiveData<Resource<ResultType>> = result
+    fun asFlowable(): Flowable<Resource<ResultType>> =
+        result.toFlowable(BackpressureStrategy.BUFFER)
 }

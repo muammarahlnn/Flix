@@ -1,6 +1,7 @@
 package com.ardnn.flix.tvshows
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.LiveDataReactiveStreams
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.ardnn.flix.core.domain.model.TvShow
@@ -16,7 +17,7 @@ class TvShowsViewModel(private val flixUseCase: FlixUseCase) : ViewModel() {
     val tvShowsSort: LiveData<Array<String>> = _tvShowsSort
 
     fun getSectionWithTvShows(page: Int, filter: String): LiveData<Resource<List<TvShow>>> =
-        flixUseCase.getSectionWithTvShows(page, section, filter)
+        LiveDataReactiveStreams.fromPublisher(flixUseCase.getSectionWithTvShows(page, section, filter))
 
     fun setSection(section: Int) {
         this.section = section

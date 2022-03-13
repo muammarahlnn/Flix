@@ -1,18 +1,10 @@
 package com.ardnn.flix.core.vo
 
-data class Resource<T>(
-    val status: Status,
-    val data: T?,
-    val message: String?
+sealed class Resource<T>(
+    val data: T? = null,
+    val message: String? = null
 ) {
-    companion object {
-        fun <T> success(data: T?): Resource<T> =
-            Resource(Status.SUCCESS, data, null)
-
-        fun <T> error(message: String?, data: T?): Resource<T> =
-            Resource(Status.ERROR, data, message)
-
-        fun <T> loading(data: T?): Resource<T> =
-            Resource(Status.LOADING, data, null)
-    }
+    class Success<T>(data: T) : Resource<T>(data)
+    class Loading<T>(data: T? = null) : Resource<T>(data)
+    class Error<T>(message: String, data: T? = null) : Resource<T>(data, message)
 }

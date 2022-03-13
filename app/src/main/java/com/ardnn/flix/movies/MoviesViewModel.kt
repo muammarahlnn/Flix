@@ -1,6 +1,7 @@
 package com.ardnn.flix.movies
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.LiveDataReactiveStreams
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.ardnn.flix.core.data.FlixRepositoryImpl
@@ -17,7 +18,7 @@ class MoviesViewModel(private val flixUseCase: FlixUseCase) : ViewModel() {
     val moviesSort: LiveData<Array<String>> = _moviesSort
 
     fun getSectionWithMovies(page: Int, filter: String): LiveData<Resource<List<Movie>>> =
-        flixUseCase.getSectionWithMovies(page, section, filter)
+        LiveDataReactiveStreams.fromPublisher(flixUseCase.getSectionWithMovies(page, section, filter))
 
     fun setSection(section: Int) {
         this.section = section

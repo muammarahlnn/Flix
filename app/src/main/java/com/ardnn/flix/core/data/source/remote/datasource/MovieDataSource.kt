@@ -1,267 +1,190 @@
 package com.ardnn.flix.core.data.source.remote.datasource
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+import android.annotation.SuppressLint
+import android.util.Log
 import com.ardnn.flix.core.data.source.remote.ApiConfig
 import com.ardnn.flix.core.data.source.remote.ApiResponse
-import com.ardnn.flix.core.data.source.remote.response.*
+import com.ardnn.flix.core.data.source.remote.response.CastResponse
+import com.ardnn.flix.core.data.source.remote.response.MovieDetailResponse
+import com.ardnn.flix.core.data.source.remote.response.MovieResponse
 import com.ardnn.flix.core.data.source.remote.service.MovieApiService
 import com.ardnn.flix.core.util.EspressoIdlingResource
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import io.reactivex.BackpressureStrategy
+import io.reactivex.Flowable
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
+import io.reactivex.subjects.PublishSubject
 
 class MovieDataSource(
     private val apiService: MovieApiService
 ) : DetailInterface<MovieDetailResponse>, FilmsInterface<MovieResponse> {
 
     // method to get movie detail
-    override fun getDetail(id: Int): LiveData<ApiResponse<MovieDetailResponse>> {
+    @SuppressLint("CheckResult")
+    override fun getDetail(id: Int): Flowable<ApiResponse<MovieDetailResponse>> {
         EspressoIdlingResource.increment()
 
-        val resultMovieDetail = MutableLiveData<ApiResponse<MovieDetailResponse>>()
+        val resultData = PublishSubject.create<ApiResponse<MovieDetailResponse>>()
         apiService.getMovieDetails(id, ApiConfig.API_KEY)
-            .enqueue(object : Callback<MovieDetailResponse> {
-                override fun onResponse(
-                    call: Call<MovieDetailResponse>,
-                    response: Response<MovieDetailResponse>
-                ) {
-                    if (response.isSuccessful) {
-                        resultMovieDetail.postValue(
-                            ApiResponse.success(response.body() as MovieDetailResponse)
-                        )
-                        EspressoIdlingResource.decrement()
-                    } else {
-                        resultMovieDetail.postValue(
-                            ApiResponse.error(
-                                response.message(),
-                                MovieDetailResponse()
-                            )
-                        )
-                        EspressoIdlingResource.decrement()
-                    }
-                }
+            .subscribeOn(Schedulers.computation())
+            .observeOn(AndroidSchedulers.mainThread())
+            .take(1)
+            .subscribe({ response ->
+                resultData.onNext(
+                    if (response != null) ApiResponse.Success(response)
+                    else ApiResponse.Empty
+                )
+                EspressoIdlingResource.decrement()
+            }, { error ->
+                resultData.onNext(ApiResponse.Error(error.message.toString()))
+                Log.e("RemoteDataSource", error.toString())
 
-                override fun onFailure(call: Call<MovieDetailResponse>, t: Throwable) {
-                    resultMovieDetail.postValue(
-                        ApiResponse.error(
-                            "onFailure: ${t.localizedMessage}",
-                            MovieDetailResponse()
-                        )
-                    )
-                    EspressoIdlingResource.decrement()
-                }
+                EspressoIdlingResource.decrement()
             })
 
-        return resultMovieDetail
+        return resultData.toFlowable(BackpressureStrategy.BUFFER)
     }
 
     // method to get now playing movies
-    override fun getFirstSectionFilms(page: Int): LiveData<ApiResponse<List<MovieResponse>>> {
+    @SuppressLint("CheckResult")
+    override fun getFirstSectionFilms(page: Int): Flowable<ApiResponse<List<MovieResponse>>> {
         EspressoIdlingResource.increment()
 
-        val resultMovies = MutableLiveData<ApiResponse<List<MovieResponse>>>()
+        val resultData = PublishSubject.create<ApiResponse<List<MovieResponse>>>()
         apiService.getNowPlayingMovies(ApiConfig.API_KEY, page)
-            .enqueue(object : Callback<MoviesResponse> {
-                override fun onResponse(
-                    call: Call<MoviesResponse>,
-                    response: Response<MoviesResponse>
-                ) {
-                    if (response.isSuccessful) {
-                        resultMovies.postValue(
-                            ApiResponse.success(response.body()?.movies as List<MovieResponse>)
-                        )
-                        EspressoIdlingResource.decrement()
-                    } else {
-                        resultMovies.postValue(
-                            ApiResponse.error(
-                                response.message(),
-                                listOf()
-                            )
-                        )
-                        EspressoIdlingResource.decrement()
-                    }
+            .subscribeOn(Schedulers.computation())
+            .observeOn(AndroidSchedulers.mainThread())
+            .take(1)
+            .subscribe({ response ->
+                val dataArray = response.movies as List<MovieResponse>
+                Log.d("RemoteDataSource", "movies empty -> ${response.movies.isEmpty()}")
+                if (dataArray.isNotEmpty()) {
+                    Log.d("RemoteDataSource", "movies success")
+                    resultData.onNext(ApiResponse.Success(dataArray))
+                } else {
+                    Log.d("RemoteDataSource", "movies empty")
+                    resultData.onNext(ApiResponse.Empty)
                 }
+//                resultData.onNext(
+//                    if (dataArray.isNotEmpty()) ApiResponse.Success(dataArray)
+//                    else ApiResponse.Empty
+//                )
+                EspressoIdlingResource.decrement()
+            }, { error ->
+                resultData.onNext(ApiResponse.Error(error.message.toString()))
+                Log.e("RemoteDataSource", error.toString())
 
-                override fun onFailure(call: Call<MoviesResponse>, t: Throwable) {
-                    resultMovies.postValue(
-                        ApiResponse.error(
-                            "onFailure: ${t.localizedMessage}",
-                            listOf()
-                        )
-                    )
-                    EspressoIdlingResource.decrement()
-                }
-
+                EspressoIdlingResource.decrement()
             })
 
-        return resultMovies
+        return resultData.toFlowable(BackpressureStrategy.BUFFER)
     }
 
     // method to get upcoming movies
-    override fun getSecondSectionFilms(page: Int): LiveData<ApiResponse<List<MovieResponse>>> {
+    @SuppressLint("CheckResult")
+    override fun getSecondSectionFilms(page: Int): Flowable<ApiResponse<List<MovieResponse>>> {
         EspressoIdlingResource.increment()
 
-        val resultMovies = MutableLiveData<ApiResponse<List<MovieResponse>>>()
+        val resultData = PublishSubject.create<ApiResponse<List<MovieResponse>>>()
         apiService.getUpcomingMovies(ApiConfig.API_KEY, page)
-            .enqueue(object : Callback<MoviesResponse> {
-                override fun onResponse(
-                    call: Call<MoviesResponse>,
-                    response: Response<MoviesResponse>
-                ) {
-                    if (response.isSuccessful) {
-                        resultMovies.postValue(
-                            ApiResponse.success(response.body()?.movies as List<MovieResponse>)
-                        )
-                        EspressoIdlingResource.decrement()
-                    } else {
-                        resultMovies.postValue(
-                            ApiResponse.error(
-                                response.message(),
-                                listOf()
-                            )
-                        )
-                        EspressoIdlingResource.decrement()
-                    }
-                }
+            .subscribeOn(Schedulers.computation())
+            .observeOn(AndroidSchedulers.mainThread())
+            .take(1)
+            .subscribe({ response ->
+                val dataArray = response.movies ?: listOf()
+                resultData.onNext(
+                    if (dataArray.isNotEmpty()) ApiResponse.Success(dataArray)
+                    else ApiResponse.Empty
+                )
+                EspressoIdlingResource.decrement()
+            }, { error ->
+                resultData.onNext(ApiResponse.Error(error.message.toString()))
+                Log.e("RemoteDataSource", error.toString())
 
-                override fun onFailure(call: Call<MoviesResponse>, t: Throwable) {
-                    resultMovies.postValue(
-                        ApiResponse.error(
-                            "onFailure: ${t.localizedMessage}",
-                            listOf()
-                        )
-                    )
-                    EspressoIdlingResource.decrement()
-                }
-
+                EspressoIdlingResource.decrement()
             })
 
-        return resultMovies
+        return resultData.toFlowable(BackpressureStrategy.BUFFER)
     }
 
     // method to get popular movies
-    override fun getThirdSectionFilms(page: Int): LiveData<ApiResponse<List<MovieResponse>>> {
+    @SuppressLint("CheckResult")
+    override fun getThirdSectionFilms(page: Int): Flowable<ApiResponse<List<MovieResponse>>> {
         EspressoIdlingResource.increment()
 
-        val resultMovies = MutableLiveData<ApiResponse<List<MovieResponse>>>()
+        val resultData = PublishSubject.create<ApiResponse<List<MovieResponse>>>()
         apiService.getPopularMovies(ApiConfig.API_KEY, page)
-            .enqueue(object : Callback<MoviesResponse> {
-                override fun onResponse(
-                    call: Call<MoviesResponse>,
-                    response: Response<MoviesResponse>
-                ) {
-                    if (response.isSuccessful) {
-                        resultMovies.postValue(
-                            ApiResponse.success(response.body()?.movies as List<MovieResponse>)
-                        )
-                        EspressoIdlingResource.decrement()
-                    } else {
-                        resultMovies.postValue(
-                            ApiResponse.error(
-                                response.message(),
-                                listOf()
-                            )
-                        )
-                        EspressoIdlingResource.decrement()
-                    }
-                }
+            .subscribeOn(Schedulers.computation())
+            .observeOn(AndroidSchedulers.mainThread())
+            .take(1)
+            .subscribe({ response ->
+                val dataArray = response.movies ?: listOf()
+                resultData.onNext(
+                    if (dataArray.isNotEmpty()) ApiResponse.Success(dataArray)
+                    else ApiResponse.Empty
+                )
+                EspressoIdlingResource.decrement()
+            }, { error ->
+                resultData.onNext(ApiResponse.Error(error.message.toString()))
+                Log.e("RemoteDataSource", error.toString())
 
-                override fun onFailure(call: Call<MoviesResponse>, t: Throwable) {
-                    resultMovies.postValue(
-                        ApiResponse.error(
-                            "onFailure: ${t.localizedMessage}",
-                            listOf()
-                        )
-                    )
-                    EspressoIdlingResource.decrement()
-                }
-
+                EspressoIdlingResource.decrement()
             })
 
-        return resultMovies
+        return resultData.toFlowable(BackpressureStrategy.BUFFER)
     }
 
     // method to get top rated movies
-    override fun getFourthSectionFilms(page: Int): LiveData<ApiResponse<List<MovieResponse>>> {
+    @SuppressLint("CheckResult")
+    override fun getFourthSectionFilms(page: Int): Flowable<ApiResponse<List<MovieResponse>>> {
         EspressoIdlingResource.increment()
 
-        val resultMovies = MutableLiveData<ApiResponse<List<MovieResponse>>>()
+        val resultData = PublishSubject.create<ApiResponse<List<MovieResponse>>>()
         apiService.getTopRatedMovies(ApiConfig.API_KEY, page)
-            .enqueue(object : Callback<MoviesResponse> {
-                override fun onResponse(
-                    call: Call<MoviesResponse>,
-                    response: Response<MoviesResponse>
-                ) {
-                    if (response.isSuccessful) {
-                        resultMovies.postValue(
-                            ApiResponse.success(response.body()?.movies as List<MovieResponse>)
-                        )
-                        EspressoIdlingResource.decrement()
-                    } else {
-                        resultMovies.postValue(
-                            ApiResponse.error(
-                                response.message(),
-                                listOf()
-                            )
-                        )
-                        EspressoIdlingResource.decrement()
-                    }
-                }
+            .subscribeOn(Schedulers.computation())
+            .observeOn(AndroidSchedulers.mainThread())
+            .take(1)
+            .subscribe({ response ->
+                val dataArray = response.movies ?: listOf()
+                resultData.onNext(
+                    if (dataArray.isNotEmpty()) ApiResponse.Success(dataArray)
+                    else ApiResponse.Empty
+                )
+                EspressoIdlingResource.decrement()
+            }, { error ->
+                resultData.onNext(ApiResponse.Error(error.message.toString()))
+                Log.e("RemoteDataSource", error.toString())
 
-                override fun onFailure(call: Call<MoviesResponse>, t: Throwable) {
-                    resultMovies.postValue(
-                        ApiResponse.error(
-                            "onFailure: ${t.localizedMessage}",
-                            listOf()
-                        )
-                    )
-                    EspressoIdlingResource.decrement()
-                }
-
+                EspressoIdlingResource.decrement()
             })
 
-        return resultMovies
+        return resultData.toFlowable(BackpressureStrategy.BUFFER)
     }
 
-    override fun getFilmCredits(id: Int): LiveData<ApiResponse<List<CastResponse>>> {
+    @SuppressLint("CheckResult")
+    override fun getFilmCredits(id: Int): Flowable<ApiResponse<List<CastResponse>>> {
         EspressoIdlingResource.increment()
 
-        val resultCredits = MutableLiveData<ApiResponse<List<CastResponse>>>()
+        val resultData = PublishSubject.create<ApiResponse<List<CastResponse>>>()
         apiService.getMovieCredits(id, ApiConfig.API_KEY)
-            .enqueue(object : Callback<CreditsResponse> {
-                override fun onResponse(
-                    call: Call<CreditsResponse>,
-                    response: Response<CreditsResponse>
-                ) {
-                    if (response.isSuccessful) {
-                        resultCredits.postValue(
-                            ApiResponse.success(response.body()?.cast as List<CastResponse>)
-                        )
-                        EspressoIdlingResource.decrement()
-                    } else {
-                        resultCredits.postValue(
-                            ApiResponse.error(
-                                response.message(),
-                                listOf()
-                            )
-                        )
-                        EspressoIdlingResource.decrement()
-                    }
-                }
+            .subscribeOn(Schedulers.computation())
+            .observeOn(AndroidSchedulers.mainThread())
+            .take(1)
+            .subscribe({ response ->
+                val dataArray = response.cast
+                resultData.onNext(
+                    if (dataArray.isNotEmpty()) ApiResponse.Success(dataArray)
+                    else ApiResponse.Empty
+                )
+                EspressoIdlingResource.decrement()
+            }, { error ->
+                resultData.onNext(ApiResponse.Error(error.message.toString()))
+                Log.e("RemoteDataSource", error.toString())
 
-                override fun onFailure(call: Call<CreditsResponse>, t: Throwable) {
-                    resultCredits.postValue(
-                        ApiResponse.error(
-                            "onFailure: ${t.localizedMessage}",
-                            listOf()
-                        )
-                    )
-                    EspressoIdlingResource.decrement()
-                }
+                EspressoIdlingResource.decrement()
             })
 
-        return resultCredits
+        return resultData.toFlowable(BackpressureStrategy.BUFFER)
     }
 
 }
