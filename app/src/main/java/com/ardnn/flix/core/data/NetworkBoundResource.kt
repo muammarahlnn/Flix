@@ -1,82 +1,53 @@
 package com.ardnn.flix.core.data
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MediatorLiveData
+import android.util.Log
 import com.ardnn.flix.core.data.source.remote.ApiResponse
-import com.ardnn.flix.core.data.source.remote.StatusResponse
-import com.ardnn.flix.core.util.AppExecutors
-import com.ardnn.flix.core.vo.Resource
+import kotlinx.coroutines.flow.*
 
-abstract class NetworkBoundResource<ResultType, RequestType>(private val executors: AppExecutors) {
+abstract class NetworkBoundResource<ResultType, RequestType> {
 
-    private val result = MediatorLiveData<Resource<ResultType>>()
+    private var result: Flow<Resource<ResultType>> = flow {
+        emit(Resource.Loading())
 
-    init {
-        result.value = Resource.loading(null)
-
-        @Suppress("LeakingThis")
-        val dbSource = loadFromDB()
-
-        result.addSource(dbSource) { data ->
-            result.removeSource(dbSource)
-            if (shouldFetch(data)) {
-                fetchFromNetwork(dbSource)
-            } else {
-                result.addSource(dbSource) { newData ->
-                    result.value = Resource.success(newData)
+        val dbSource = loadFromDB().first()
+        if (shouldFetch(dbSource)) {
+            emit(Resource.Loading())
+            when (val apiResponse = createCall().first()) {
+                is ApiResponse.Success -> {
+                    saveCallResult(apiResponse.data)
+                    emitAll(loadFromDB().map {
+                        Resource.Success(it)
+                    })
+                }
+                is ApiResponse.Empty -> {
+                    emitAll(loadFromDB().map {
+                        Resource.Success(it)
+                    })
+                }
+                is ApiResponse.Error -> {
+                    onFetchFailed()
+                    emit(Resource.Error<ResultType>(apiResponse.errorMessage))
                 }
             }
+        } else {
+            emitAll(loadFromDB().map {
+                Resource.Success(it)
+            })
         }
     }
 
-    protected fun onFetchFailed() {}
 
-    protected abstract fun loadFromDB(): LiveData<ResultType>
+    private fun onFetchFailed() {
+        Log.e("NetworkBoundResource", "onFetchFailed")
+    }
+
+    protected abstract fun loadFromDB(): Flow<ResultType>
 
     protected abstract fun shouldFetch(data: ResultType?): Boolean
 
-    protected abstract fun createCall(): LiveData<ApiResponse<RequestType>>
+    protected abstract suspend fun createCall(): Flow<ApiResponse<RequestType>>
 
-    protected abstract fun saveCallResult(data: RequestType)
+    protected abstract suspend fun saveCallResult(data: RequestType)
 
-    private fun fetchFromNetwork(dbSource: LiveData<ResultType>) {
-        val apiResponse = createCall()
-
-        result.addSource(dbSource) { newData ->
-            result.value = Resource.loading(newData)
-        }
-
-        result.addSource(apiResponse) { response ->
-            result.removeSource(apiResponse)
-            result.removeSource(dbSource)
-
-            when (response.status) {
-                StatusResponse.SUCCESS -> {
-                    executors.diskIO().execute {
-                        saveCallResult(response.body)
-                        executors.mainThread().execute {
-                            result.addSource(loadFromDB()) { newData ->
-                                result.value = Resource.success(newData)
-                            }
-                        }
-                    }
-                }
-                StatusResponse.EMPTY -> {
-                    executors.mainThread().execute {
-                        result.addSource(loadFromDB()) { newData ->
-                            result.value = Resource.success(newData)
-                        }
-                    }
-                }
-                StatusResponse.ERROR -> {
-                    onFetchFailed()
-                    result.addSource(dbSource) { newData ->
-                        result.value = Resource.error(response.message, newData)
-                    }
-                }
-            }
-        }
-    }
-
-    fun asLiveData(): LiveData<Resource<ResultType>> = result
+    fun asFLow(): Flow<Resource<ResultType>> = result
 }

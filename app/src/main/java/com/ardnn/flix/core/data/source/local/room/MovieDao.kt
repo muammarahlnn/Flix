@@ -1,34 +1,30 @@
 package com.ardnn.flix.core.data.source.local.room
 
-import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.ardnn.flix.core.data.source.local.entity.MovieEntity
 import com.ardnn.flix.core.data.source.local.entity.relation.MovieGenreCrossRef
 import com.ardnn.flix.core.data.source.local.entity.relation.MovieWithGenres
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface MovieDao {
 
     @Transaction
     @Query("SELECT * FROM movie_entities WHERE movie_id = :movieId")
-    fun getMovie(movieId: Int): MovieEntity
+    fun getMovieWithGenres(movieId: Int): Flow<MovieWithGenres>
 
     @Transaction
     @Query("SELECT * FROM movie_entities WHERE is_favorite = 1")
-    fun getFavoriteMovies(): LiveData<List<MovieEntity>>
-
-    @Transaction
-    @Query("SELECT * FROM movie_entities WHERE movie_id = :movieId")
-    fun getMovieWithGenres(movieId: Int): LiveData<MovieWithGenres>
+    fun getFavoriteMovies(): Flow<List<MovieEntity>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertMovies(movies: List<MovieEntity>)
+    suspend fun insertMovies(movies: List<MovieEntity>)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertMovie(movie: MovieEntity)
+    suspend fun insertMovie(movie: MovieEntity)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertMovieGenreCrossRef(crossRef: MovieGenreCrossRef)
+    suspend fun insertMovieGenreCrossRef(crossRef: MovieGenreCrossRef)
 
     @Update
     fun updateMovie(movie: MovieEntity)

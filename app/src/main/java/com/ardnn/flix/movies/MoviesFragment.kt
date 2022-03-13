@@ -13,8 +13,7 @@ import com.ardnn.flix.core.util.PagedListDataSources
 import com.ardnn.flix.core.util.SingleClickListener
 import com.ardnn.flix.core.util.SortUtils
 import com.ardnn.flix.core.viewmodel.ViewModelFactory
-import com.ardnn.flix.core.vo.Resource
-import com.ardnn.flix.core.vo.Status
+import com.ardnn.flix.core.data.Resource
 import com.ardnn.flix.databinding.FragmentFilmsBinding
 import com.ardnn.flix.moviedetail.MovieDetailActivity
 
@@ -115,12 +114,12 @@ class MoviesFragment : Fragment(), SingleClickListener<Movie> {
     }
 
     private fun setMovies(moviesResource: Resource<List<Movie>>) {
-        when (moviesResource.status) {
-            Status.LOADING -> {
+        when (moviesResource) {
+            is Resource.Loading -> {
                 showLoading(true)
                 showAlert(false)
             }
-            Status.SUCCESS -> {
+            is Resource.Success -> {
                 if (moviesResource.data != null) {
                     showLoading(false)
                     showAlert(false)
@@ -132,7 +131,7 @@ class MoviesFragment : Fragment(), SingleClickListener<Movie> {
                     binding?.recyclerView?.adapter = adapter
                 }
             }
-            Status.ERROR -> {
+            is Resource.Error -> {
                 showLoading(false)
                 showAlert(true)
 

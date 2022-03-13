@@ -3,45 +3,44 @@ package com.ardnn.flix.core.data.source.remote.service
 import com.ardnn.flix.core.data.source.remote.response.CreditsResponse
 import com.ardnn.flix.core.data.source.remote.response.MovieDetailResponse
 import com.ardnn.flix.core.data.source.remote.response.MoviesResponse
-import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface MovieApiService {
     @GET("3/movie/{movie_id}")
-    fun getMovieDetails(
+    suspend fun getMovieDetails(
         @Path("movie_id") movieId: Int,
         @Query("api_key") apiKey: String
-    ): Call<MovieDetailResponse>
+    ): MovieDetailResponse
 
     @GET("3/movie/{movie_id}/credits")
-    fun getMovieCredits(
+    suspend fun getMovieCredits(
         @Path("movie_id") movieId: Int,
         @Query("api_key") apiKey: String
-    ): Call<CreditsResponse>
+    ): CreditsResponse
 
     @GET("3/movie/now_playing")
-    fun getNowPlayingMovies(
+    suspend fun getNowPlayingMovies(
         @Query("api_key") apiKey: String,
         @Query("page") page: Int
-    ): Call<MoviesResponse>
+    ): MoviesResponse
 
     @GET("3/movie/upcoming")
-    fun getUpcomingMovies(
+    suspend fun getUpcomingMovies(
         @Query("api_key") apiKey: String,
         @Query("page") page: Int
-    ): Call<MoviesResponse>
+    ): MoviesResponse
 
     @GET("3/movie/popular")
-    fun getPopularMovies(
+    suspend fun getPopularMovies(
         @Query("api_key") apiKey: String,
         @Query("page") page: Int
-    ): Call<MoviesResponse>
+    ): MoviesResponse
 
     @GET("3/movie/top_rated")
-    fun getTopRatedMovies(
+    suspend fun getTopRatedMovies(
         @Query("api_key") apiKey: String,
         @Query("page") page: Int
-    ): Call<MoviesResponse>
+    ): MoviesResponse
 }

@@ -8,16 +8,14 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.ardnn.flix.R
-import com.ardnn.flix.core.data.source.local.entity.TvShowEntity
 import com.ardnn.flix.core.domain.model.TvShow
-import com.ardnn.flix.databinding.FragmentFilmsBinding
-import com.ardnn.flix.tvshowdetail.TvShowDetailActivity
 import com.ardnn.flix.core.util.PagedListDataSources
 import com.ardnn.flix.core.util.SingleClickListener
 import com.ardnn.flix.core.util.SortUtils
 import com.ardnn.flix.core.viewmodel.ViewModelFactory
-import com.ardnn.flix.core.vo.Resource
-import com.ardnn.flix.core.vo.Status
+import com.ardnn.flix.core.data.Resource
+import com.ardnn.flix.databinding.FragmentFilmsBinding
+import com.ardnn.flix.tvshowdetail.TvShowDetailActivity
 
 class TvShowsFragment : Fragment(), SingleClickListener<TvShow> {
 
@@ -114,12 +112,12 @@ class TvShowsFragment : Fragment(), SingleClickListener<TvShow> {
     }
 
     private fun setTvShows(tvShowsResource: Resource<List<TvShow>>) {
-        when (tvShowsResource.status) {
-            Status.LOADING -> {
+        when (tvShowsResource) {
+            is Resource.Loading -> {
                 showLoading(true)
                 showAlert(false)
             }
-            Status.SUCCESS -> {
+            is Resource.Success -> {
                 if (tvShowsResource.data != null) {
                     showLoading(false)
                     showAlert(false)
@@ -131,7 +129,7 @@ class TvShowsFragment : Fragment(), SingleClickListener<TvShow> {
                     binding?.recyclerView?.adapter = adapter
                 }
             }
-            Status.ERROR -> {
+            is Resource.Error -> {
                 showLoading(false)
                 showAlert(true)
 

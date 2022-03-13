@@ -7,10 +7,8 @@ import com.ardnn.flix.core.data.source.local.entity.relation.GenreWithMovies
 import com.ardnn.flix.core.data.source.local.entity.relation.GenreWithTvShows
 import com.ardnn.flix.core.data.source.local.entity.relation.MovieWithGenres
 import com.ardnn.flix.core.data.source.local.entity.relation.TvShowWithGenres
-import com.ardnn.flix.core.data.source.remote.ImageSizeTMDB
-import com.ardnn.flix.core.data.source.remote.response.GenreResponse
-import com.ardnn.flix.core.data.source.remote.response.MovieResponse
-import com.ardnn.flix.core.data.source.remote.response.TvShowResponse
+import com.ardnn.flix.core.data.source.local.ImageSizeTMDB
+import com.ardnn.flix.core.data.source.remote.response.*
 import com.ardnn.flix.core.domain.model.Genre
 import com.ardnn.flix.core.domain.model.Movie
 import com.ardnn.flix.core.domain.model.TvShow
@@ -28,6 +26,39 @@ object DataMapper {
                 popularity = it.popularity ?: 0f
             )
         }
+    }
+
+    fun mapMovieDetailResponseToEntity(input: MovieDetailResponse): MovieEntity {
+        return MovieEntity(
+            id = input.id,
+            title = input.title ?: "",
+            overview = input.overview ?: "",
+            releaseDate = input.releaseDate ?: "",
+            runtime = input.runtime ?: 0,
+            rating = input.rating ?: 0f,
+            popularity = input.popularity ?: 0f,
+            posterUrl = input.posterUrl ?: "",
+            wallpaperUrl = input.wallpaperUrl ?: "",
+        )
+    }
+
+    fun mapTvShowDetailResponseToEntity(input: TvShowDetailResponse): TvShowEntity {
+        return TvShowEntity(
+            id = input.id,
+            title = input.title ?: "",
+            overview = input.overview ?: "",
+            firstAirDate = input.firstAirDate ?: "",
+            lastAirDate = input.lastAirDate ?: "",
+            runtime =
+                if (input.runtimes.isNullOrEmpty()) 0
+                else input.runtimes[0],
+            rating = input.rating ?: 0f,
+            popularity = input.popularity ?: 0f,
+            posterUrl = input.posterUrl ?: "",
+            wallpaperUrl = input.wallpaperUrl ?: "",
+            numberOfEpisodes = input.numberOfEpisodes ?: 0,
+            numberOfSeasons = input.numberOfSeasons ?: 0,
+        )
     }
 
     fun mapTvShowResponsesToEntities(input: List<TvShowResponse>): List<TvShowEntity> {

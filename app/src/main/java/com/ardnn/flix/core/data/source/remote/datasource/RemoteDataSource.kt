@@ -1,8 +1,8 @@
 package com.ardnn.flix.core.data.source.remote.datasource
 
-import androidx.lifecycle.LiveData
 import com.ardnn.flix.core.data.source.remote.ApiResponse
 import com.ardnn.flix.core.data.source.remote.response.*
+import kotlinx.coroutines.flow.Flow
 
 class RemoteDataSource private constructor(
     private val movieDataSource: MovieDataSource,
@@ -11,47 +11,47 @@ class RemoteDataSource private constructor(
 ) : IRemoteDataSource {
 
     // ===== movie ======================================================================
-    override fun getMovieDetail(movieId: Int): LiveData<ApiResponse<MovieDetailResponse>> =
+    override fun getMovieDetail(movieId: Int): Flow<ApiResponse<MovieDetailResponse>> =
         movieDataSource.getDetail(movieId)
 
-    override fun getNowPlayingMovies(page: Int): LiveData<ApiResponse<List<MovieResponse>>> =
+    override fun getNowPlayingMovies(page: Int): Flow<ApiResponse<List<MovieResponse>>> =
         movieDataSource.getFirstSectionFilms(page)
 
-    override fun getUpcomingMovies(page: Int): LiveData<ApiResponse<List<MovieResponse>>> =
+    override fun getUpcomingMovies(page: Int): Flow<ApiResponse<List<MovieResponse>>> =
         movieDataSource.getSecondSectionFilms(page)
 
-    override fun getPopularMovies(page: Int): LiveData<ApiResponse<List<MovieResponse>>> =
+    override fun getPopularMovies(page: Int): Flow<ApiResponse<List<MovieResponse>>> =
         movieDataSource.getThirdSectionFilms(page)
 
-    override fun getTopRatedMovies(page: Int): LiveData<ApiResponse<List<MovieResponse>>> =
+    override fun getTopRatedMovies(page: Int): Flow<ApiResponse<List<MovieResponse>>> =
         movieDataSource.getFourthSectionFilms(page)
 
-    override fun getMovieCredits(movieId: Int): LiveData<ApiResponse<List<CastResponse>>> =
+    override fun getMovieCredits(movieId: Int): Flow<ApiResponse<List<CastResponse>>> =
         movieDataSource.getFilmCredits(movieId)
 
 
     // ===== tv show ======================================================================
-    override fun getTvShowDetail(tvShowId: Int): LiveData<ApiResponse<TvShowDetailResponse>> =
+    override fun getTvShowDetail(tvShowId: Int): Flow<ApiResponse<TvShowDetailResponse>> =
         tvShowDataSource.getDetail(tvShowId)
 
-    override fun getAiringTodayTvShows(page: Int): LiveData<ApiResponse<List<TvShowResponse>>> =
+    override fun getAiringTodayTvShows(page: Int): Flow<ApiResponse<List<TvShowResponse>>> =
         tvShowDataSource.getFirstSectionFilms(page)
 
-    override fun getOnTheAirTvShows(page: Int): LiveData<ApiResponse<List<TvShowResponse>>> =
+    override fun getOnTheAirTvShows(page: Int): Flow<ApiResponse<List<TvShowResponse>>> =
         tvShowDataSource.getSecondSectionFilms(page)
 
-    override fun getPopularTvShows(page: Int): LiveData<ApiResponse<List<TvShowResponse>>> =
+    override fun getPopularTvShows(page: Int): Flow<ApiResponse<List<TvShowResponse>>> =
         tvShowDataSource.getThirdSectionFilms(page)
 
-    override fun getTopRatedTvShows(page: Int): LiveData<ApiResponse<List<TvShowResponse>>> =
+    override fun getTopRatedTvShows(page: Int): Flow<ApiResponse<List<TvShowResponse>>> =
         tvShowDataSource.getFourthSectionFilms(page)
 
-    override fun getTvShowCredits(tvShowId: Int): LiveData<ApiResponse<List<CastResponse>>> =
+    override fun getTvShowCredits(tvShowId: Int): Flow<ApiResponse<List<CastResponse>>> =
         tvShowDataSource.getFilmCredits(tvShowId)
 
 
     // ===== person ======================================================================
-    override fun getPersonDetail(personId: Int): LiveData<ApiResponse<PersonResponse>> =
+    override fun getPersonDetail(personId: Int): Flow<ApiResponse<PersonResponse>> =
         personDataSource.getDetail(personId)
 
 

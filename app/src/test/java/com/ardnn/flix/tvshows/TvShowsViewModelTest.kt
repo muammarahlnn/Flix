@@ -8,7 +8,7 @@ import com.ardnn.flix.core.data.FlixRepositoryImpl
 import com.ardnn.flix.core.util.DataDummy
 import com.ardnn.flix.core.util.PagedTestDataSources
 import com.ardnn.flix.core.util.SortUtils
-import com.ardnn.flix.core.vo.Resource
+import com.ardnn.flix.core.data.Resource
 import com.nhaarman.mockitokotlin2.verify
 import org.junit.Assert.*
 

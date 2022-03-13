@@ -6,7 +6,7 @@ import androidx.lifecycle.Observer
 import com.ardnn.flix.core.data.FlixRepositoryImpl
 import com.ardnn.flix.core.data.source.local.entity.relation.TvShowWithGenres
 import com.ardnn.flix.core.util.DataDummy
-import com.ardnn.flix.core.vo.Resource
+import com.ardnn.flix.core.data.Resource
 import com.nhaarman.mockitokotlin2.verify
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull

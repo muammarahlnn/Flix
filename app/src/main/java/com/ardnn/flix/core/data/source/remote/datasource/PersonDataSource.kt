@@ -1,68 +1,34 @@
 package com.ardnn.flix.core.data.source.remote.datasource
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+import android.util.Log
 import com.ardnn.flix.core.data.source.remote.ApiConfig
 import com.ardnn.flix.core.data.source.remote.ApiResponse
 import com.ardnn.flix.core.data.source.remote.response.PersonResponse
 import com.ardnn.flix.core.data.source.remote.service.PersonApiService
 import com.ardnn.flix.core.util.EspressoIdlingResource
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 
 class PersonDataSource(
     private val apiService: PersonApiService
 ) : DetailInterface<PersonResponse> {
 
-    override fun getDetail(id: Int): LiveData<ApiResponse<PersonResponse>> {
+    override fun getDetail(id: Int): Flow<ApiResponse<PersonResponse>> {
         EspressoIdlingResource.increment()
+        return flow {
+            try {
+                val response = apiService.getPersonDetail(id, ApiConfig.API_KEY)
+                emit(ApiResponse.Success(response))
 
-        val resultPersonDetail = MutableLiveData<ApiResponse<PersonResponse>>()
-        apiService.getPersonDetail(id, ApiConfig.API_KEY)
-            .enqueue(object : Callback<PersonResponse> {
-                override fun onResponse(
-                    call: Call<PersonResponse>,
-                    response: Response<PersonResponse>
-                ) {
-                    if (response.isSuccessful) {
-                        if (response.body() != null) {
-                            resultPersonDetail.postValue(
-                                ApiResponse.success(response.body() as PersonResponse)
-                            )
-                            EspressoIdlingResource.decrement()
-                        } else {
-                            resultPersonDetail.postValue(
-                                ApiResponse.error(
-                                    "response.body() is null",
-                                    PersonResponse()
-                                )
-                            )
-                            EspressoIdlingResource.decrement()
-                        }
-                    } else {
-                        resultPersonDetail.postValue(
-                            ApiResponse.error(
-                                response.message(),
-                                PersonResponse()
-                            )
-                        )
-                        EspressoIdlingResource.decrement()
-                    }
-                }
+                EspressoIdlingResource.decrement()
+            } catch (e: Exception) {
+                emit(ApiResponse.Error(e.toString()))
+                Log.e("RemoteDataSource", e.toString())
 
-                override fun onFailure(call: Call<PersonResponse>, t: Throwable) {
-                    resultPersonDetail.postValue(
-                        ApiResponse.error(
-                            "onFailure: ${t.localizedMessage}",
-                            PersonResponse()
-                        )
-                    )
-                    EspressoIdlingResource.decrement()
-                }
-
-            })
-
-        return resultPersonDetail
+                EspressoIdlingResource.decrement()
+            }
+        }.flowOn(Dispatchers.IO)
     }
 }

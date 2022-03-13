@@ -11,7 +11,6 @@ import com.ardnn.flix.core.data.source.remote.datasource.RemoteDataSource
 import com.ardnn.flix.core.data.source.remote.response.*
 import com.ardnn.flix.core.domain.repository.FlixRepository
 import com.ardnn.flix.core.util.AppExecutors
-import com.ardnn.flix.core.vo.Resource
 
 class FakeFlixRepository(
     private val remoteDataSource: RemoteDataSource,

@@ -4,8 +4,7 @@ import androidx.annotation.NonNull
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.ardnn.flix.core.data.source.remote.Const
-import com.ardnn.flix.core.data.source.remote.ImageSizeTMDB
+import com.ardnn.flix.core.data.source.local.ImageSizeTMDB
 
 @Entity(tableName = "movie_entities")
 data class MovieEntity(
@@ -46,10 +45,10 @@ data class MovieEntity(
     var isDetailFetched: Boolean = false
 
     fun getPosterUrl(size: ImageSizeTMDB): String {
-        return "${Const.IMG_URL}${size.getValue()}$posterUrl"
+        return "${ImageSizeTMDB.IMG_URL}${size.getValue()}$posterUrl"
     }
 
     fun getWallpaperUrl(size: ImageSizeTMDB): String {
-        return "${Const.IMG_URL}${size.getValue()}$wallpaperUrl"
+        return "${ImageSizeTMDB.IMG_URL}${size.getValue()}$wallpaperUrl"
     }
 }

@@ -16,7 +16,6 @@ import com.ardnn.flix.core.data.source.remote.response.MovieResponse
 import com.ardnn.flix.core.data.source.remote.response.TvShowDetailResponse
 import com.ardnn.flix.core.data.source.remote.response.TvShowResponse
 import com.ardnn.flix.core.util.*
-import com.ardnn.flix.core.vo.Resource
 import com.nhaarman.mockitokotlin2.verify
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull

@@ -36,6 +36,9 @@ data class TvShowDetailResponse(
     @field:SerializedName("number_of_seasons")
     val numberOfSeasons: Int? = null,
 
+    @field:SerializedName("popularity")
+    val popularity: Float? = null,
+
     @field:SerializedName("genres")
     val genreList: List<GenreResponse>? = null,
 )

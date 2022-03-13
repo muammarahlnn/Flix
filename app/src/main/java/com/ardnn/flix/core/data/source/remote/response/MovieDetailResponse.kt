@@ -27,6 +27,9 @@ data class MovieDetailResponse(
     @field:SerializedName("backdrop_path")
     val wallpaperUrl: String? = null,
 
+    @field:SerializedName("popularity")
+    val popularity: Float? = null,
+
     @field:SerializedName("genres")
     val genreList: List<GenreResponse>? = null
 )

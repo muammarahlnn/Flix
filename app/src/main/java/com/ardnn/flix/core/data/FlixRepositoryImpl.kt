@@ -1,11 +1,12 @@
 package com.ardnn.flix.core.data
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.Transformations
 import com.ardnn.flix.core.data.source.local.LocalDataSource
 import com.ardnn.flix.core.data.source.local.entity.SectionMovieEntity
 import com.ardnn.flix.core.data.source.local.entity.SectionTvShowEntity
-import com.ardnn.flix.core.data.source.local.entity.relation.*
+import com.ardnn.flix.core.data.source.local.entity.relation.MovieGenreCrossRef
+import com.ardnn.flix.core.data.source.local.entity.relation.SectionMovieCrossRef
+import com.ardnn.flix.core.data.source.local.entity.relation.SectionTvShowCrossRef
+import com.ardnn.flix.core.data.source.local.entity.relation.TvShowGenreCrossRef
 import com.ardnn.flix.core.data.source.remote.ApiResponse
 import com.ardnn.flix.core.data.source.remote.datasource.RemoteDataSource
 import com.ardnn.flix.core.data.source.remote.response.*
@@ -15,7 +16,8 @@ import com.ardnn.flix.core.domain.model.TvShow
 import com.ardnn.flix.core.domain.repository.FlixRepository
 import com.ardnn.flix.core.util.AppExecutors
 import com.ardnn.flix.core.util.DataMapper
-import com.ardnn.flix.core.vo.Resource
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 
 class FlixRepositoryImpl private constructor(
     private val remoteDataSource: RemoteDataSource,
@@ -27,10 +29,10 @@ class FlixRepositoryImpl private constructor(
         page: Int,
         section: Int,
         filter: String
-    ): LiveData<Resource<List<Movie>>> {
-        return object : NetworkBoundResource<List<Movie>, List<MovieResponse>>(appExecutors) {
-            override fun loadFromDB(): LiveData<List<Movie>> {
-                return Transformations.map(localDataSource.getSectionWithMovies(section, filter)) {
+    ): Flow<Resource<List<Movie>>> {
+        return object : NetworkBoundResource<List<Movie>, List<MovieResponse>>() {
+            override fun loadFromDB(): Flow<List<Movie>> {
+                return localDataSource.getSectionWithMovies(section, filter).map {
                     DataMapper.mapMovieEntitiesToDomain(it)
                 }
             }
@@ -39,7 +41,7 @@ class FlixRepositoryImpl private constructor(
                 return data.isNullOrEmpty()
             }
 
-            override fun createCall(): LiveData<ApiResponse<List<MovieResponse>>> {
+            override suspend fun createCall(): Flow<ApiResponse<List<MovieResponse>>> {
                 return when (section) {
                     0 -> { // now playing
                         remoteDataSource.getNowPlayingMovies(page)
@@ -59,7 +61,7 @@ class FlixRepositoryImpl private constructor(
                 }
             }
 
-            override fun saveCallResult(data: List<MovieResponse>) {
+            override suspend fun saveCallResult(data: List<MovieResponse>) {
                 // insert movies
                 val moviesEntity = DataMapper.mapMovieResponsesToEntities(data)
                 localDataSource.insertMovies(moviesEntity)
@@ -87,17 +89,17 @@ class FlixRepositoryImpl private constructor(
                 }
             }
 
-        }.asLiveData()
+        }.asFLow()
     }
 
     override fun getSectionWithTvShows(
         page: Int,
         section: Int,
         filter: String
-    ): LiveData<Resource<List<TvShow>>> {
-        return object : NetworkBoundResource<List<TvShow>, List<TvShowResponse>>(appExecutors) {
-            override fun loadFromDB(): LiveData<List<TvShow>> {
-                return Transformations.map(localDataSource.getSectionWithTvShows(section, filter)) {
+    ): Flow<Resource<List<TvShow>>> {
+        return object : NetworkBoundResource<List<TvShow>, List<TvShowResponse>>() {
+            override fun loadFromDB(): Flow<List<TvShow>> {
+                return localDataSource.getSectionWithTvShows(section, filter).map {
                     DataMapper.mapTvShowEntitiesToDomain(it)
                 }
             }
@@ -106,7 +108,7 @@ class FlixRepositoryImpl private constructor(
                 return data.isNullOrEmpty()
             }
 
-            override fun createCall(): LiveData<ApiResponse<List<TvShowResponse>>> {
+            override suspend fun createCall(): Flow<ApiResponse<List<TvShowResponse>>> {
                 return when (section) {
                     0 -> { // airing today
                         remoteDataSource.getAiringTodayTvShows(page)
@@ -126,7 +128,7 @@ class FlixRepositoryImpl private constructor(
                 }
             }
 
-            override fun saveCallResult(data: List<TvShowResponse>) {
+            override suspend fun saveCallResult(data: List<TvShowResponse>) {
                 // insert tv shows
                 val tvShowsEntity = DataMapper.mapTvShowResponsesToEntities(data)
                 localDataSource.insertTvShows(tvShowsEntity)
@@ -155,13 +157,13 @@ class FlixRepositoryImpl private constructor(
 
             }
 
-        }.asLiveData()
+        }.asFLow()
     }
 
-    override fun getMovieWithGenres(movieId: Int): LiveData<Resource<Movie>> {
-        return object : NetworkBoundResource<Movie, MovieDetailResponse>(appExecutors) {
-            override fun loadFromDB(): LiveData<Movie> {
-                return Transformations.map(localDataSource.getMovieWithGenres(movieId)) {
+    override fun getMovieWithGenres(movieId: Int): Flow<Resource<Movie>> {
+        return object : NetworkBoundResource<Movie, MovieDetailResponse>() {
+            override fun loadFromDB(): Flow<Movie> {
+                return localDataSource.getMovieWithGenres(movieId).map {
                     DataMapper.mapMovieWithGenresEntityToDomain(it)
                 }
             }
@@ -171,18 +173,13 @@ class FlixRepositoryImpl private constructor(
                 return !isDetailFetched
             }
 
-            override fun createCall(): LiveData<ApiResponse<MovieDetailResponse>> =
+            override suspend fun createCall(): Flow<ApiResponse<MovieDetailResponse>> =
                 remoteDataSource.getMovieDetail(movieId)
 
-            override fun saveCallResult(data: MovieDetailResponse) {
+            override suspend fun saveCallResult(data: MovieDetailResponse) {
                 // get and update movie detail
-                val movieDetail = localDataSource.getMovie(data.id)
-                movieDetail.overview = data.overview ?: ""
-                movieDetail.runtime = data.runtime ?: 0
-                movieDetail.wallpaperUrl = data.wallpaperUrl ?: ""
-                movieDetail.isDetailFetched = true
-
-                localDataSource.updateMovie(movieDetail)
+                val movieEntity = DataMapper.mapMovieDetailResponseToEntity(data)
+                localDataSource.insertMovie(movieEntity)
 
                 data.genreList?.let {
                     // insert genres
@@ -198,16 +195,16 @@ class FlixRepositoryImpl private constructor(
                 }
             }
 
-        }.asLiveData()
+        }.asFLow()
     }
 
-    override fun getFavoriteMovies(): LiveData<List<Movie>> {
-        return Transformations.map(localDataSource.getFavoriteMovies()) {
+    override fun getFavoriteMovies(): Flow<List<Movie>> {
+        return localDataSource.getFavoriteMovies().map {
             DataMapper.mapMovieEntitiesToDomain(it)
         }
     }
 
-    override fun getMovieCredits(movieId: Int): LiveData<ApiResponse<List<CastResponse>>> {
+    override fun getMovieCredits(movieId: Int): Flow<ApiResponse<List<CastResponse>>> {
         return remoteDataSource.getMovieCredits(movieId)
     }
 
@@ -218,10 +215,10 @@ class FlixRepositoryImpl private constructor(
         }
     }
 
-    override fun getTvShowWithGenres(tvShowId: Int): LiveData<Resource<TvShow>> {
-        return object : NetworkBoundResource<TvShow, TvShowDetailResponse>(appExecutors) {
-            override fun loadFromDB(): LiveData<TvShow> {
-                return Transformations.map(localDataSource.getTvShowWithGenres(tvShowId)) {
+    override fun getTvShowWithGenres(tvShowId: Int): Flow<Resource<TvShow>> {
+        return object : NetworkBoundResource<TvShow, TvShowDetailResponse>() {
+            override fun loadFromDB(): Flow<TvShow> {
+                return localDataSource.getTvShowWithGenres(tvShowId).map {
                     DataMapper.mapTvShowWithGenresEntityToDomain(it)
                 }
             }
@@ -231,23 +228,13 @@ class FlixRepositoryImpl private constructor(
                 return !isDetailFetched
             }
 
-            override fun createCall(): LiveData<ApiResponse<TvShowDetailResponse>> =
+            override suspend fun createCall(): Flow<ApiResponse<TvShowDetailResponse>> =
                 remoteDataSource.getTvShowDetail(tvShowId)
 
-            override fun saveCallResult(data: TvShowDetailResponse) {
+            override suspend fun saveCallResult(data: TvShowDetailResponse) {
                 // get and update tv show detail
-                val tvShowDetail = localDataSource.getTvShow(data.id)
-                tvShowDetail.overview = data.overview ?: ""
-                tvShowDetail.lastAirDate = data.lastAirDate ?: ""
-                tvShowDetail.runtime =
-                    if (data.runtimes.isNullOrEmpty()) 0
-                    else data.runtimes[0]
-                tvShowDetail.wallpaperUrl = data.wallpaperUrl ?: ""
-                tvShowDetail.numberOfEpisodes = data.numberOfEpisodes ?: 0
-                tvShowDetail.numberOfSeasons = data.numberOfSeasons ?: 0
-                tvShowDetail.isDetailFetched = true
-
-                localDataSource.updateTvShow(tvShowDetail)
+                val tvShowEntity = DataMapper.mapTvShowDetailResponseToEntity(data)
+                localDataSource.insertTvShow(tvShowEntity)
 
                 data.genreList?.let {
                     // insert genres
@@ -263,16 +250,16 @@ class FlixRepositoryImpl private constructor(
                 }
             }
 
-        }.asLiveData()
+        }.asFLow()
     }
 
-    override fun getFavoriteTvShows(): LiveData<List<TvShow>> {
-        return Transformations.map(localDataSource.getFavoriteTvShows()) {
+    override fun getFavoriteTvShows(): Flow<List<TvShow>> {
+        return localDataSource.getFavoriteTvShows().map {
             DataMapper.mapTvShowEntitiesToDomain(it)
         }
     }
 
-    override fun getTvShowCredits(tvShowId: Int): LiveData<ApiResponse<List<CastResponse>>> {
+    override fun getTvShowCredits(tvShowId: Int): Flow<ApiResponse<List<CastResponse>>> {
         return remoteDataSource.getTvShowCredits(tvShowId)
     }
 
@@ -283,14 +270,14 @@ class FlixRepositoryImpl private constructor(
         }
     }
 
-    override fun getGenreWithMovies(genreId: Int): LiveData<Genre> {
-        return Transformations.map(localDataSource.getGenreWithMovies(genreId)) {
+    override fun getGenreWithMovies(genreId: Int): Flow<Genre> {
+        return localDataSource.getGenreWithMovies(genreId).map {
             DataMapper.mapGenreWithMoviesEntityToDomain(it)
         }
     }
 
-    override fun getGenreWithTvShows(genreId: Int): LiveData<Genre> {
-        return Transformations.map(localDataSource.getGenreWithTvShows(genreId)) {
+    override fun getGenreWithTvShows(genreId: Int): Flow<Genre> {
+        return localDataSource.getGenreWithTvShows(genreId).map {
             DataMapper.mapGenreWithTvShowsEntityToDomain(it)
         }
     }

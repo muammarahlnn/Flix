@@ -1,268 +1,151 @@
 package com.ardnn.flix.core.data.source.remote.datasource
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+import android.util.Log
 import com.ardnn.flix.core.data.source.remote.ApiConfig
 import com.ardnn.flix.core.data.source.remote.ApiResponse
-import com.ardnn.flix.core.data.source.remote.response.*
+import com.ardnn.flix.core.data.source.remote.response.CastResponse
+import com.ardnn.flix.core.data.source.remote.response.TvShowDetailResponse
+import com.ardnn.flix.core.data.source.remote.response.TvShowResponse
 import com.ardnn.flix.core.data.source.remote.service.TvShowApiService
 import com.ardnn.flix.core.util.EspressoIdlingResource
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 
 class TvShowDataSource(
     private val apiService: TvShowApiService
 ) : DetailInterface<TvShowDetailResponse>, FilmsInterface<TvShowResponse> {
 
-    override fun getDetail(id: Int): LiveData<ApiResponse<TvShowDetailResponse>> {
+    override fun getDetail(id: Int): Flow<ApiResponse<TvShowDetailResponse>> {
         EspressoIdlingResource.increment()
+        return flow {
+            try {
+                val response = apiService.getTvShowDetails(id, ApiConfig.API_KEY)
+                emit(ApiResponse.Success(response))
 
-        val resultTvShowDetail = MutableLiveData<ApiResponse<TvShowDetailResponse>>()
-        apiService.getTvShowDetails(id, ApiConfig.API_KEY)
-            .enqueue(object : Callback<TvShowDetailResponse> {
-                override fun onResponse(
-                    call: Call<TvShowDetailResponse>,
-                    response: Response<TvShowDetailResponse>
-                ) {
-                    if (response.isSuccessful) {
-                        resultTvShowDetail.postValue(
-                            ApiResponse.success(response.body() as TvShowDetailResponse)
-                        )
-                        EspressoIdlingResource.decrement()
-                    } else {
-                        resultTvShowDetail.postValue(
-                            ApiResponse.error(
-                                response.message(),
-                                TvShowDetailResponse()
-                            )
-                        )
-                        EspressoIdlingResource.decrement()
-                    }
-                }
+                EspressoIdlingResource.decrement()
+            } catch (e: Exception) {
+                emit(ApiResponse.Error(e.toString()))
+                Log.e("RemoteDataSource", e.toString())
 
-                override fun onFailure(call: Call<TvShowDetailResponse>, t: Throwable) {
-                    resultTvShowDetail.postValue(
-                        ApiResponse.error(
-                            "onFailure: ${t.localizedMessage}",
-                            TvShowDetailResponse()
-                        )
-                    )
-                    EspressoIdlingResource.decrement()
-                }
-
-            })
-
-        return resultTvShowDetail
+                EspressoIdlingResource.decrement()
+            }
+        }.flowOn(Dispatchers.IO)
     }
 
     // get airing today tv shows
-    override fun getFirstSectionFilms(page: Int): LiveData<ApiResponse<List<TvShowResponse>>> {
+    override fun getFirstSectionFilms(page: Int): Flow<ApiResponse<List<TvShowResponse>>> {
         EspressoIdlingResource.increment()
-
-        val resultTvShows = MutableLiveData<ApiResponse<List<TvShowResponse>>>()
-        apiService.getAiringTodayTvShows(ApiConfig.API_KEY, page)
-            .enqueue(object : Callback<TvShowsResponse> {
-                override fun onResponse(
-                    call: Call<TvShowsResponse>,
-                    response: Response<TvShowsResponse>
-                ) {
-                    if (response.isSuccessful) {
-                        resultTvShows.postValue(
-                            ApiResponse.success(response.body()?.tvShows as List<TvShowResponse>)
-                        )
-                        EspressoIdlingResource.decrement()
-                    } else {
-                        resultTvShows.postValue(
-                            ApiResponse.error(
-                                response.message(),
-                                listOf()
-                            )
-                        )
-                        EspressoIdlingResource.decrement()
-                    }
+        return flow {
+            try {
+                val response = apiService.getAiringTodayTvShows(ApiConfig.API_KEY, page)
+                val dataArray = response.tvShows
+                if (!dataArray.isNullOrEmpty()) {
+                    emit(ApiResponse.Success(dataArray))
+                } else {
+                    emit(ApiResponse.Empty)
                 }
 
-                override fun onFailure(call: Call<TvShowsResponse>, t: Throwable) {
-                    resultTvShows.postValue(
-                        ApiResponse.error(
-                            "onFailure: ${t.localizedMessage}",
-                            listOf()
-                        )
-                    )
-                    EspressoIdlingResource.decrement()
-                }
+                EspressoIdlingResource.decrement()
+            } catch (e: Exception) {
+                emit(ApiResponse.Error(e.toString()))
+                Log.e("RemoteDataSource", e.toString())
 
-            })
-
-        return resultTvShows
+                EspressoIdlingResource.decrement()
+            }
+        }.flowOn(Dispatchers.IO)
     }
 
     // get on the air tv shows
-    override fun getSecondSectionFilms(page: Int): LiveData<ApiResponse<List<TvShowResponse>>> {
+    override fun getSecondSectionFilms(page: Int): Flow<ApiResponse<List<TvShowResponse>>> {
         EspressoIdlingResource.increment()
-
-        val resultTvShows = MutableLiveData<ApiResponse<List<TvShowResponse>>>()
-        apiService.getOnTheAirTvShows(ApiConfig.API_KEY, page)
-            .enqueue(object : Callback<TvShowsResponse> {
-                override fun onResponse(
-                    call: Call<TvShowsResponse>,
-                    response: Response<TvShowsResponse>
-                ) {
-                    if (response.isSuccessful) {
-                        resultTvShows.postValue(
-                            ApiResponse.success(response.body()?.tvShows as List<TvShowResponse>)
-                        )
-                        EspressoIdlingResource.decrement()
-                    } else {
-                        resultTvShows.postValue(
-                            ApiResponse.error(
-                                response.message(),
-                                listOf()
-                            )
-                        )
-                        EspressoIdlingResource.decrement()
-                    }
+        return flow {
+            try {
+                val response = apiService.getOnTheAirTvShows(ApiConfig.API_KEY, page)
+                val dataArray = response.tvShows
+                if (!dataArray.isNullOrEmpty()) {
+                    emit(ApiResponse.Success(dataArray))
+                } else {
+                    emit(ApiResponse.Empty)
                 }
 
-                override fun onFailure(call: Call<TvShowsResponse>, t: Throwable) {
-                    resultTvShows.postValue(
-                        ApiResponse.error(
-                            "onFailure: ${t.localizedMessage}",
-                            listOf()
-                        )
-                    )
-                    EspressoIdlingResource.decrement()
-                }
+                EspressoIdlingResource.decrement()
+            } catch (e: Exception) {
+                emit(ApiResponse.Error(e.toString()))
+                Log.e("RemoteDataSource", e.toString())
 
-            })
-
-        return resultTvShows
+                EspressoIdlingResource.decrement()
+            }
+        }.flowOn(Dispatchers.IO)
     }
 
     // get popular tv shows
-    override fun getThirdSectionFilms(page: Int): LiveData<ApiResponse<List<TvShowResponse>>> {
+    override fun getThirdSectionFilms(page: Int): Flow<ApiResponse<List<TvShowResponse>>> {
         EspressoIdlingResource.increment()
-
-        val resultTvShows = MutableLiveData<ApiResponse<List<TvShowResponse>>>()
-        apiService.getPopularTvShows(ApiConfig.API_KEY, page)
-            .enqueue(object : Callback<TvShowsResponse> {
-                override fun onResponse(
-                    call: Call<TvShowsResponse>,
-                    response: Response<TvShowsResponse>
-                ) {
-                    if (response.isSuccessful) {
-                        resultTvShows.postValue(
-                            ApiResponse.success(response.body()?.tvShows as List<TvShowResponse>)
-                        )
-                        EspressoIdlingResource.decrement()
-                    } else {
-                        resultTvShows.postValue(
-                            ApiResponse.error(
-                                response.message(),
-                                listOf()
-                            )
-                        )
-                        EspressoIdlingResource.decrement()
-                    }
+        return flow {
+            try {
+                val response = apiService.getPopularTvShows(ApiConfig.API_KEY, page)
+                val dataArray = response.tvShows
+                if (!dataArray.isNullOrEmpty()) {
+                    emit(ApiResponse.Success(dataArray))
+                } else {
+                    emit(ApiResponse.Empty)
                 }
 
-                override fun onFailure(call: Call<TvShowsResponse>, t: Throwable) {
-                    resultTvShows.postValue(
-                        ApiResponse.error(
-                            "onFailure: ${t.localizedMessage}",
-                            listOf()
-                        )
-                    )
-                    EspressoIdlingResource.decrement()
-                }
+                EspressoIdlingResource.decrement()
+            } catch (e: Exception) {
+                emit(ApiResponse.Error(e.toString()))
+                Log.e("RemoteDataSource", e.toString())
 
-            })
-
-        return resultTvShows
+                EspressoIdlingResource.decrement()
+            }
+        }.flowOn(Dispatchers.IO)
     }
 
     // get top rated tv shows
-    override fun getFourthSectionFilms(page: Int): LiveData<ApiResponse<List<TvShowResponse>>> {
+    override fun getFourthSectionFilms(page: Int): Flow<ApiResponse<List<TvShowResponse>>> {
         EspressoIdlingResource.increment()
-
-        val resultTvShows = MutableLiveData<ApiResponse<List<TvShowResponse>>>()
-        apiService.getTopRatedTvShows(ApiConfig.API_KEY, page)
-            .enqueue(object : Callback<TvShowsResponse> {
-                override fun onResponse(
-                    call: Call<TvShowsResponse>,
-                    response: Response<TvShowsResponse>
-                ) {
-                    if (response.isSuccessful) {
-                        resultTvShows.postValue(
-                            ApiResponse.success(response.body()?.tvShows as List<TvShowResponse>)
-                        )
-                        EspressoIdlingResource.decrement()
-                    } else {
-                        resultTvShows.postValue(
-                            ApiResponse.error(
-                                response.message(),
-                                listOf()
-                            )
-                        )
-                        EspressoIdlingResource.decrement()
-                    }
+        return flow {
+            try {
+                val response = apiService.getTopRatedTvShows(ApiConfig.API_KEY, page)
+                val dataArray = response.tvShows
+                if (!dataArray.isNullOrEmpty()) {
+                    emit(ApiResponse.Success(dataArray))
+                } else {
+                    emit(ApiResponse.Empty)
                 }
 
-                override fun onFailure(call: Call<TvShowsResponse>, t: Throwable) {
-                    resultTvShows.postValue(
-                        ApiResponse.error(
-                            "onFailure: ${t.localizedMessage}",
-                            listOf()
-                        )
-                    )
-                    EspressoIdlingResource.decrement()
-                }
+                EspressoIdlingResource.decrement()
+            } catch (e: Exception) {
+                emit(ApiResponse.Error(e.toString()))
+                Log.e("RemoteDataSource", e.toString())
 
-            })
-
-        return resultTvShows
+                EspressoIdlingResource.decrement()
+            }
+        }.flowOn(Dispatchers.IO)
     }
 
-    override fun getFilmCredits(id: Int): LiveData<ApiResponse<List<CastResponse>>> {
+    override fun getFilmCredits(id: Int): Flow<ApiResponse<List<CastResponse>>> {
         EspressoIdlingResource.increment()
-
-        val resultCredits = MutableLiveData<ApiResponse<List<CastResponse>>>()
-        apiService.getTvShowCredits(id, ApiConfig.API_KEY)
-            .enqueue(object : Callback<CreditsResponse> {
-                override fun onResponse(
-                    call: Call<CreditsResponse>,
-                    response: Response<CreditsResponse>
-                ) {
-                    if (response.isSuccessful) {
-                        resultCredits.postValue(
-                            ApiResponse.success(response.body()?.cast as List<CastResponse>)
-                        )
-                        EspressoIdlingResource.decrement()
-                    } else {
-                        resultCredits.postValue(
-                            ApiResponse.error(
-                                response.message(),
-                                listOf()
-                            )
-                        )
-                        EspressoIdlingResource.decrement()
-                    }
+        return flow {
+            try {
+                val response = apiService.getTvShowCredits(id, ApiConfig.API_KEY)
+                val dataArray = response.cast
+                if (!dataArray.isNullOrEmpty()) {
+                    emit(ApiResponse.Success(dataArray))
+                } else {
+                    emit(ApiResponse.Empty)
                 }
 
-                override fun onFailure(call: Call<CreditsResponse>, t: Throwable) {
-                    resultCredits.postValue(
-                        ApiResponse.error(
-                            "onFailure: ${t.localizedMessage}",
-                            listOf()
-                        )
-                    )
-                    EspressoIdlingResource.decrement()
-                }
+                EspressoIdlingResource.decrement()
+            } catch (e: Exception) {
+                emit(ApiResponse.Error(e.toString()))
+                Log.e("RemoteDataSource", e.toString())
 
-            })
-
-        return resultCredits
+                EspressoIdlingResource.decrement()
+            }
+        }.flowOn(Dispatchers.IO)
     }
 
 }

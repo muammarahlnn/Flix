@@ -1,26 +1,26 @@
 package com.ardnn.flix.core.data.source.remote.datasource
 
-import androidx.lifecycle.LiveData
 import com.ardnn.flix.core.data.source.remote.ApiResponse
 import com.ardnn.flix.core.data.source.remote.response.*
+import kotlinx.coroutines.flow.Flow
 
 interface IRemoteDataSource {
     // movie
-    fun getMovieDetail(movieId: Int): LiveData<ApiResponse<MovieDetailResponse>>
-    fun getNowPlayingMovies(page: Int): LiveData<ApiResponse<List<MovieResponse>>>
-    fun getUpcomingMovies(page: Int): LiveData<ApiResponse<List<MovieResponse>>>
-    fun getPopularMovies(page: Int): LiveData<ApiResponse<List<MovieResponse>>>
-    fun getTopRatedMovies(page: Int): LiveData<ApiResponse<List<MovieResponse>>>
-    fun getMovieCredits(movieId: Int): LiveData<ApiResponse<List<CastResponse>>>
+    fun getMovieDetail(movieId: Int): Flow<ApiResponse<MovieDetailResponse>>
+    fun getNowPlayingMovies(page: Int): Flow<ApiResponse<List<MovieResponse>>>
+    fun getUpcomingMovies(page: Int): Flow<ApiResponse<List<MovieResponse>>>
+    fun getPopularMovies(page: Int): Flow<ApiResponse<List<MovieResponse>>>
+    fun getTopRatedMovies(page: Int): Flow<ApiResponse<List<MovieResponse>>>
+    fun getMovieCredits(movieId: Int): Flow<ApiResponse<List<CastResponse>>>
 
     // tv show
-    fun getTvShowDetail(tvShowId: Int): LiveData<ApiResponse<TvShowDetailResponse>>
-    fun getAiringTodayTvShows(page: Int): LiveData<ApiResponse<List<TvShowResponse>>>
-    fun getOnTheAirTvShows(page: Int): LiveData<ApiResponse<List<TvShowResponse>>>
-    fun getPopularTvShows(page: Int): LiveData<ApiResponse<List<TvShowResponse>>>
-    fun getTopRatedTvShows(page: Int): LiveData<ApiResponse<List<TvShowResponse>>>
-    fun getTvShowCredits(tvShowId: Int): LiveData<ApiResponse<List<CastResponse>>>
+    fun getTvShowDetail(tvShowId: Int): Flow<ApiResponse<TvShowDetailResponse>>
+    fun getAiringTodayTvShows(page: Int): Flow<ApiResponse<List<TvShowResponse>>>
+    fun getOnTheAirTvShows(page: Int): Flow<ApiResponse<List<TvShowResponse>>>
+    fun getPopularTvShows(page: Int): Flow<ApiResponse<List<TvShowResponse>>>
+    fun getTopRatedTvShows(page: Int): Flow<ApiResponse<List<TvShowResponse>>>
+    fun getTvShowCredits(tvShowId: Int): Flow<ApiResponse<List<CastResponse>>>
 
     // person
-    fun getPersonDetail(personId: Int): LiveData<ApiResponse<PersonResponse>>
+    fun getPersonDetail(personId: Int): Flow<ApiResponse<PersonResponse>>
 }

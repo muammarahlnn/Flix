@@ -1,7 +1,5 @@
 package com.ardnn.flix.core.data.source.local
 
-import androidx.lifecycle.LiveData
-import androidx.paging.DataSource
 import com.ardnn.flix.core.data.source.local.entity.*
 import com.ardnn.flix.core.data.source.local.entity.relation.*
 import com.ardnn.flix.core.data.source.local.room.GenreDao
@@ -9,6 +7,7 @@ import com.ardnn.flix.core.data.source.local.room.MovieDao
 import com.ardnn.flix.core.data.source.local.room.SectionDao
 import com.ardnn.flix.core.data.source.local.room.TvShowDao
 import com.ardnn.flix.core.util.SortUtils
+import kotlinx.coroutines.flow.Flow
 
 class LocalDataSource private constructor(
     private val movieDao: MovieDao,
@@ -18,28 +17,25 @@ class LocalDataSource private constructor(
 ) {
 
     // === movie dao ===================================================================
-    fun getMovie(movieId: Int): MovieEntity =
-        movieDao.getMovie(movieId)
-
-    fun getFavoriteMovies(): LiveData<List<MovieEntity>> =
-        movieDao.getFavoriteMovies()
-
-    fun getMovieWithGenres(movieId: Int): LiveData<MovieWithGenres> =
+    fun getMovieWithGenres(movieId: Int): Flow<MovieWithGenres> =
         movieDao.getMovieWithGenres(movieId)
 
-    fun insertMovies(movies: List<MovieEntity>) {
+    fun getFavoriteMovies(): Flow<List<MovieEntity>> =
+        movieDao.getFavoriteMovies()
+
+    suspend fun insertMovies(movies: List<MovieEntity>) {
         movieDao.insertMovies(movies)
     }
 
-    fun insertMovie(movie: MovieEntity) {
+    suspend fun insertMovie(movie: MovieEntity) {
         movieDao.insertMovie(movie)
     }
 
-    fun insertMovieGenreCrossRef(crossRef: MovieGenreCrossRef) {
+    suspend fun insertMovieGenreCrossRef(crossRef: MovieGenreCrossRef) {
         movieDao.insertMovieGenreCrossRef(crossRef)
     }
 
-    fun updateMovie(movie: MovieEntity) {
+    private fun updateMovie(movie: MovieEntity) {
         movieDao.updateMovie(movie)
     }
 
@@ -49,27 +45,23 @@ class LocalDataSource private constructor(
     }
 
     // === tv show dao ===================================================================
-    fun getTvShow(tvShowId: Int): TvShowEntity =
-        tvShowDao.getTvShow(tvShowId)
-
-    fun getFavoriteTvShows(): LiveData<List<TvShowEntity>> =
-        tvShowDao.getFavoriteTvShows()
-
-    fun getTvShowWithGenres(tvShowId: Int): LiveData<TvShowWithGenres> =
+    fun getTvShowWithGenres(tvShowId: Int): Flow<TvShowWithGenres> =
         tvShowDao.getTvShowWithGenres(tvShowId)
 
-    fun insertTvShows(tvShows: List<TvShowEntity>) {
+    fun getFavoriteTvShows(): Flow<List<TvShowEntity>> =
+        tvShowDao.getFavoriteTvShows()
+
+    suspend fun insertTvShows(tvShows: List<TvShowEntity>) {
         tvShowDao.insertTvShows(tvShows)
     }
-
-    fun insertTvShow(tvShow: TvShowEntity) {
+    suspend fun insertTvShow(tvShow: TvShowEntity) {
         tvShowDao.insertTvShow(tvShow)
     }
 
-    fun insertTvShowGenreCrossRef(crossRef: TvShowGenreCrossRef) =
+    suspend fun insertTvShowGenreCrossRef(crossRef: TvShowGenreCrossRef) =
         tvShowDao.insertTvShowGenreCrossRef(crossRef)
 
-    fun updateTvShow(tvShow: TvShowEntity) {
+    private fun updateTvShow(tvShow: TvShowEntity) {
         tvShowDao.updateTvShow(tvShow)
     }
 
@@ -79,45 +71,41 @@ class LocalDataSource private constructor(
     }
 
     // === section dao ===================================================================
-    fun getSectionWithMovies(section: Int, filter: String): LiveData<List<MovieEntity>> {
+    fun getSectionWithMovies(section: Int, filter: String): Flow<List<MovieEntity>> {
         val query = SortUtils.getSortedSection(SortUtils.MOVIES, section, filter)
         return sectionDao.getSectionWithMovies(query)
     }
 
-    fun getSectionWithTvShows(section: Int, filter: String): LiveData<List<TvShowEntity>> {
+    fun getSectionWithTvShows(section: Int, filter: String): Flow<List<TvShowEntity>> {
         val query = SortUtils.getSortedSection(SortUtils.TV_SHOWS, section, filter)
         return sectionDao.getSectionWithTvShows(query)
     }
 
-    fun insertSectionMovie(sectionMovie: SectionMovieEntity) {
+    suspend fun insertSectionMovie(sectionMovie: SectionMovieEntity) {
         sectionDao.insertSectionMovie(sectionMovie)
     }
 
-    fun insertSectionTvShow(sectionTvShow: SectionTvShowEntity) {
+    suspend fun insertSectionTvShow(sectionTvShow: SectionTvShowEntity) {
         sectionDao.insertSectionTvShow(sectionTvShow)
     }
 
-    fun insertSectionMovieCrossRef(crossRef: SectionMovieCrossRef) {
+    suspend fun insertSectionMovieCrossRef(crossRef: SectionMovieCrossRef) {
         sectionDao.insertSectionMovieCrossRef(crossRef)
     }
 
-    fun insertSectionTvShowCrossRef(crossRef: SectionTvShowCrossRef) {
+    suspend fun insertSectionTvShowCrossRef(crossRef: SectionTvShowCrossRef) {
         sectionDao.insertSectionTvShowCrossRef(crossRef)
     }
 
     // === genre dao ===================================================================
-    fun getGenreWithMovies(genreId: Int): LiveData<GenreWithMovies> =
+    fun getGenreWithMovies(genreId: Int): Flow<GenreWithMovies> =
         genreDao.getGenreWithMovies(genreId)
 
-    fun getGenreWithTvShows(genreId: Int): LiveData<GenreWithTvShows> =
+    fun getGenreWithTvShows(genreId: Int): Flow<GenreWithTvShows> =
         genreDao.getGenreWithTvShows(genreId)
 
-    fun insertGenre(genres: List<GenreEntity>) {
+    suspend fun insertGenre(genres: List<GenreEntity>) {
         genreDao.insertGenre(genres)
-    }
-
-    fun updateGenre(genre: GenreEntity) {
-        genreDao.updateGenre(genre)
     }
 
     companion object {
