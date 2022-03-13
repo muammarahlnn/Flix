@@ -1,14 +1,16 @@
 package com.ardnn.flix.favorites
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.ardnn.flix.MyApplication
 import com.ardnn.flix.R
 import com.ardnn.flix.core.domain.model.Movie
 import com.ardnn.flix.core.domain.model.TvShow
@@ -16,13 +18,20 @@ import com.ardnn.flix.core.util.PagedListDataSources
 import com.ardnn.flix.core.viewmodel.ViewModelFactory
 import com.ardnn.flix.databinding.FragmentFavoritesBinding
 import com.google.android.material.snackbar.Snackbar
+import javax.inject.Inject
 
 class FavoritesFragment : Fragment() {
+
+    @Inject
+    lateinit var factory: ViewModelFactory
+
+    private val viewModel: FavoritesViewModel by viewModels {
+        factory
+    }
 
     private var _binding: FragmentFavoritesBinding? = null
     private val binding get() = _binding
 
-    private lateinit var viewModel: FavoritesViewModel
     private lateinit var favoriteMoviesAdapter: FavoriteMoviesAdapter
     private lateinit var favoriteTvShowsAdapter: FavoriteTvShowsAdapter
 
@@ -37,14 +46,16 @@ class FavoritesFragment : Fragment() {
         return binding?.root
     }
 
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        (requireActivity().application as MyApplication)
+            .appComponent.inject(this)
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         itemTouchHelper.attachToRecyclerView(binding?.recyclerView)
         if (activity != null) {
-            // initialize view model
-            val factory = ViewModelFactory.getInstance(requireActivity())
-            viewModel = ViewModelProvider(this, factory)[FavoritesViewModel::class.java]
-
             // get section and set it on view model
             section = arguments?.getInt(ARG_SECTION_NUMBER, 0) as Int
             viewModel.setSection(section)

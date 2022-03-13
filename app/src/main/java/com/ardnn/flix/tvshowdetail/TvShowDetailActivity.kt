@@ -5,37 +5,42 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.ardnn.flix.MyApplication
 import com.ardnn.flix.R
+import com.ardnn.flix.core.data.Resource
 import com.ardnn.flix.core.domain.model.Genre
 import com.ardnn.flix.core.domain.model.TvShow
 import com.ardnn.flix.core.util.Helper
 import com.ardnn.flix.core.util.SingleClickListener
 import com.ardnn.flix.core.viewmodel.ViewModelFactory
-import com.ardnn.flix.core.data.Resource
 import com.ardnn.flix.databinding.ActivityTvShowDetailBinding
 import com.ardnn.flix.genre.GenreActivity
 import com.ardnn.flix.moviedetail.GenreAdapter
+import javax.inject.Inject
 
 class TvShowDetailActivity : AppCompatActivity(), View.OnClickListener,
     SingleClickListener<Genre> {
 
-    private lateinit var viewModel: TvShowDetailViewModel
+    @Inject
+    lateinit var factory: ViewModelFactory
+
+    private val viewModel: TvShowDetailViewModel by viewModels {
+        factory
+    }
+
     private lateinit var binding: ActivityTvShowDetailBinding
     private lateinit var tvShow: TvShow
 
     private var isSynopsisExtended = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        (application as MyApplication).appComponent.inject(this)
         super.onCreate(savedInstanceState)
         binding = ActivityTvShowDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        // initialize view model
-        val factory = ViewModelFactory.getInstance(this)
-        viewModel = ViewModelProvider(this, factory)[TvShowDetailViewModel::class.java]
 
         // get tv show id and set it into view model
         val tvShowId = intent.getIntExtra(EXTRA_TV_SHOW_ID, 0)

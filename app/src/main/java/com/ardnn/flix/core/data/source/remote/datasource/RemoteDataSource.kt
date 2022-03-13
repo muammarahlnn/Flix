@@ -3,8 +3,11 @@ package com.ardnn.flix.core.data.source.remote.datasource
 import com.ardnn.flix.core.data.source.remote.ApiResponse
 import com.ardnn.flix.core.data.source.remote.response.*
 import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class RemoteDataSource private constructor(
+@Singleton
+class RemoteDataSource @Inject constructor(
     private val movieDataSource: MovieDataSource,
     private val tvShowDataSource: TvShowDataSource,
     private val personDataSource: PersonDataSource
@@ -54,20 +57,4 @@ class RemoteDataSource private constructor(
     override fun getPersonDetail(personId: Int): Flow<ApiResponse<PersonResponse>> =
         personDataSource.getDetail(personId)
 
-
-    companion object {
-        @Volatile
-        private var instance: RemoteDataSource? = null
-
-        fun getInstance(
-            movieData: MovieDataSource,
-            tvShowData: TvShowDataSource,
-            personData: PersonDataSource
-        ): RemoteDataSource =
-            instance ?: synchronized(this) {
-                RemoteDataSource(movieData, tvShowData, personData).apply {
-                    instance = this
-                }
-            }
-    }
 }

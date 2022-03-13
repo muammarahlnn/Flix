@@ -18,8 +18,11 @@ import com.ardnn.flix.core.util.AppExecutors
 import com.ardnn.flix.core.util.DataMapper
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class FlixRepositoryImpl private constructor(
+@Singleton
+class FlixRepositoryImpl @Inject constructor(
     private val remoteDataSource: RemoteDataSource,
     private val localDataSource: LocalDataSource,
     private val appExecutors: AppExecutors
@@ -282,19 +285,4 @@ class FlixRepositoryImpl private constructor(
         }
     }
 
-    companion object {
-        @Volatile
-        private var instance: FlixRepositoryImpl? = null
-
-        fun getInstance(
-            remoteData: RemoteDataSource,
-            localData: LocalDataSource,
-            appExecutors: AppExecutors
-        ): FlixRepositoryImpl =
-            instance ?: synchronized(this) {
-                instance ?: FlixRepositoryImpl(remoteData, localData, appExecutors).apply {
-                    instance = this
-                }
-            }
-    }
 }

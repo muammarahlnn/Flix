@@ -1,18 +1,19 @@
 package com.ardnn.flix.core.viewmodel
 
-import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.ardnn.flix.core.di.Injection
 import com.ardnn.flix.core.domain.usecase.FlixUseCase
+import com.ardnn.flix.di.AppScope
 import com.ardnn.flix.favorites.FavoritesViewModel
 import com.ardnn.flix.genre.GenreViewModel
 import com.ardnn.flix.moviedetail.MovieDetailViewModel
 import com.ardnn.flix.movies.MoviesViewModel
 import com.ardnn.flix.tvshowdetail.TvShowDetailViewModel
 import com.ardnn.flix.tvshows.TvShowsViewModel
+import javax.inject.Inject
 
-class ViewModelFactory private constructor(
+@AppScope
+class ViewModelFactory @Inject constructor(
     private val flixUseCase: FlixUseCase
 ) : ViewModelProvider.NewInstanceFactory() {
 
@@ -43,15 +44,4 @@ class ViewModelFactory private constructor(
         }
     }
 
-    companion object {
-        @Volatile
-        private var instance: ViewModelFactory? = null
-
-        fun getInstance(context: Context): ViewModelFactory =
-            instance ?: synchronized(this) {
-                ViewModelFactory(Injection.provideFlixUseCase(context)).apply {
-                    instance = this
-                }
-            }
-    }
 }

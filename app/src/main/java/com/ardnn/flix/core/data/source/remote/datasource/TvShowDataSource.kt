@@ -1,7 +1,7 @@
 package com.ardnn.flix.core.data.source.remote.datasource
 
 import android.util.Log
-import com.ardnn.flix.core.data.source.remote.ApiConfig
+import com.ardnn.flix.BuildConfig
 import com.ardnn.flix.core.data.source.remote.ApiResponse
 import com.ardnn.flix.core.data.source.remote.response.CastResponse
 import com.ardnn.flix.core.data.source.remote.response.TvShowDetailResponse
@@ -12,16 +12,20 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
+import javax.inject.Inject
 
-class TvShowDataSource(
+class TvShowDataSource @Inject constructor(
     private val apiService: TvShowApiService
-) : DetailInterface<TvShowDetailResponse>, FilmsInterface<TvShowResponse> {
+) : ApiKeyInterface, DetailInterface<TvShowDetailResponse>, FilmsInterface<TvShowResponse> {
+
+    override val apiKey: String
+        get() = BuildConfig.API_KEY
 
     override fun getDetail(id: Int): Flow<ApiResponse<TvShowDetailResponse>> {
         EspressoIdlingResource.increment()
         return flow {
             try {
-                val response = apiService.getTvShowDetails(id, ApiConfig.API_KEY)
+                val response = apiService.getTvShowDetails(id, apiKey)
                 emit(ApiResponse.Success(response))
 
                 EspressoIdlingResource.decrement()
@@ -39,7 +43,7 @@ class TvShowDataSource(
         EspressoIdlingResource.increment()
         return flow {
             try {
-                val response = apiService.getAiringTodayTvShows(ApiConfig.API_KEY, page)
+                val response = apiService.getAiringTodayTvShows(apiKey, page)
                 val dataArray = response.tvShows
                 if (!dataArray.isNullOrEmpty()) {
                     emit(ApiResponse.Success(dataArray))
@@ -62,7 +66,7 @@ class TvShowDataSource(
         EspressoIdlingResource.increment()
         return flow {
             try {
-                val response = apiService.getOnTheAirTvShows(ApiConfig.API_KEY, page)
+                val response = apiService.getOnTheAirTvShows(apiKey, page)
                 val dataArray = response.tvShows
                 if (!dataArray.isNullOrEmpty()) {
                     emit(ApiResponse.Success(dataArray))
@@ -85,7 +89,7 @@ class TvShowDataSource(
         EspressoIdlingResource.increment()
         return flow {
             try {
-                val response = apiService.getPopularTvShows(ApiConfig.API_KEY, page)
+                val response = apiService.getPopularTvShows(apiKey, page)
                 val dataArray = response.tvShows
                 if (!dataArray.isNullOrEmpty()) {
                     emit(ApiResponse.Success(dataArray))
@@ -108,7 +112,7 @@ class TvShowDataSource(
         EspressoIdlingResource.increment()
         return flow {
             try {
-                val response = apiService.getTopRatedTvShows(ApiConfig.API_KEY, page)
+                val response = apiService.getTopRatedTvShows(apiKey, page)
                 val dataArray = response.tvShows
                 if (!dataArray.isNullOrEmpty()) {
                     emit(ApiResponse.Success(dataArray))
@@ -130,7 +134,7 @@ class TvShowDataSource(
         EspressoIdlingResource.increment()
         return flow {
             try {
-                val response = apiService.getTvShowCredits(id, ApiConfig.API_KEY)
+                val response = apiService.getTvShowCredits(id, apiKey)
                 val dataArray = response.cast
                 if (!dataArray.isNullOrEmpty()) {
                     emit(ApiResponse.Success(dataArray))

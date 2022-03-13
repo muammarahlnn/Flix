@@ -1,25 +1,34 @@
 package com.ardnn.flix.tvshows
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.*
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
+import com.ardnn.flix.MyApplication
 import com.ardnn.flix.R
+import com.ardnn.flix.core.data.Resource
 import com.ardnn.flix.core.domain.model.TvShow
 import com.ardnn.flix.core.util.PagedListDataSources
 import com.ardnn.flix.core.util.SingleClickListener
 import com.ardnn.flix.core.util.SortUtils
 import com.ardnn.flix.core.viewmodel.ViewModelFactory
-import com.ardnn.flix.core.data.Resource
 import com.ardnn.flix.databinding.FragmentFilmsBinding
 import com.ardnn.flix.tvshowdetail.TvShowDetailActivity
+import javax.inject.Inject
 
 class TvShowsFragment : Fragment(), SingleClickListener<TvShow> {
 
-    private lateinit var viewModel: TvShowsViewModel
+    @Inject
+    lateinit var factory: ViewModelFactory
+
+    private val viewModel: TvShowsViewModel by viewModels {
+        factory
+    }
+
     private var _binding: FragmentFilmsBinding? = null
     private val binding get() = _binding
 
@@ -29,6 +38,12 @@ class TvShowsFragment : Fragment(), SingleClickListener<TvShow> {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        (requireActivity().application as MyApplication)
+            .appComponent.inject(this)
     }
 
     override fun onCreateView(
@@ -43,9 +58,6 @@ class TvShowsFragment : Fragment(), SingleClickListener<TvShow> {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         if (activity != null) {
-            // initialize view model
-            val factory = ViewModelFactory.getInstance(requireActivity())
-            viewModel = ViewModelProvider(this, factory)[TvShowsViewModel::class.java]
 
             // get section and set it on view model
             section = arguments?.getInt(ARG_SECTION_NUMBER, 0) as Int

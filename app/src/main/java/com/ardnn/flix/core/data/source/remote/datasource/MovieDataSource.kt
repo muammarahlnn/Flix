@@ -1,7 +1,7 @@
 package com.ardnn.flix.core.data.source.remote.datasource
 
 import android.util.Log
-import com.ardnn.flix.core.data.source.remote.ApiConfig
+import com.ardnn.flix.BuildConfig
 import com.ardnn.flix.core.data.source.remote.ApiResponse
 import com.ardnn.flix.core.data.source.remote.response.CastResponse
 import com.ardnn.flix.core.data.source.remote.response.MovieDetailResponse
@@ -12,17 +12,21 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
+import javax.inject.Inject
 
-class MovieDataSource(
+class MovieDataSource @Inject constructor(
     private val apiService: MovieApiService
-) : DetailInterface<MovieDetailResponse>, FilmsInterface<MovieResponse> {
+) : ApiKeyInterface, DetailInterface<MovieDetailResponse>, FilmsInterface<MovieResponse> {
+
+    override val apiKey: String
+        get() = BuildConfig.API_KEY
 
     // method to get movie detail
     override fun getDetail(id: Int): Flow<ApiResponse<MovieDetailResponse>> {
         EspressoIdlingResource.increment()
         return flow {
             try {
-                val response = apiService.getMovieDetails(id, ApiConfig.API_KEY)
+                val response = apiService.getMovieDetails(id, apiKey)
                 emit(ApiResponse.Success(response))
 
                 EspressoIdlingResource.decrement()
@@ -40,7 +44,7 @@ class MovieDataSource(
         EspressoIdlingResource.increment()
         return flow {
             try {
-                val response = apiService.getNowPlayingMovies(ApiConfig.API_KEY, page)
+                val response = apiService.getNowPlayingMovies(apiKey, page)
                 val dataArray = response.movies
                 if (!dataArray.isNullOrEmpty()) {
                     emit(ApiResponse.Success(dataArray))
@@ -63,7 +67,7 @@ class MovieDataSource(
         EspressoIdlingResource.increment()
         return flow {
             try {
-                val response = apiService.getUpcomingMovies(ApiConfig.API_KEY, page)
+                val response = apiService.getUpcomingMovies(apiKey, page)
                 val dataArray = response.movies
                 if (!dataArray.isNullOrEmpty()) {
                     emit(ApiResponse.Success(dataArray))
@@ -86,7 +90,7 @@ class MovieDataSource(
         EspressoIdlingResource.increment()
         return flow {
             try {
-                val response = apiService.getPopularMovies(ApiConfig.API_KEY, page)
+                val response = apiService.getPopularMovies(apiKey, page)
                 val dataArray = response.movies
                 if (!dataArray.isNullOrEmpty()) {
                     emit(ApiResponse.Success(dataArray))
@@ -109,7 +113,7 @@ class MovieDataSource(
         EspressoIdlingResource.increment()
         return flow {
             try {
-                val response = apiService.getTopRatedMovies(ApiConfig.API_KEY, page)
+                val response = apiService.getTopRatedMovies(apiKey, page)
                 val dataArray = response.movies
                 if (!dataArray.isNullOrEmpty()) {
                     emit(ApiResponse.Success(dataArray))
@@ -131,7 +135,7 @@ class MovieDataSource(
         EspressoIdlingResource.increment()
         return flow {
             try {
-                val response = apiService.getMovieCredits(id, ApiConfig.API_KEY)
+                val response = apiService.getMovieCredits(id, apiKey)
                 val dataArray = response.cast
                 if (!dataArray.isNullOrEmpty()) {
                     emit(ApiResponse.Success(dataArray))

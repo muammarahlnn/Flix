@@ -2,21 +2,29 @@ package com.ardnn.flix.genre
 
 import android.os.Bundle
 import android.view.View
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
+import com.ardnn.flix.MyApplication
 import com.ardnn.flix.R
-import com.ardnn.flix.databinding.ActivityGenreBinding
 import com.ardnn.flix.core.util.PagedListDataSources
 import com.ardnn.flix.core.viewmodel.ViewModelFactory
+import com.ardnn.flix.databinding.ActivityGenreBinding
+import javax.inject.Inject
 
 class GenreActivity : AppCompatActivity() {
 
-    private lateinit var viewModel: GenreViewModel
+    @Inject
+    lateinit var factory: ViewModelFactory
+
+    private val viewModel: GenreViewModel by viewModels {
+        factory
+    }
     private lateinit var binding: ActivityGenreBinding
 
     private var genreType = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        (application as MyApplication).appComponent.inject(this)
         super.onCreate(savedInstanceState)
         binding = ActivityGenreBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -32,10 +40,6 @@ class GenreActivity : AppCompatActivity() {
         val genreName = intent.getStringExtra(EXTRA_GENRE_NAME)
         genreType = intent.getStringExtra(EXTRA_TYPE).toString()
         binding.toolbar.tvSection.text = getString(R.string.genre_toolbar_title, genreName, genreType)
-
-        // initialize view model
-        val factory = ViewModelFactory.getInstance(this)
-        viewModel = ViewModelProvider(this, factory)[GenreViewModel::class.java]
 
         // get id and set it on view model
         val genreId = intent.getIntExtra(EXTRA_GENRE_ID, 0)

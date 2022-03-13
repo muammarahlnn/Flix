@@ -1,8 +1,6 @@
 package com.ardnn.flix.core.data.source.local.room
 
-import android.content.Context
 import androidx.room.Database
-import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.ardnn.flix.core.data.source.local.entity.*
 import com.ardnn.flix.core.data.source.local.entity.relation.MovieGenreCrossRef
@@ -31,20 +29,4 @@ abstract class FlixDatabase : RoomDatabase() {
     abstract fun sectionDao(): SectionDao
     abstract fun genreDao(): GenreDao
 
-    companion object {
-        @Volatile
-        private var INSTANCE: FlixDatabase? = null
-
-        @JvmStatic
-        fun getInstance(context: Context): FlixDatabase =
-            INSTANCE ?: synchronized(this) {
-                Room.databaseBuilder(
-                    context.applicationContext,
-                    FlixDatabase::class.java,
-                    "Flix.db"
-                ).build().apply {
-                    INSTANCE = this
-                }
-            }
-    }
 }

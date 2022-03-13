@@ -8,8 +8,11 @@ import com.ardnn.flix.core.data.source.local.room.SectionDao
 import com.ardnn.flix.core.data.source.local.room.TvShowDao
 import com.ardnn.flix.core.util.SortUtils
 import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class LocalDataSource private constructor(
+@Singleton
+class LocalDataSource @Inject constructor(
     private val movieDao: MovieDao,
     private val tvShowDao: TvShowDao,
     private val sectionDao: SectionDao,
@@ -108,15 +111,4 @@ class LocalDataSource private constructor(
         genreDao.insertGenre(genres)
     }
 
-    companion object {
-        private var INSTANCE: LocalDataSource? = null
-
-        fun getInstance(
-            movieDao: MovieDao,
-            tvShowDao: TvShowDao,
-            sectionDao: SectionDao,
-            genreDao: GenreDao
-        ): LocalDataSource =
-            INSTANCE ?: LocalDataSource(movieDao, tvShowDao, sectionDao, genreDao)
-    }
 }

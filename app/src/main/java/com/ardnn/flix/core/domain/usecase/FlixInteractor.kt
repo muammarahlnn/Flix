@@ -8,8 +8,9 @@ import com.ardnn.flix.core.domain.model.TvShow
 import com.ardnn.flix.core.domain.repository.FlixRepository
 import com.ardnn.flix.core.data.Resource
 import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
 
-class FlixInteractor(
+class FlixInteractor @Inject constructor(
     private val flixRepository: FlixRepository
 ) : FlixUseCase{
 
