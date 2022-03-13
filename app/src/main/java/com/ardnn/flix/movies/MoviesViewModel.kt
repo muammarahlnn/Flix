@@ -4,11 +4,14 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
+import com.ardnn.flix.core.data.Resource
 import com.ardnn.flix.core.domain.model.Movie
 import com.ardnn.flix.core.domain.usecase.FlixUseCase
-import com.ardnn.flix.core.data.Resource
+import javax.inject.Inject
 
-class MoviesViewModel(private val flixUseCase: FlixUseCase) : ViewModel() {
+class MoviesViewModel @Inject constructor(
+    private val flixUseCase: FlixUseCase
+) : ViewModel() {
 
     private var section = 0
 

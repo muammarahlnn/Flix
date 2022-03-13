@@ -5,8 +5,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import com.ardnn.flix.core.domain.model.Genre
 import com.ardnn.flix.core.domain.usecase.FlixUseCase
+import javax.inject.Inject
 
-class GenreViewModel(private val flixUseCase: FlixUseCase) : ViewModel() {
+class GenreViewModel @Inject constructor(
+    private val flixUseCase: FlixUseCase
+) : ViewModel() {
 
     private var genreId = 0
 

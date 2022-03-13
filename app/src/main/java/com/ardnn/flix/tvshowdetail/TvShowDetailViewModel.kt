@@ -1,13 +1,16 @@
 package com.ardnn.flix.tvshowdetail
 
 import androidx.lifecycle.*
+import com.ardnn.flix.core.data.Resource
 import com.ardnn.flix.core.data.source.remote.ApiResponse
 import com.ardnn.flix.core.data.source.remote.response.CastResponse
 import com.ardnn.flix.core.domain.model.TvShow
 import com.ardnn.flix.core.domain.usecase.FlixUseCase
-import com.ardnn.flix.core.data.Resource
+import javax.inject.Inject
 
-class TvShowDetailViewModel(private val flixUseCase: FlixUseCase) : ViewModel() {
+class TvShowDetailViewModel @Inject constructor(
+    private val flixUseCase: FlixUseCase
+) : ViewModel() {
 
     val tvShowId = MutableLiveData<Int>()
 
