@@ -8,28 +8,22 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.ardnn.flix.MyApplication
 import com.ardnn.flix.R
 import com.ardnn.flix.core.data.Resource
 import com.ardnn.flix.core.domain.model.Genre
 import com.ardnn.flix.core.domain.model.TvShow
 import com.ardnn.flix.core.util.Helper
 import com.ardnn.flix.core.util.SingleClickListener
-import com.ardnn.flix.core.viewmodel.ViewModelFactory
 import com.ardnn.flix.databinding.ActivityTvShowDetailBinding
 import com.ardnn.flix.genre.GenreActivity
 import com.ardnn.flix.moviedetail.GenreAdapter
-import javax.inject.Inject
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class TvShowDetailActivity : AppCompatActivity(), View.OnClickListener,
     SingleClickListener<Genre> {
 
-    @Inject
-    lateinit var factory: ViewModelFactory
-
-    private val viewModel: TvShowDetailViewModel by viewModels {
-        factory
-    }
+    private val viewModel: TvShowDetailViewModel by viewModels()
 
     private lateinit var binding: ActivityTvShowDetailBinding
     private lateinit var tvShow: TvShow
@@ -37,7 +31,6 @@ class TvShowDetailActivity : AppCompatActivity(), View.OnClickListener,
     private var isSynopsisExtended = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        (application as MyApplication).appComponent.inject(this)
         super.onCreate(savedInstanceState)
         binding = ActivityTvShowDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)

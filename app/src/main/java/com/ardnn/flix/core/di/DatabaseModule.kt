@@ -5,14 +5,18 @@ import androidx.room.Room
 import com.ardnn.flix.core.data.source.local.room.*
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
+import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
 @Module
+@InstallIn(SingletonComponent::class)
 class DatabaseModule {
 
     @Singleton
     @Provides
-    fun provideDatabase(context: Context): FlixDatabase =
+    fun provideDatabase(@ApplicationContext context: Context): FlixDatabase =
         Room.databaseBuilder(
             context,
             FlixDatabase::class.java,

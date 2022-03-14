@@ -8,27 +8,21 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.ardnn.flix.MyApplication
 import com.ardnn.flix.R
 import com.ardnn.flix.core.data.Resource
 import com.ardnn.flix.core.domain.model.Genre
 import com.ardnn.flix.core.domain.model.Movie
 import com.ardnn.flix.core.util.Helper
 import com.ardnn.flix.core.util.SingleClickListener
-import com.ardnn.flix.core.viewmodel.ViewModelFactory
 import com.ardnn.flix.databinding.ActivityMovieDetailBinding
 import com.ardnn.flix.genre.GenreActivity
-import javax.inject.Inject
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MovieDetailActivity : AppCompatActivity(), View.OnClickListener,
     SingleClickListener<Genre> {
 
-    @Inject
-    lateinit var factory: ViewModelFactory
-
-    private val viewModel: MovieDetailViewModel by viewModels {
-        factory
-    }
+    private val viewModel: MovieDetailViewModel by viewModels()
 
     private lateinit var binding: ActivityMovieDetailBinding
     private lateinit var movie: Movie
@@ -36,7 +30,6 @@ class MovieDetailActivity : AppCompatActivity(), View.OnClickListener,
     private var isSynopsisExtended = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        (application as MyApplication).appComponent.inject(this)
         super.onCreate(savedInstanceState)
         binding = ActivityMovieDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)

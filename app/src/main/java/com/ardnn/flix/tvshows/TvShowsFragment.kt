@@ -1,6 +1,5 @@
 package com.ardnn.flix.tvshows
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -8,26 +7,21 @@ import android.view.*
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import com.ardnn.flix.MyApplication
 import com.ardnn.flix.R
 import com.ardnn.flix.core.data.Resource
 import com.ardnn.flix.core.domain.model.TvShow
 import com.ardnn.flix.core.util.PagedListDataSources
 import com.ardnn.flix.core.util.SingleClickListener
 import com.ardnn.flix.core.util.SortUtils
-import com.ardnn.flix.core.viewmodel.ViewModelFactory
 import com.ardnn.flix.databinding.FragmentFilmsBinding
 import com.ardnn.flix.tvshowdetail.TvShowDetailActivity
-import javax.inject.Inject
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class TvShowsFragment : Fragment(), SingleClickListener<TvShow> {
 
-    @Inject
-    lateinit var factory: ViewModelFactory
 
-    private val viewModel: TvShowsViewModel by viewModels {
-        factory
-    }
+    private val viewModel: TvShowsViewModel by viewModels()
 
     private var _binding: FragmentFilmsBinding? = null
     private val binding get() = _binding
@@ -38,12 +32,6 @@ class TvShowsFragment : Fragment(), SingleClickListener<TvShow> {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
-    }
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        (requireActivity().application as MyApplication)
-            .appComponent.inject(this)
     }
 
     override fun onCreateView(

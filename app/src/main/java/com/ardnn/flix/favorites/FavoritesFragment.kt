@@ -1,6 +1,5 @@
 package com.ardnn.flix.favorites
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,24 +9,18 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.ardnn.flix.MyApplication
 import com.ardnn.flix.R
 import com.ardnn.flix.core.domain.model.Movie
 import com.ardnn.flix.core.domain.model.TvShow
 import com.ardnn.flix.core.util.PagedListDataSources
-import com.ardnn.flix.core.viewmodel.ViewModelFactory
 import com.ardnn.flix.databinding.FragmentFavoritesBinding
 import com.google.android.material.snackbar.Snackbar
-import javax.inject.Inject
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class FavoritesFragment : Fragment() {
 
-    @Inject
-    lateinit var factory: ViewModelFactory
-
-    private val viewModel: FavoritesViewModel by viewModels {
-        factory
-    }
+    private val viewModel: FavoritesViewModel by viewModels()
 
     private var _binding: FragmentFavoritesBinding? = null
     private val binding get() = _binding
@@ -44,12 +37,6 @@ class FavoritesFragment : Fragment() {
         // Inflate the layout for this fragment
         _binding = FragmentFavoritesBinding.inflate(layoutInflater, container, false)
         return binding?.root
-    }
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        (requireActivity().application as MyApplication)
-            .appComponent.inject(this)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

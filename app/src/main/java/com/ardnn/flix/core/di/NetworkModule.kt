@@ -5,6 +5,8 @@ import com.ardnn.flix.core.data.source.remote.service.PersonApiService
 import com.ardnn.flix.core.data.source.remote.service.TvShowApiService
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -12,6 +14,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
 @Module
+@InstallIn(SingletonComponent::class)
 class NetworkModule {
 
     @Provides
@@ -44,5 +47,4 @@ class NetworkModule {
             .client(client)
             .build()
     }
-
 }

@@ -5,8 +5,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import com.ardnn.flix.core.domain.model.Genre
 import com.ardnn.flix.core.domain.usecase.FlixUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
+@HiltViewModel
 class GenreViewModel @Inject constructor(
     private val flixUseCase: FlixUseCase
 ) : ViewModel() {

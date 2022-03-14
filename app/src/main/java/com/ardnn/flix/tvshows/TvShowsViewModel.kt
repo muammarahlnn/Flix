@@ -7,8 +7,10 @@ import androidx.lifecycle.asLiveData
 import com.ardnn.flix.core.data.Resource
 import com.ardnn.flix.core.domain.model.TvShow
 import com.ardnn.flix.core.domain.usecase.FlixUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
+@HiltViewModel
 class TvShowsViewModel @Inject constructor(
     private val flixUseCase: FlixUseCase
 ) : ViewModel() {

@@ -4,27 +4,21 @@ import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import com.ardnn.flix.MyApplication
 import com.ardnn.flix.R
 import com.ardnn.flix.core.util.PagedListDataSources
-import com.ardnn.flix.core.viewmodel.ViewModelFactory
 import com.ardnn.flix.databinding.ActivityGenreBinding
-import javax.inject.Inject
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class GenreActivity : AppCompatActivity() {
 
-    @Inject
-    lateinit var factory: ViewModelFactory
+    private val viewModel: GenreViewModel by viewModels()
 
-    private val viewModel: GenreViewModel by viewModels {
-        factory
-    }
     private lateinit var binding: ActivityGenreBinding
 
     private var genreType = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        (application as MyApplication).appComponent.inject(this)
         super.onCreate(savedInstanceState)
         binding = ActivityGenreBinding.inflate(layoutInflater)
         setContentView(binding.root)

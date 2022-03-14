@@ -6,8 +6,10 @@ import com.ardnn.flix.core.data.source.remote.ApiResponse
 import com.ardnn.flix.core.data.source.remote.response.CastResponse
 import com.ardnn.flix.core.domain.model.Movie
 import com.ardnn.flix.core.domain.usecase.FlixUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
+@HiltViewModel
 class MovieDetailViewModel @Inject constructor(
     private val flixUseCase: FlixUseCase
 ) : ViewModel() {
