@@ -7,3 +7,4 @@ dependencyResolutionManagement {
 }
 rootProject.name = "Flix"
 include ':app'
+include ':core'

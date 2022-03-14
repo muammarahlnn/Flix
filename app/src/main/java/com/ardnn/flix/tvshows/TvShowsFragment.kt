@@ -118,12 +118,11 @@ class TvShowsFragment : Fragment(), SingleClickListener<TvShow> {
                 showAlert(false)
             }
             is Resource.Success -> {
-                if (tvShowsResource.data != null) {
-                    showLoading(false)
-                    showAlert(false)
+                showLoading(false)
+                showAlert(false)
 
-                    val tvShows = tvShowsResource.data
-                    val pagedTvShows = PagedListDataSources.snapshot(tvShows)
+                tvShowsResource.data?.let {
+                    val pagedTvShows = PagedListDataSources.snapshot(it)
                     val adapter = TvShowsAdapter(this)
                     adapter.submitList(pagedTvShows)
                     binding?.recyclerView?.adapter = adapter

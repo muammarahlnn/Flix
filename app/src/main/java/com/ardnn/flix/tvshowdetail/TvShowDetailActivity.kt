@@ -63,11 +63,11 @@ class TvShowDetailActivity : AppCompatActivity(), View.OnClickListener,
                         showLoading(true)
                     }
                     is Resource.Success -> {
-                        if (tvShowResource.data != null) {
-                            showLoading(false)
-                            showAlert(false)
+                        showLoading(false)
+                        showAlert(false)
 
-                            tvShow = tvShowResource.data
+                        tvShowResource.data?.let {
+                            tvShow = it
                             setTvShowDetailToWidgets()
                         }
                     }

@@ -62,11 +62,11 @@ class MovieDetailActivity : AppCompatActivity(), View.OnClickListener,
                         showLoading(true)
                     }
                     is Resource.Success -> {
-                        if (movieDetailResource.data != null) {
-                            showLoading(false)
-                            showAlert(false)
+                        showLoading(false)
+                        showAlert(false)
 
-                            movie = movieDetailResource.data
+                        movieDetailResource.data?.let {
+                            movie = it
                             setMovieDetailToWidgets()
                         }
                     }

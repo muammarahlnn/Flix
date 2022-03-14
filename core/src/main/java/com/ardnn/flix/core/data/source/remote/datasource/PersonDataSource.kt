@@ -1,7 +1,7 @@
 package com.ardnn.flix.core.data.source.remote.datasource
 
 import android.util.Log
-import com.ardnn.flix.BuildConfig
+import com.ardnn.flix.core.BuildConfig
 import com.ardnn.flix.core.data.source.remote.ApiResponse
 import com.ardnn.flix.core.data.source.remote.response.PersonResponse
 import com.ardnn.flix.core.data.source.remote.service.PersonApiService

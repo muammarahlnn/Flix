@@ -1,12 +1,12 @@
 package com.ardnn.flix.core.data.source.remote.datasource
 
 import android.util.Log
-import com.ardnn.flix.BuildConfig
+import com.ardnn.flix.core.BuildConfig
 import com.ardnn.flix.core.data.source.remote.ApiResponse
 import com.ardnn.flix.core.data.source.remote.response.CastResponse
-import com.ardnn.flix.core.data.source.remote.response.MovieDetailResponse
-import com.ardnn.flix.core.data.source.remote.response.MovieResponse
-import com.ardnn.flix.core.data.source.remote.service.MovieApiService
+import com.ardnn.flix.core.data.source.remote.response.TvShowDetailResponse
+import com.ardnn.flix.core.data.source.remote.response.TvShowResponse
+import com.ardnn.flix.core.data.source.remote.service.TvShowApiService
 import com.ardnn.flix.core.util.EspressoIdlingResource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -14,19 +14,18 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
 
-class MovieDataSource @Inject constructor(
-    private val apiService: MovieApiService
-) : ApiKeyInterface, DetailInterface<MovieDetailResponse>, FilmsInterface<MovieResponse> {
+class TvShowDataSource @Inject constructor(
+    private val apiService: TvShowApiService
+) : ApiKeyInterface, DetailInterface<TvShowDetailResponse>, FilmsInterface<TvShowResponse> {
 
     override val apiKey: String
         get() = BuildConfig.API_KEY
 
-    // method to get movie detail
-    override fun getDetail(id: Int): Flow<ApiResponse<MovieDetailResponse>> {
+    override fun getDetail(id: Int): Flow<ApiResponse<TvShowDetailResponse>> {
         EspressoIdlingResource.increment()
         return flow {
             try {
-                val response = apiService.getMovieDetails(id, apiKey)
+                val response = apiService.getTvShowDetails(id, apiKey)
                 emit(ApiResponse.Success(response))
 
                 EspressoIdlingResource.decrement()
@@ -39,16 +38,16 @@ class MovieDataSource @Inject constructor(
         }.flowOn(Dispatchers.IO)
     }
 
-    // method to get now playing movies
-    override fun getFirstSectionFilms(page: Int): Flow<ApiResponse<List<MovieResponse>>> {
+    // get airing today tv shows
+    override fun getFirstSectionFilms(page: Int): Flow<ApiResponse<List<TvShowResponse>>> {
         EspressoIdlingResource.increment()
         return flow {
             try {
-                val response = apiService.getNowPlayingMovies(apiKey, page)
-                val dataArray = response.movies
+                val response = apiService.getAiringTodayTvShows(apiKey, page)
+                val dataArray = response.tvShows
                 if (!dataArray.isNullOrEmpty()) {
                     emit(ApiResponse.Success(dataArray))
-                }  else {
+                } else {
                     emit(ApiResponse.Empty)
                 }
 
@@ -62,16 +61,16 @@ class MovieDataSource @Inject constructor(
         }.flowOn(Dispatchers.IO)
     }
 
-    // method to get upcoming movies
-    override fun getSecondSectionFilms(page: Int): Flow<ApiResponse<List<MovieResponse>>> {
+    // get on the air tv shows
+    override fun getSecondSectionFilms(page: Int): Flow<ApiResponse<List<TvShowResponse>>> {
         EspressoIdlingResource.increment()
         return flow {
             try {
-                val response = apiService.getUpcomingMovies(apiKey, page)
-                val dataArray = response.movies
+                val response = apiService.getOnTheAirTvShows(apiKey, page)
+                val dataArray = response.tvShows
                 if (!dataArray.isNullOrEmpty()) {
                     emit(ApiResponse.Success(dataArray))
-                }  else {
+                } else {
                     emit(ApiResponse.Empty)
                 }
 
@@ -85,16 +84,16 @@ class MovieDataSource @Inject constructor(
         }.flowOn(Dispatchers.IO)
     }
 
-    // method to get popular movies
-    override fun getThirdSectionFilms(page: Int): Flow<ApiResponse<List<MovieResponse>>> {
+    // get popular tv shows
+    override fun getThirdSectionFilms(page: Int): Flow<ApiResponse<List<TvShowResponse>>> {
         EspressoIdlingResource.increment()
         return flow {
             try {
-                val response = apiService.getPopularMovies(apiKey, page)
-                val dataArray = response.movies
+                val response = apiService.getPopularTvShows(apiKey, page)
+                val dataArray = response.tvShows
                 if (!dataArray.isNullOrEmpty()) {
                     emit(ApiResponse.Success(dataArray))
-                }  else {
+                } else {
                     emit(ApiResponse.Empty)
                 }
 
@@ -108,16 +107,16 @@ class MovieDataSource @Inject constructor(
         }.flowOn(Dispatchers.IO)
     }
 
-    // method to get top rated movies
-    override fun getFourthSectionFilms(page: Int): Flow<ApiResponse<List<MovieResponse>>> {
+    // get top rated tv shows
+    override fun getFourthSectionFilms(page: Int): Flow<ApiResponse<List<TvShowResponse>>> {
         EspressoIdlingResource.increment()
         return flow {
             try {
-                val response = apiService.getTopRatedMovies(apiKey, page)
-                val dataArray = response.movies
+                val response = apiService.getTopRatedTvShows(apiKey, page)
+                val dataArray = response.tvShows
                 if (!dataArray.isNullOrEmpty()) {
                     emit(ApiResponse.Success(dataArray))
-                }  else {
+                } else {
                     emit(ApiResponse.Empty)
                 }
 
@@ -135,11 +134,11 @@ class MovieDataSource @Inject constructor(
         EspressoIdlingResource.increment()
         return flow {
             try {
-                val response = apiService.getMovieCredits(id, apiKey)
+                val response = apiService.getTvShowCredits(id, apiKey)
                 val dataArray = response.cast
                 if (!dataArray.isNullOrEmpty()) {
                     emit(ApiResponse.Success(dataArray))
-                }  else {
+                } else {
                     emit(ApiResponse.Empty)
                 }
 

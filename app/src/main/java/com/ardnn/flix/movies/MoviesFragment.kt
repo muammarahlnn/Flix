@@ -118,12 +118,11 @@ class MoviesFragment : Fragment(), SingleClickListener<Movie> {
                 showAlert(false)
             }
             is Resource.Success -> {
-                if (moviesResource.data != null) {
-                    showLoading(false)
-                    showAlert(false)
+                showLoading(false)
+                showAlert(false)
 
-                    val movies = moviesResource.data
-                    val pagedMovies = PagedListDataSources.snapshot(movies)
+                moviesResource.data?.let {
+                    val pagedMovies = PagedListDataSources.snapshot(it)
                     val adapter = MoviesAdapter(this)
                     adapter.submitList(pagedMovies)
                     binding?.recyclerView?.adapter = adapter
