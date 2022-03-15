@@ -12,6 +12,8 @@ import com.google.android.material.tabs.TabLayout
 
 object Helper {
 
+    private const val IMG_URL = "https://image.tmdb.org/t/p/"
+
     fun equalingEachTabWidth(tabLayout: TabLayout) {
         val slidingTab: ViewGroup = tabLayout.getChildAt(0) as ViewGroup
         for (i in 0 until tabLayout.tabCount) {
@@ -32,6 +34,12 @@ object Helper {
                 .into(imageView)
         }
     }
+
+    fun getPosterTMDB(posterUrl: String): String =
+        "${IMG_URL}w500$posterUrl"
+
+    fun getWallpaperTMDB(wallpaperUrl: String): String =
+        "${IMG_URL}w780$wallpaperUrl"
 
     fun setTextString(text: String): String =
         if (text.isEmpty()) "-" else text

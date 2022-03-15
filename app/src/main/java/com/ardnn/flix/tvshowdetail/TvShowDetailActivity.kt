@@ -101,18 +101,16 @@ class TvShowDetailActivity : AppCompatActivity(), View.OnClickListener,
             // set images
             Helper.setImageGlide(
                 this@TvShowDetailActivity,
-                tvShow.posterUrl,
+                Helper.getPosterTMDB(tvShow.posterUrl),
                 ivPoster
             )
-            ivPoster.tag = tvShow.posterUrl
-
             Helper.setImageGlide(
                 this@TvShowDetailActivity,
-                tvShow.wallpaperUrl,
+                Helper.getWallpaperTMDB(tvShow.wallpaperUrl),
                 ivWallpaper
             )
-            ivWallpaper.tag = tvShow.wallpaperUrl
 
+            // set btn favorite
             val isFavorite = tvShow.isFavorite
             binding.btnFavorite.setImageResource(
                 if (isFavorite) R.drawable.ic_favorite

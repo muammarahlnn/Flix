@@ -7,7 +7,6 @@ import com.ardnn.flix.core.data.source.local.entity.relation.GenreWithMovies
 import com.ardnn.flix.core.data.source.local.entity.relation.GenreWithTvShows
 import com.ardnn.flix.core.data.source.local.entity.relation.MovieWithGenres
 import com.ardnn.flix.core.data.source.local.entity.relation.TvShowWithGenres
-import com.ardnn.flix.core.data.source.local.ImageSizeTMDB
 import com.ardnn.flix.core.data.source.remote.response.*
 import com.ardnn.flix.core.domain.model.Genre
 import com.ardnn.flix.core.domain.model.Movie
@@ -93,8 +92,8 @@ object DataMapper {
                 runtime = it.runtime,
                 rating = it.rating,
                 popularity = it.popularity,
-                posterUrl = it.getPosterUrl(ImageSizeTMDB.W500),
-                wallpaperUrl = it.getWallpaperUrl(ImageSizeTMDB.W780),
+                posterUrl = it.posterUrl,
+                wallpaperUrl = it.wallpaperUrl,
                 isFavorite = it.isFavorite,
                 isDetailFetched = it.isDetailFetched
             )
@@ -112,8 +111,8 @@ object DataMapper {
                 runtime = it.runtime,
                 rating = it.rating,
                 popularity = it.popularity,
-                posterUrl = it.getPosterUrl(ImageSizeTMDB.W500),
-                wallpaperUrl = it.getWallpaperUrl(ImageSizeTMDB.W780),
+                posterUrl = it.posterUrl,
+                wallpaperUrl = it.wallpaperUrl,
                 numberOfEpisodes = it.numberOfEpisodes,
                 numberOfSeasons = it.numberOfSeasons,
                 isFavorite = it.isFavorite,
@@ -133,8 +132,8 @@ object DataMapper {
             runtime = movieEntity.runtime,
             rating = movieEntity.rating,
             popularity = movieEntity.popularity,
-            posterUrl = movieEntity.getPosterUrl(ImageSizeTMDB.W500),
-            wallpaperUrl = movieEntity.getWallpaperUrl(ImageSizeTMDB.W780),
+            posterUrl = movieEntity.posterUrl,
+            wallpaperUrl = movieEntity.wallpaperUrl,
             genres = genres,
             isFavorite = movieEntity.isFavorite,
             isDetailFetched = movieEntity.isDetailFetched
@@ -153,8 +152,8 @@ object DataMapper {
             runtime = tvShowEntity.runtime,
             rating = tvShowEntity.rating,
             popularity = tvShowEntity.popularity,
-            posterUrl = tvShowEntity.getPosterUrl(ImageSizeTMDB.W500),
-            wallpaperUrl = tvShowEntity.getWallpaperUrl(ImageSizeTMDB.W780),
+            posterUrl = tvShowEntity.posterUrl,
+            wallpaperUrl = tvShowEntity.wallpaperUrl,
             numberOfEpisodes = tvShowEntity.numberOfEpisodes,
             numberOfSeasons = tvShowEntity.numberOfSeasons,
             genres = genres,
@@ -192,8 +191,8 @@ object DataMapper {
         )
     }
 
-    fun mapMovieDomainToEntity(input: Movie): MovieEntity {
-        val movieEntity = MovieEntity(
+    fun mapMovieDomainToEntity(input: Movie): MovieEntity =
+        MovieEntity(
             id = input.id,
             title = input.title,
             overview = input.overview,
@@ -202,16 +201,13 @@ object DataMapper {
             rating = input.rating,
             popularity = input.popularity,
             posterUrl = input.posterUrl,
-            wallpaperUrl = input.wallpaperUrl
+            wallpaperUrl = input.wallpaperUrl,
+            isFavorite = input.isFavorite,
+            isDetailFetched = input.isDetailFetched
         )
-        movieEntity.isFavorite = input.isFavorite
-        movieEntity.isDetailFetched = input.isDetailFetched
 
-        return movieEntity
-    }
-
-    fun mapTvShowDomainToEntity(input: TvShow): TvShowEntity {
-        val tvShowEntity = TvShowEntity(
+    fun mapTvShowDomainToEntity(input: TvShow): TvShowEntity =
+        TvShowEntity(
             id = input.id,
             title = input.title,
             overview = input.overview,
@@ -224,10 +220,7 @@ object DataMapper {
             wallpaperUrl = input.wallpaperUrl,
             numberOfEpisodes = input.numberOfEpisodes,
             numberOfSeasons = input.numberOfSeasons,
+            isFavorite = input.isFavorite,
+            isDetailFetched = input.isDetailFetched
         )
-        tvShowEntity.isFavorite = input.isFavorite
-        tvShowEntity.isDetailFetched = input.isDetailFetched
-
-        return tvShowEntity
-    }
 }

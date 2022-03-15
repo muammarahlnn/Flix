@@ -100,18 +100,16 @@ class MovieDetailActivity : AppCompatActivity(), View.OnClickListener,
             // set images
             Helper.setImageGlide(
                 this@MovieDetailActivity,
-                movie.posterUrl,
+                Helper.getPosterTMDB(movie.posterUrl),
                 ivPoster
             )
-            ivPoster.tag = movie.posterUrl
-
             Helper.setImageGlide(
                 this@MovieDetailActivity,
-                movie.wallpaperUrl,
+                Helper.getWallpaperTMDB(movie.wallpaperUrl),
                 ivWallpaper
             )
-            ivWallpaper.tag = movie.wallpaperUrl
 
+            // set btn favorite
             val isFavorite = movie.isFavorite
             binding.btnFavorite.setImageResource(
                 if (isFavorite) R.drawable.ic_favorite

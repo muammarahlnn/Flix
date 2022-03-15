@@ -34,7 +34,7 @@ class TvShowsAdapter(
             with (binding) {
                 Helper.setImageGlide(
                     itemView.context,
-                    tvShow.posterUrl,
+                    Helper.getPosterTMDB(tvShow.posterUrl),
                     ivPoster
                 )
 

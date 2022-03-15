@@ -1,5 +1,6 @@
 package com.ardnn.flix.core.data
 
+import android.util.Log
 import com.ardnn.flix.core.data.source.local.LocalDataSource
 import com.ardnn.flix.core.data.source.local.entity.SectionMovieEntity
 import com.ardnn.flix.core.data.source.local.entity.SectionTvShowEntity
@@ -182,6 +183,7 @@ class FlixRepositoryImpl @Inject constructor(
             override suspend fun saveCallResult(data: MovieDetailResponse) {
                 // get and update movie detail
                 val movieEntity = DataMapper.mapMovieDetailResponseToEntity(data)
+                movieEntity.isDetailFetched = true
                 localDataSource.insertMovie(movieEntity)
 
                 data.genreList?.let {
@@ -237,6 +239,7 @@ class FlixRepositoryImpl @Inject constructor(
             override suspend fun saveCallResult(data: TvShowDetailResponse) {
                 // get and update tv show detail
                 val tvShowEntity = DataMapper.mapTvShowDetailResponseToEntity(data)
+                tvShowEntity.isDetailFetched = true
                 localDataSource.insertTvShow(tvShowEntity)
 
                 data.genreList?.let {

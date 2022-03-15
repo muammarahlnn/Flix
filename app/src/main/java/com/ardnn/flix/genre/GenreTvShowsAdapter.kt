@@ -33,7 +33,7 @@ class GenreTvShowsAdapter : PagedListAdapter<TvShow, GenreTvShowsAdapter.TvShowV
             with (binding) {
                 Helper.setImageGlide(
                     itemView.context,
-                    tvShow.posterUrl,
+                    Helper.getPosterTMDB(tvShow.posterUrl),
                     ivPoster
                 )
 

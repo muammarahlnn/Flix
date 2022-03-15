@@ -33,7 +33,7 @@ class GenreMoviesAdapter : PagedListAdapter<Movie, GenreMoviesAdapter.MovieViewH
             with (binding) {
                 Helper.setImageGlide(
                     itemView.context,
-                    movie.posterUrl,
+                    Helper.getPosterTMDB(movie.posterUrl),
                     ivPoster
                 )
 
