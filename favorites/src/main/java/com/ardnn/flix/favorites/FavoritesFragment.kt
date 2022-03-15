@@ -1,5 +1,6 @@
 package com.ardnn.flix.favorites
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -14,13 +15,20 @@ import com.ardnn.flix.core.domain.model.Movie
 import com.ardnn.flix.core.domain.model.TvShow
 import com.ardnn.flix.core.util.PagedListDataSources
 import com.ardnn.flix.databinding.FragmentFavoritesBinding
+import com.ardnn.flix.di.FavoritesModuleDependencies
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
+import dagger.hilt.android.EntryPointAccessors
+import javax.inject.Inject
 
-@AndroidEntryPoint
 class FavoritesFragment : Fragment() {
 
-    private val viewModel: FavoritesViewModel by viewModels()
+    @Inject
+    lateinit var factory: ViewModelFactory
+
+    private val viewModel: FavoritesViewModel by viewModels {
+        factory
+    }
 
     private var _binding: FragmentFavoritesBinding? = null
     private val binding get() = _binding
@@ -37,6 +45,20 @@ class FavoritesFragment : Fragment() {
         // Inflate the layout for this fragment
         _binding = FragmentFavoritesBinding.inflate(layoutInflater, container, false)
         return binding?.root
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        DaggerFavoritesComponent.builder()
+            .context(requireActivity())
+            .appDependencies(
+                EntryPointAccessors.fromApplication(
+                    requireActivity().applicationContext,
+                    FavoritesModuleDependencies::class.java
+                )
+            )
+            .build()
+            .inject(this)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

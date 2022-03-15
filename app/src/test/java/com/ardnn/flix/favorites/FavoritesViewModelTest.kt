@@ -41,12 +41,12 @@ class FavoritesViewModelTest {
     @Mock
     private lateinit var favoriteTvShowsObserver: Observer<PagedList<TvShowEntity>>
 
-    private lateinit var viewModel: FavoritesViewModel
+    private lateinit var viewModel: com.ardnn.flix.favorites.FavoritesViewModel
     private lateinit var dataDummy: DataDummy
 
     @Before
     fun setUp() {
-        viewModel = FavoritesViewModel(flixRepository)
+        viewModel = com.ardnn.flix.favorites.FavoritesViewModel(flixRepository)
 
         val context = RuntimeEnvironment.getApplication()
         dataDummy = DataDummy(context)
