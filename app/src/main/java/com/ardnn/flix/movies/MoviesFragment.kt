@@ -1,12 +1,13 @@
 package com.ardnn.flix.movies
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.*
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
+import com.ardnn.flix.MainFragmentDirections
 import com.ardnn.flix.R
 import com.ardnn.flix.core.data.Resource
 import com.ardnn.flix.core.domain.model.Movie
@@ -14,7 +15,6 @@ import com.ardnn.flix.core.util.PagedListDataSources
 import com.ardnn.flix.core.util.SingleClickListener
 import com.ardnn.flix.core.util.SortUtils
 import com.ardnn.flix.databinding.FragmentFilmsBinding
-import com.ardnn.flix.moviedetail.MovieDetailActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -160,9 +160,19 @@ class MoviesFragment : Fragment(), SingleClickListener<Movie> {
     }
 
     override fun onItemClicked(item: Movie) {
-        val toMovieDetail = Intent(requireActivity(), MovieDetailActivity::class.java)
-        toMovieDetail.putExtra(MovieDetailActivity.EXTRA_MOVIE_ID, item.id)
-        startActivity(toMovieDetail)
+        val toMovieDetail = MainFragmentDirections
+            .actionMainFragmentToMovieDetailFragment().apply {
+                id = item.id
+            }
+        findNavController().navigate(toMovieDetail)
+//        val toMovieDetail = MoviesPagerFragmentDirections
+//            .actionNavigationMoviesToMovieDetailFragment().apply {
+//                id = item.id
+//            }
+//        findNavController().navigate(toMovieDetail)
+//        val toMovieDetail = Intent(requireActivity(), MovieDetailActivity::class.java)
+//        toMovieDetail.putExtra(MovieDetailActivity.EXTRA_MOVIE_ID, item.id)
+//        startActivity(toMovieDetail)
     }
 
     companion object {

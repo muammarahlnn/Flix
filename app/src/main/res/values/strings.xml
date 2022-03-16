@@ -41,4 +41,8 @@
     <string name="iv_rating_desc">Image rating</string>
     <string name="app_logo_desc">Application logo image</string>
     <string name="title_favorites">Favorites</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
 </resources>

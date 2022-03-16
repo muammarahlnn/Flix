@@ -14,7 +14,7 @@ class MovieDetailViewModel @Inject constructor(
     private val flixUseCase: FlixUseCase
 ) : ViewModel() {
 
-    val movieId = MutableLiveData<Int>()
+    private val movieId = MutableLiveData<Int>()
 
     var movie: LiveData<Resource<Movie>> =
         Transformations.switchMap(movieId) {

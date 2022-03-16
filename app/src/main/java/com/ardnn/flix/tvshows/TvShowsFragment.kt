@@ -1,12 +1,13 @@
 package com.ardnn.flix.tvshows
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.*
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
+import com.ardnn.flix.MainFragmentDirections
 import com.ardnn.flix.R
 import com.ardnn.flix.core.data.Resource
 import com.ardnn.flix.core.domain.model.TvShow
@@ -14,12 +15,10 @@ import com.ardnn.flix.core.util.PagedListDataSources
 import com.ardnn.flix.core.util.SingleClickListener
 import com.ardnn.flix.core.util.SortUtils
 import com.ardnn.flix.databinding.FragmentFilmsBinding
-import com.ardnn.flix.tvshowdetail.TvShowDetailActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class TvShowsFragment : Fragment(), SingleClickListener<TvShow> {
-
 
     private val viewModel: TvShowsViewModel by viewModels()
 
@@ -159,9 +158,19 @@ class TvShowsFragment : Fragment(), SingleClickListener<TvShow> {
     }
 
     override fun onItemClicked(item: TvShow) {
-        val toTvShowDetail = Intent(requireActivity(), TvShowDetailActivity::class.java)
-        toTvShowDetail.putExtra(TvShowDetailActivity.EXTRA_TV_SHOW_ID, item.id)
-        startActivity(toTvShowDetail)
+        val toTvShowDetail = MainFragmentDirections
+            .actionMainFragmentToTvShowDetailFragment().apply {
+                id = item.id
+            }
+        findNavController().navigate(toTvShowDetail)
+//        val toTvShowDetail = TvShowsPagerFragmentDirections
+//            .actionNavigationTvShowsToTvShowDetailActivity().apply {
+//                id = item.id
+//            }
+//        findNavController().navigate(toTvShowDetail)
+//        val toTvShowDetail = Intent(requireActivity(), TvShowDetailActivity::class.java)
+//        toTvShowDetail.putExtra(TvShowDetailActivity.EXTRA_TV_SHOW_ID, item.id)
+//        startActivity(toTvShowDetail)
     }
 
     companion object {

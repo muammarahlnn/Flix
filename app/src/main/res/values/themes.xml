@@ -31,5 +31,11 @@
         <item name="android:textColorSecondary">@color/gray_primary</item>
         <item name="android:textColor">@color/gray_primary</item>
         <item name="android:background">@color/black_primary</item>
-    </style>`
+    </style>
+
+    <style name="ThemeOverlay.Flix.FullscreenContainer" parent="">
+        <item name="fullscreenBackgroundColor">@color/light_blue_600</item>
+        <item name="fullscreenTextColor">@color/light_blue_A200</item>
+    </style>
+    `
 </resources>

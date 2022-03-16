@@ -1,15 +1,14 @@
 package com.ardnn.flix.genre
 
-import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.navigation.findNavController
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.ardnn.flix.core.domain.model.Movie
 import com.ardnn.flix.core.util.Helper
 import com.ardnn.flix.databinding.ItemFilmBinding
-import com.ardnn.flix.moviedetail.MovieDetailActivity
 
 class GenreMoviesAdapter : PagedListAdapter<Movie, GenreMoviesAdapter.MovieViewHolder>(DIFF_CALLBACK) {
 
@@ -42,10 +41,12 @@ class GenreMoviesAdapter : PagedListAdapter<Movie, GenreMoviesAdapter.MovieViewH
                 tvRating.text = Helper.setTextFloat(movie.rating)
             }
 
-            itemView.setOnClickListener {
-                val toMovieDetail = Intent(itemView.context, MovieDetailActivity::class.java)
-                toMovieDetail.putExtra(MovieDetailActivity.EXTRA_MOVIE_ID, movie.id)
-                itemView.context.startActivity(toMovieDetail)
+            itemView.setOnClickListener { view ->
+                val toMovieDetail = GenreFragmentDirections
+                    .actionGenreFragmentToMovieDetailFragment().apply {
+                        id = movie.id
+                    }
+                view.findNavController().navigate(toMovieDetail)
             }
         }
     }
