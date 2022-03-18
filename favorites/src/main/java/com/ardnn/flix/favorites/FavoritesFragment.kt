@@ -170,39 +170,25 @@ class FavoritesFragment : Fragment() {
         override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
             if (view != null) {
                 val swipedPosition = viewHolder.absoluteAdapterPosition
-                val snackBar = Snackbar.make(
-                    view as View,
-                    R.string.message_remove_favorite,
-                    Snackbar.LENGTH_LONG)
-
                 when (section) {
                     0 -> {
                         val movieDetail = favoriteMoviesAdapter.getSwipedData(swipedPosition)
                         movieDetail?.let {
                             viewModel.setIsFavoriteMovie(it)
                         }
-
-                        snackBar.setAction(R.string.undo) {
-                            movieDetail?.let {
-                                viewModel.setIsFavoriteMovie(it)
-                            }
-                        }
-                        snackBar.show()
                     }
                     1 -> {
                         val tvShowDetail = favoriteTvShowsAdapter.getSwipedData(swipedPosition)
                         tvShowDetail?.let {
                             viewModel.setIsFavoriteTvShow(it)
                         }
-
-                        snackBar.setAction(R.string.undo) {
-                            tvShowDetail?.let {
-                                viewModel.setIsFavoriteTvShow(it)
-                            }
-                        }
-                        snackBar.show()
                     }
                 }
+                Snackbar.make(
+                    view as View,
+                    R.string.message_remove_favorite,
+                    Snackbar.LENGTH_LONG
+                ).show()
             }
         }
 
