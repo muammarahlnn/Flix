@@ -3,7 +3,7 @@ package com.ardnn.flix.moviedetail
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.ardnn.flix.core.domain.model.Genre
+import com.ardnn.flix.core.domain.genre.model.Genre
 import com.ardnn.flix.core.util.Helper
 import com.ardnn.flix.core.util.SingleClickListener
 import com.ardnn.flix.databinding.ItemGenreBinding

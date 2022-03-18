@@ -2,28 +2,21 @@ package com.ardnn.flix.tvshowdetail
 
 import androidx.lifecycle.*
 import com.ardnn.flix.core.data.Resource
-import com.ardnn.flix.core.data.source.remote.ApiResponse
-import com.ardnn.flix.core.data.source.remote.response.CastResponse
-import com.ardnn.flix.core.domain.model.TvShow
-import com.ardnn.flix.core.domain.usecase.FlixUseCase
+import com.ardnn.flix.core.domain.tvshowdetail.model.TvShowDetail
+import com.ardnn.flix.core.domain.tvshowdetail.usecase.TvShowDetailUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
 class TvShowDetailViewModel @Inject constructor(
-    private val flixUseCase: FlixUseCase
+    private val tvShowDetailUseCase: TvShowDetailUseCase
 ) : ViewModel() {
 
     private val tvShowId = MutableLiveData<Int>()
 
-    var tvShow: LiveData<Resource<TvShow>> =
+    var tvShow: LiveData<Resource<TvShowDetail>> =
         Transformations.switchMap(tvShowId) {
-            flixUseCase.getTvShowWithGenres(it).asLiveData()
-        }
-
-    var tvShowCredits: LiveData<ApiResponse<List<CastResponse>>> =
-        Transformations.switchMap(tvShowId) {
-            flixUseCase.getTvShowCredits(it).asLiveData()
+            tvShowDetailUseCase.getTvShowDetail(it).asLiveData()
         }
 
     private val _isSynopsisExtended = MutableLiveData(false)
@@ -43,7 +36,7 @@ class TvShowDetailViewModel @Inject constructor(
             val tvShow = tvShowResource.data
             if (tvShow != null) {
                 val newState = !tvShow.isFavorite
-                flixUseCase.setIsFavoriteTvShow(tvShow, newState)
+                tvShowDetailUseCase.setIsFavoriteTvShow(tvShow, newState)
             }
         }
     }

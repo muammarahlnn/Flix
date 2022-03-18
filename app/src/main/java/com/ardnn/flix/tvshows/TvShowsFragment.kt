@@ -10,7 +10,7 @@ import androidx.navigation.fragment.findNavController
 import com.ardnn.flix.MainFragmentDirections
 import com.ardnn.flix.R
 import com.ardnn.flix.core.data.Resource
-import com.ardnn.flix.core.domain.model.TvShow
+import com.ardnn.flix.core.domain.tvshows.model.TvShow
 import com.ardnn.flix.core.util.PagedListDataSources
 import com.ardnn.flix.core.util.SingleClickListener
 import com.ardnn.flix.core.util.SortUtils
@@ -94,18 +94,18 @@ class TvShowsFragment : Fragment(), SingleClickListener<TvShow> {
         }
 
         viewModel.setTvShowsSort(sort)
-        viewModel.getSectionWithTvShows(page, sort).observe(viewLifecycleOwner, { sectionWithTvShowsResource ->
-            if (sectionWithTvShowsResource != null) {
-                setTvShows(sectionWithTvShowsResource)
+        viewModel.getTvShows(page, sort).observe(viewLifecycleOwner, { tvShowsResource ->
+            if (tvShowsResource != null) {
+                setTvShows(tvShowsResource)
             }
         })
         return super.onOptionsItemSelected(item)
     }
 
     private fun subscribe() {
-        viewModel.getSectionWithTvShows(page, SortUtils.DEFAULT).observe(viewLifecycleOwner, { sectionWithTvShowsResource ->
-            if (sectionWithTvShowsResource != null) {
-                setTvShows(sectionWithTvShowsResource)
+        viewModel.getTvShows(page, SortUtils.DEFAULT).observe(viewLifecycleOwner, { tvShowsResource ->
+            if (tvShowsResource != null) {
+                setTvShows(tvShowsResource)
             }
         })
     }
@@ -163,14 +163,6 @@ class TvShowsFragment : Fragment(), SingleClickListener<TvShow> {
                 id = item.id
             }
         findNavController().navigate(toTvShowDetail)
-//        val toTvShowDetail = TvShowsPagerFragmentDirections
-//            .actionNavigationTvShowsToTvShowDetailActivity().apply {
-//                id = item.id
-//            }
-//        findNavController().navigate(toTvShowDetail)
-//        val toTvShowDetail = Intent(requireActivity(), TvShowDetailActivity::class.java)
-//        toTvShowDetail.putExtra(TvShowDetailActivity.EXTRA_TV_SHOW_ID, item.id)
-//        startActivity(toTvShowDetail)
     }
 
     companion object {

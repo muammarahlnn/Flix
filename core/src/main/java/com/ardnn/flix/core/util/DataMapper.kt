@@ -8,14 +8,18 @@ import com.ardnn.flix.core.data.source.local.entity.relation.GenreWithTvShows
 import com.ardnn.flix.core.data.source.local.entity.relation.MovieWithGenres
 import com.ardnn.flix.core.data.source.local.entity.relation.TvShowWithGenres
 import com.ardnn.flix.core.data.source.remote.response.*
-import com.ardnn.flix.core.domain.model.Genre
-import com.ardnn.flix.core.domain.model.Movie
-import com.ardnn.flix.core.domain.model.TvShow
+import com.ardnn.flix.core.domain.genre.model.Genre
+import com.ardnn.flix.core.domain.genre.model.GenreMovies
+import com.ardnn.flix.core.domain.genre.model.GenreTvShows
+import com.ardnn.flix.core.domain.moviedetail.model.MovieDetail
+import com.ardnn.flix.core.domain.movies.model.Movie
+import com.ardnn.flix.core.domain.tvshowdetail.model.TvShowDetail
+import com.ardnn.flix.core.domain.tvshows.model.TvShow
 
 object DataMapper {
 
-    fun mapMovieResponsesToEntities(input: List<MovieResponse>): List<MovieEntity> {
-        return input.map {
+    fun mapMovieResponsesToEntities(input: List<MovieResponse>): List<MovieEntity> =
+        input.map {
             MovieEntity(
                 id = it.id,
                 title = it.title ?: "",
@@ -25,10 +29,9 @@ object DataMapper {
                 popularity = it.popularity ?: 0f
             )
         }
-    }
 
-    fun mapMovieDetailResponseToEntity(input: MovieDetailResponse): MovieEntity {
-        return MovieEntity(
+    fun mapMovieDetailResponseToEntity(input: MovieDetailResponse): MovieEntity =
+        MovieEntity(
             id = input.id,
             title = input.title ?: "",
             overview = input.overview ?: "",
@@ -39,10 +42,9 @@ object DataMapper {
             posterUrl = input.posterUrl ?: "",
             wallpaperUrl = input.wallpaperUrl ?: "",
         )
-    }
 
-    fun mapTvShowDetailResponseToEntity(input: TvShowDetailResponse): TvShowEntity {
-        return TvShowEntity(
+    fun mapTvShowDetailResponseToEntity(input: TvShowDetailResponse): TvShowEntity =
+        TvShowEntity(
             id = input.id,
             title = input.title ?: "",
             overview = input.overview ?: "",
@@ -58,10 +60,9 @@ object DataMapper {
             numberOfEpisodes = input.numberOfEpisodes ?: 0,
             numberOfSeasons = input.numberOfSeasons ?: 0,
         )
-    }
 
-    fun mapTvShowResponsesToEntities(input: List<TvShowResponse>): List<TvShowEntity> {
-        return input.map {
+    fun mapTvShowResponsesToEntities(input: List<TvShowResponse>): List<TvShowEntity> =
+        input.map {
             TvShowEntity(
                 id = it.id,
                 title = it.title ?: "",
@@ -71,20 +72,29 @@ object DataMapper {
                 popularity = it.popularity ?: 0f
             )
         }
-    }
 
-    fun mapGenreResponsesToEntities(input: List<GenreResponse>): List<GenreEntity> {
-        return input.map {
+    fun mapGenreResponsesToEntities(input: List<GenreResponse>): List<GenreEntity> =
+        input.map {
             GenreEntity(
                 id = it.id,
                 name = it.name ?: ""
             )
         }
-    }
 
-    fun mapMovieEntitiesToDomain(input: List<MovieEntity>): List<Movie> {
-        return input.map {
+    fun mapMovieEntitiesToDomain(input: List<MovieEntity>): List<Movie> =
+        input.map {
             Movie(
+                id = it.id,
+                title = it.title,
+                releaseDate = it.releaseDate,
+                rating = it.rating,
+                posterUrl = it.posterUrl,
+            )
+        }
+
+    fun mapMovieEntitiesToMovieDetailDomain(input: List<MovieEntity>): List<MovieDetail> =
+        input.map {
+            MovieDetail(
                 id = it.id,
                 title = it.title,
                 overview = it.overview,
@@ -95,14 +105,24 @@ object DataMapper {
                 posterUrl = it.posterUrl,
                 wallpaperUrl = it.wallpaperUrl,
                 isFavorite = it.isFavorite,
-                isDetailFetched = it.isDetailFetched
+                isDetailFetched = it.isDetailFetched,
             )
         }
-    }
 
-    fun mapTvShowEntitiesToDomain(input: List<TvShowEntity>): List<TvShow> {
-        return input.map {
+    fun mapTvShowEntitiesToDomain(input: List<TvShowEntity>): List<TvShow> =
+        input.map {
             TvShow(
+                id = it.id,
+                title = it.title,
+                firstAirDate = it.firstAirDate,
+                rating = it.rating,
+                posterUrl = it.posterUrl,
+            )
+        }
+
+    fun mapTvShowEntitiesToTvShowDetailDomain(input: List<TvShowEntity>): List<TvShowDetail> =
+        input.map {
+            TvShowDetail(
                 id = it.id,
                 title = it.title,
                 overview = it.overview,
@@ -116,15 +136,14 @@ object DataMapper {
                 numberOfEpisodes = it.numberOfEpisodes,
                 numberOfSeasons = it.numberOfSeasons,
                 isFavorite = it.isFavorite,
-                isDetailFetched = it.isDetailFetched
+                isDetailFetched = it.isDetailFetched,
             )
         }
-    }
 
-    fun mapMovieWithGenresEntityToDomain(input: MovieWithGenres): Movie {
+    fun mapMovieWithGenresEntityToDomain(input: MovieWithGenres): MovieDetail {
         val movieEntity = input.movie
         val genres = mapGenreEntitiesToDomain(input.genres)
-        return Movie(
+        return MovieDetail(
             id = movieEntity.id,
             title = movieEntity.title,
             overview = movieEntity.overview,
@@ -136,14 +155,14 @@ object DataMapper {
             wallpaperUrl = movieEntity.wallpaperUrl,
             genres = genres,
             isFavorite = movieEntity.isFavorite,
-            isDetailFetched = movieEntity.isDetailFetched
+            isDetailFetched = movieEntity.isDetailFetched,
         )
     }
 
-    fun mapTvShowWithGenresEntityToDomain(input: TvShowWithGenres): TvShow {
+    fun mapTvShowWithGenresEntityToDomain(input: TvShowWithGenres): TvShowDetail {
         val tvShowEntity = input.tvShow
         val genres = mapGenreEntitiesToDomain(input.genres)
-        return TvShow(
+        return TvShowDetail(
             id = tvShowEntity.id,
             title = tvShowEntity.title,
             overview = tvShowEntity.overview,
@@ -158,40 +177,39 @@ object DataMapper {
             numberOfSeasons = tvShowEntity.numberOfSeasons,
             genres = genres,
             isFavorite = tvShowEntity.isFavorite,
-            isDetailFetched = tvShowEntity.isDetailFetched
+            isDetailFetched = tvShowEntity.isDetailFetched,
         )
     }
 
-    fun mapGenreEntitiesToDomain(input: List<GenreEntity>): List<Genre> {
-        return input.map {
+    private fun mapGenreEntitiesToDomain(input: List<GenreEntity>): List<Genre> =
+        input.map {
             Genre(
                 id = it.id,
                 name = it.name
             )
         }
-    }
 
-    fun mapGenreWithMoviesEntityToDomain(input: GenreWithMovies): Genre {
+    fun mapGenreWithMoviesEntityToDomain(input: GenreWithMovies): GenreMovies {
         val genreEntity = input.genre
         val movies = mapMovieEntitiesToDomain(input.movies)
-        return Genre(
+        return GenreMovies(
             id = genreEntity.id,
             name = genreEntity.name,
             movies = movies
         )
     }
 
-    fun mapGenreWithTvShowsEntityToDomain(input: GenreWithTvShows): Genre {
+    fun mapGenreWithTvShowsEntityToDomain(input: GenreWithTvShows): GenreTvShows {
         val genreEntity = input.genre
         val tvShows = mapTvShowEntitiesToDomain(input.tvShows)
-        return Genre(
+        return GenreTvShows(
             id = genreEntity.id,
             name = genreEntity.name,
             tvShows = tvShows
         )
     }
 
-    fun mapMovieDomainToEntity(input: Movie): MovieEntity =
+    fun mapMovieDetailDomainToEntity(input: MovieDetail): MovieEntity =
         MovieEntity(
             id = input.id,
             title = input.title,
@@ -206,7 +224,7 @@ object DataMapper {
             isDetailFetched = input.isDetailFetched
         )
 
-    fun mapTvShowDomainToEntity(input: TvShow): TvShowEntity =
+    fun mapTvShowDetailDomainToEntity(input: TvShowDetail): TvShowEntity =
         TvShowEntity(
             id = input.id,
             title = input.title,

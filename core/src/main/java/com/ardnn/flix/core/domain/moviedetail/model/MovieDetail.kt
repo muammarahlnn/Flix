@@ -1,18 +1,17 @@
-package com.ardnn.flix.core.domain.model
+package com.ardnn.flix.core.domain.moviedetail.model
 
-data class TvShow(
+import com.ardnn.flix.core.domain.genre.model.Genre
+
+data class MovieDetail(
     val id: Int,
     var title: String = "",
     var overview: String = "",
-    var firstAirDate: String = "",
-    var lastAirDate: String = "",
+    var releaseDate: String = "",
     var runtime: Int = 0,
     var rating: Float = 0f,
     var popularity: Float = 0f,
     var posterUrl: String = "",
     var wallpaperUrl: String = "",
-    var numberOfEpisodes: Int = 0,
-    var numberOfSeasons: Int = 0,
     var genres: List<Genre> = listOf(),
     var isFavorite: Boolean = false,
     var isDetailFetched: Boolean = false

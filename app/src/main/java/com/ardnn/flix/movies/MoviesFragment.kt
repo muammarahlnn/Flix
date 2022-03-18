@@ -10,7 +10,7 @@ import androidx.navigation.fragment.findNavController
 import com.ardnn.flix.MainFragmentDirections
 import com.ardnn.flix.R
 import com.ardnn.flix.core.data.Resource
-import com.ardnn.flix.core.domain.model.Movie
+import com.ardnn.flix.core.domain.movies.model.Movie
 import com.ardnn.flix.core.util.PagedListDataSources
 import com.ardnn.flix.core.util.SingleClickListener
 import com.ardnn.flix.core.util.SortUtils
@@ -93,7 +93,7 @@ class MoviesFragment : Fragment(), SingleClickListener<Movie> {
         }
 
         viewModel.setMoviesSort(sort)
-        viewModel.getSectionWithMovies(page, sort).observe(viewLifecycleOwner, { moviesResource ->
+        viewModel.getMovies(page, sort).observe(viewLifecycleOwner, { moviesResource ->
             if (moviesResource != null) {
                 setMovies(moviesResource)
             }
@@ -104,9 +104,9 @@ class MoviesFragment : Fragment(), SingleClickListener<Movie> {
     }
 
     private fun subscribe() {
-        viewModel.getSectionWithMovies(page, SortUtils.DEFAULT).observe(viewLifecycleOwner, { sectionWithMoviesResource ->
-            if (sectionWithMoviesResource != null) {
-                setMovies(sectionWithMoviesResource)
+        viewModel.getMovies(page, SortUtils.DEFAULT).observe(viewLifecycleOwner, { moviesResource ->
+            if (moviesResource != null) {
+                setMovies(moviesResource)
             }
         })
     }
@@ -165,14 +165,6 @@ class MoviesFragment : Fragment(), SingleClickListener<Movie> {
                 id = item.id
             }
         findNavController().navigate(toMovieDetail)
-//        val toMovieDetail = MoviesPagerFragmentDirections
-//            .actionNavigationMoviesToMovieDetailFragment().apply {
-//                id = item.id
-//            }
-//        findNavController().navigate(toMovieDetail)
-//        val toMovieDetail = Intent(requireActivity(), MovieDetailActivity::class.java)
-//        toMovieDetail.putExtra(MovieDetailActivity.EXTRA_MOVIE_ID, item.id)
-//        startActivity(toMovieDetail)
     }
 
     companion object {

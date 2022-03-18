@@ -12,8 +12,8 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ardnn.flix.R
 import com.ardnn.flix.core.data.Resource
-import com.ardnn.flix.core.domain.model.Genre
-import com.ardnn.flix.core.domain.model.Movie
+import com.ardnn.flix.core.domain.genre.model.Genre
+import com.ardnn.flix.core.domain.moviedetail.model.MovieDetail
 import com.ardnn.flix.core.util.Helper
 import com.ardnn.flix.core.util.SingleClickListener
 import com.ardnn.flix.databinding.FragmentMovieDetailBinding
@@ -28,7 +28,7 @@ class MovieDetailFragment : Fragment(), View.OnClickListener, SingleClickListene
 
     private val binding get() = _binding
 
-    private lateinit var movie: Movie
+    private lateinit var movie: MovieDetail
 
     private var isSynopsisExtended = false
 

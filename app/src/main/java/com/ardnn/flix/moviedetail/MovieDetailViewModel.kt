@@ -2,28 +2,21 @@ package com.ardnn.flix.moviedetail
 
 import androidx.lifecycle.*
 import com.ardnn.flix.core.data.Resource
-import com.ardnn.flix.core.data.source.remote.ApiResponse
-import com.ardnn.flix.core.data.source.remote.response.CastResponse
-import com.ardnn.flix.core.domain.model.Movie
-import com.ardnn.flix.core.domain.usecase.FlixUseCase
+import com.ardnn.flix.core.domain.moviedetail.model.MovieDetail
+import com.ardnn.flix.core.domain.moviedetail.usecase.MovieDetailUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
 class MovieDetailViewModel @Inject constructor(
-    private val flixUseCase: FlixUseCase
+    private val movieDetailUseCase: MovieDetailUseCase
 ) : ViewModel() {
 
     private val movieId = MutableLiveData<Int>()
 
-    var movie: LiveData<Resource<Movie>> =
+    var movie: LiveData<Resource<MovieDetail>> =
         Transformations.switchMap(movieId) {
-            flixUseCase.getMovieWithGenres(it).asLiveData()
-        }
-
-    var movieCredits: LiveData<ApiResponse<List<CastResponse>>> =
-        Transformations.switchMap(movieId) {
-            flixUseCase.getMovieCredits(it).asLiveData()
+            movieDetailUseCase.getMovieDetail(it).asLiveData()
         }
 
     private val _isSynopsisExtended = MutableLiveData(false)
@@ -43,7 +36,7 @@ class MovieDetailViewModel @Inject constructor(
             val movie = movieResource.data
             if (movie != null) {
                 val newState = !movie.isFavorite
-                flixUseCase.setIsFavoriteMovie(movie, newState)
+                movieDetailUseCase.setIsFavoriteMovie(movie, newState)
             }
         }
     }

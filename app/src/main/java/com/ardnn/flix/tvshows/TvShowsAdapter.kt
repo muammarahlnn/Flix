@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.ardnn.flix.core.domain.model.TvShow
+import com.ardnn.flix.core.domain.tvshows.model.TvShow
 import com.ardnn.flix.core.util.Helper
 import com.ardnn.flix.core.util.SingleClickListener
 import com.ardnn.flix.databinding.ItemFilmBinding

@@ -12,8 +12,8 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ardnn.flix.R
 import com.ardnn.flix.core.data.Resource
-import com.ardnn.flix.core.domain.model.Genre
-import com.ardnn.flix.core.domain.model.TvShow
+import com.ardnn.flix.core.domain.genre.model.Genre
+import com.ardnn.flix.core.domain.tvshowdetail.model.TvShowDetail
 import com.ardnn.flix.core.util.Helper
 import com.ardnn.flix.core.util.SingleClickListener
 import com.ardnn.flix.databinding.FragmentTvShowDetailBinding
@@ -29,7 +29,7 @@ class TvShowDetailFragment : Fragment(), View.OnClickListener, SingleClickListen
 
     private val binding get() = _binding
 
-    private lateinit var tvShow: TvShow
+    private lateinit var tvShow: TvShowDetail
 
     private var isSynopsisExtended = false
 

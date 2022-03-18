@@ -6,11 +6,14 @@ import androidx.navigation.findNavController
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.ardnn.flix.core.domain.model.TvShow
+import com.ardnn.flix.MainFragmentDirections
+import com.ardnn.flix.core.domain.tvshowdetail.model.TvShowDetail
 import com.ardnn.flix.core.util.Helper
 import com.ardnn.flix.databinding.ItemFavoriteBinding
 
-class FavoriteTvShowsAdapter : PagedListAdapter<TvShow, FavoriteTvShowsAdapter.TvShowViewHolder>(DIFF_CALLBACK) {
+class FavoriteTvShowsAdapter : PagedListAdapter<TvShowDetail, FavoriteTvShowsAdapter.TvShowViewHolder>(DIFF_CALLBACK) {
+
+    var onItemClick: ((TvShowDetail) -> Unit)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TvShowViewHolder {
         val binding = ItemFavoriteBinding
@@ -25,13 +28,13 @@ class FavoriteTvShowsAdapter : PagedListAdapter<TvShow, FavoriteTvShowsAdapter.T
         }
     }
 
-    fun getSwipedData(swipedPosition: Int): TvShow? =
+    fun getSwipedData(swipedPosition: Int): TvShowDetail? =
         getItem(swipedPosition)
 
-    class TvShowViewHolder(private val binding: ItemFavoriteBinding) :
+    inner class TvShowViewHolder(private val binding: ItemFavoriteBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun onBind(tvShow: TvShow) {
+        fun onBind(tvShow: TvShowDetail) {
             with (binding) {
                 Helper.setImageGlide(
                     itemView.context,
@@ -42,31 +45,27 @@ class FavoriteTvShowsAdapter : PagedListAdapter<TvShow, FavoriteTvShowsAdapter.T
                 tvTitle.text = Helper.setTextString(tvShow.title)
                 tvYear.text = Helper.setTextYear(tvShow.firstAirDate)
                 tvRating.text = Helper.setTextFloat(tvShow.rating)
-            }
 
-            // click listener
-//            itemView.setOnClickListener { view ->
-//                val toTvShowDetail = FavoritesPagerFragmentDirections
-//                    .actionNavigationFavoritesToTvShowDetailActivity().apply {
-//                        tvShowId = tvShow.id
-//                    }
-//                view.findNavController().navigate(toTvShowDetail)
-//            }
+                // click listener
+                root.setOnClickListener {
+                    onItemClick?.invoke(tvShow)
+                }
+            }
         }
     }
 
     companion object {
-        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<TvShow>() {
+        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<TvShowDetail>() {
             override fun areItemsTheSame(
-                oldItem: TvShow,
-                newItem: TvShow
+                oldItem: TvShowDetail,
+                newItem: TvShowDetail
             ): Boolean {
                 return oldItem.id == newItem.id
             }
 
             override fun areContentsTheSame(
-                oldItem: TvShow,
-                newItem: TvShow
+                oldItem: TvShowDetail,
+                newItem: TvShowDetail
             ): Boolean {
                 return oldItem == newItem
             }

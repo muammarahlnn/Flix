@@ -7,17 +7,18 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.ardnn.flix.MainFragmentDirections
 import com.ardnn.flix.R
-import com.ardnn.flix.core.domain.model.Movie
-import com.ardnn.flix.core.domain.model.TvShow
+import com.ardnn.flix.core.domain.moviedetail.model.MovieDetail
+import com.ardnn.flix.core.domain.tvshowdetail.model.TvShowDetail
 import com.ardnn.flix.core.util.PagedListDataSources
 import com.ardnn.flix.databinding.FragmentFavoritesBinding
 import com.ardnn.flix.di.FavoritesModuleDependencies
 import com.google.android.material.snackbar.Snackbar
-import dagger.hilt.android.AndroidEntryPoint
 import dagger.hilt.android.EntryPointAccessors
 import javax.inject.Inject
 
@@ -97,21 +98,43 @@ class FavoritesFragment : Fragment() {
         }
     }
 
-    private fun setFavoriteMovies(favoriteMovies: List<Movie>) {
+    private fun setFavoriteMovies(favoriteMovies: List<MovieDetail>) {
+        // convert list to paged list
         val pagedFavoriteMovies = PagedListDataSources.snapshot(favoriteMovies)
+
+        // setup adapter
         favoriteMoviesAdapter = FavoriteMoviesAdapter()
+        favoriteMoviesAdapter.onItemClick = { selectedData ->
+            val toMovieDetail = MainFragmentDirections
+                .actionMainFragmentToMovieDetailFragment().apply {
+                    id = selectedData.id
+                }
+            findNavController().navigate(toMovieDetail)
+        }
         favoriteMoviesAdapter.submitList(pagedFavoriteMovies)
         binding?.recyclerView?.adapter = favoriteMoviesAdapter
 
+        // show alert if favorite movies is empty
         showAlert(favoriteMovies.isEmpty(), getString(R.string.movies))
     }
 
-    private fun setFavoriteTvShows(favoriteTvShows: List<TvShow>) {
+    private fun setFavoriteTvShows(favoriteTvShows: List<TvShowDetail>) {
+        // convert list to paged list
         val pagedFavoriteTvShows = PagedListDataSources.snapshot(favoriteTvShows)
+
+        // setup adapter
         favoriteTvShowsAdapter = FavoriteTvShowsAdapter()
+        favoriteTvShowsAdapter.onItemClick = { selectedData ->
+            val toTvShowDetail = MainFragmentDirections
+                .actionMainFragmentToTvShowDetailFragment().apply {
+                    id = selectedData.id
+                }
+            findNavController().navigate(toTvShowDetail)
+        }
         favoriteTvShowsAdapter.submitList(pagedFavoriteTvShows)
         binding?.recyclerView?.adapter = favoriteTvShowsAdapter
 
+        // show alert if favorite tv shows is empty
         showAlert(favoriteTvShows.isEmpty(), getString(R.string.tv_shows))
     }
 

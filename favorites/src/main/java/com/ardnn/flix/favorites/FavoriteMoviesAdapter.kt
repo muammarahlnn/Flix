@@ -6,11 +6,14 @@ import androidx.navigation.findNavController
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.ardnn.flix.core.domain.model.Movie
+import com.ardnn.flix.MainFragmentDirections
+import com.ardnn.flix.core.domain.moviedetail.model.MovieDetail
 import com.ardnn.flix.core.util.Helper
 import com.ardnn.flix.databinding.ItemFavoriteBinding
 
-class FavoriteMoviesAdapter : PagedListAdapter<Movie, FavoriteMoviesAdapter.MovieViewHolder>(DIFF_CALLBACK) {
+class FavoriteMoviesAdapter : PagedListAdapter<MovieDetail, FavoriteMoviesAdapter.MovieViewHolder>(DIFF_CALLBACK) {
+
+    var onItemClick: ((MovieDetail) -> Unit)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
         val binding = ItemFavoriteBinding
@@ -25,14 +28,13 @@ class FavoriteMoviesAdapter : PagedListAdapter<Movie, FavoriteMoviesAdapter.Movi
         }
     }
 
-    fun getSwipedData(swipedPosition: Int): Movie? =
+    fun getSwipedData(swipedPosition: Int): MovieDetail? =
         getItem(swipedPosition)
 
-
-    class MovieViewHolder(private val binding: ItemFavoriteBinding) :
+    inner class MovieViewHolder(private val binding: ItemFavoriteBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun onBind(movie: Movie) {
+        fun onBind(movie: MovieDetail) {
             with (binding) {
                 Helper.setImageGlide(
                     itemView.context,
@@ -43,31 +45,27 @@ class FavoriteMoviesAdapter : PagedListAdapter<Movie, FavoriteMoviesAdapter.Movi
                 tvTitle.text = Helper.setTextString(movie.title)
                 tvYear.text = Helper.setTextYear(movie.releaseDate)
                 tvRating.text = Helper.setTextFloat(movie.rating)
-            }
 
-            // click listener
-//            itemView.setOnClickListener { view ->
-//                val toMovieDetail = FavoritesPagerFragmentDirections
-//                    .actionNavigationFavoritesToMovieDetailActivity().apply {
-//                        movieId = movie.id
-//                    }
-//                view.findNavController().navigate(toMovieDetail)
-//            }
+                // click listener
+                root.setOnClickListener {
+                    onItemClick?.invoke(movie)
+                }
+            }
         }
     }
 
     companion object {
-        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<Movie>() {
+        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<MovieDetail>() {
             override fun areItemsTheSame(
-                oldItem: Movie,
-                newItem: Movie
+                oldItem: MovieDetail,
+                newItem: MovieDetail
             ): Boolean {
                 return oldItem.id == newItem.id
             }
 
             override fun areContentsTheSame(
-                oldItem: Movie,
-                newItem: Movie
+                oldItem: MovieDetail,
+                newItem: MovieDetail
             ): Boolean {
                 return oldItem == newItem
             }
