@@ -1,4 +1,4 @@
-package com.ardnn.flix.core.data.source.local.room
+package com.ardnn.flix.core.data.source.local.room.dao
 
 import androidx.room.*
 import androidx.sqlite.db.SupportSQLiteQuery

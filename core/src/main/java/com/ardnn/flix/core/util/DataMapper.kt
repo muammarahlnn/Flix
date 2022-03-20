@@ -1,5 +1,6 @@
 package com.ardnn.flix.core.util
 
+import com.ardnn.flix.core.data.source.local.entity.CastEntity
 import com.ardnn.flix.core.data.source.local.entity.GenreEntity
 import com.ardnn.flix.core.data.source.local.entity.MovieEntity
 import com.ardnn.flix.core.data.source.local.entity.TvShowEntity
@@ -11,6 +12,7 @@ import com.ardnn.flix.core.data.source.remote.response.*
 import com.ardnn.flix.core.domain.genre.model.Genre
 import com.ardnn.flix.core.domain.genre.model.GenreMovies
 import com.ardnn.flix.core.domain.genre.model.GenreTvShows
+import com.ardnn.flix.core.domain.moviedetail.model.Cast
 import com.ardnn.flix.core.domain.moviedetail.model.MovieDetail
 import com.ardnn.flix.core.domain.movies.model.Movie
 import com.ardnn.flix.core.domain.tvshowdetail.model.TvShowDetail
@@ -80,6 +82,18 @@ object DataMapper {
                 name = it.name ?: ""
             )
         }
+
+    fun mapCastResponsesToEntities(input: List<CastResponse>, filmId: Int): List<CastEntity> =
+        input.map {
+            CastEntity(
+                id = it.id,
+                filmId = filmId,
+                name = it.name ?: "",
+                character = it.character ?: "",
+                profileUrl = it.profileUrl ?: "",
+            )
+        }
+
 
     fun mapMovieEntitiesToDomain(input: List<MovieEntity>): List<Movie> =
         input.map {
@@ -180,6 +194,17 @@ object DataMapper {
             isDetailFetched = tvShowEntity.isDetailFetched,
         )
     }
+
+    fun mapCastEntitiesToDomain(input: List<CastEntity>): List<Cast> =
+        input.map {
+            Cast(
+                id = it.id,
+                filmId = it.filmId,
+                name = it.name,
+                character = it.character,
+                profileUrl = it.profileUrl,
+            )
+        }
 
     private fun mapGenreEntitiesToDomain(input: List<GenreEntity>): List<Genre> =
         input.map {

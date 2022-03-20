@@ -2,10 +2,7 @@ package com.ardnn.flix.core.data.source.local
 
 import com.ardnn.flix.core.data.source.local.entity.*
 import com.ardnn.flix.core.data.source.local.entity.relation.*
-import com.ardnn.flix.core.data.source.local.room.GenreDao
-import com.ardnn.flix.core.data.source.local.room.MovieDao
-import com.ardnn.flix.core.data.source.local.room.SectionDao
-import com.ardnn.flix.core.data.source.local.room.TvShowDao
+import com.ardnn.flix.core.data.source.local.room.dao.*
 import com.ardnn.flix.core.util.SortUtils
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
@@ -16,12 +13,16 @@ class LocalDataSource @Inject constructor(
     private val movieDao: MovieDao,
     private val tvShowDao: TvShowDao,
     private val sectionDao: SectionDao,
-    private val genreDao: GenreDao
+    private val genreDao: GenreDao,
+    private val castDao: CastDao,
 ) {
 
     // === movie dao ===================================================================
     fun getMovieWithGenres(movieId: Int): Flow<MovieWithGenres> =
         movieDao.getMovieWithGenres(movieId)
+
+    fun getMovieWithCasts(movieId: Int): Flow<MovieWithCasts> =
+        movieDao.getMovieWithCasts(movieId)
 
     fun getFavoriteMovies(): Flow<List<MovieEntity>> =
         movieDao.getFavoriteMovies()
@@ -50,6 +51,9 @@ class LocalDataSource @Inject constructor(
     // === tv show dao ===================================================================
     fun getTvShowWithGenres(tvShowId: Int): Flow<TvShowWithGenres> =
         tvShowDao.getTvShowWithGenres(tvShowId)
+
+    fun getTvShowWithCasts(tvShowId: Int): Flow<TvShowWithCasts> =
+        tvShowDao.getTvShowWithCasts(tvShowId)
 
     fun getFavoriteTvShows(): Flow<List<TvShowEntity>> =
         tvShowDao.getFavoriteTvShows()
@@ -111,4 +115,8 @@ class LocalDataSource @Inject constructor(
         genreDao.insertGenre(genres)
     }
 
+    // === cast dao ===================================================================
+    suspend fun insertCasts(casts: List<CastEntity>) {
+        castDao.insertCasts(casts)
+    }
 }

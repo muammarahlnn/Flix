@@ -130,6 +130,16 @@ class MovieDetailFragment : Fragment(), View.OnClickListener, SingleClickListene
             }
         })
 
+        viewModel.movieCasts.observe(viewLifecycleOwner, { movieCastsResource ->
+            if (movieCastsResource != null) {
+                movieCastsResource.data?.let {
+                    for (cast in it) {
+                        Log.d("CAST", cast.character)
+                    }
+                }
+            }
+        })
+
         viewModel.isSynopsisExtended.observe(viewLifecycleOwner, { isExtended ->
             if (isExtended) {
                 binding?.tvSynopsis?.maxLines = Int.MAX_VALUE

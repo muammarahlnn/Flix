@@ -3,6 +3,7 @@ package com.ardnn.flix.core.di
 import android.content.Context
 import androidx.room.Room
 import com.ardnn.flix.core.data.source.local.room.*
+import com.ardnn.flix.core.data.source.local.room.dao.*
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -38,4 +39,8 @@ class DatabaseModule {
     @Provides
     fun provideGenreDao(database: FlixDatabase): GenreDao =
         database.genreDao()
+
+    @Provides
+    fun provideCastDao(database: FlixDatabase): CastDao =
+        database.castDao()
 }

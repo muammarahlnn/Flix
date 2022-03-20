@@ -6,7 +6,9 @@ import com.ardnn.flix.core.data.source.local.LocalDataSource
 import com.ardnn.flix.core.data.source.local.entity.relation.TvShowGenreCrossRef
 import com.ardnn.flix.core.data.source.remote.ApiResponse
 import com.ardnn.flix.core.data.source.remote.datasource.RemoteDataSource
+import com.ardnn.flix.core.data.source.remote.response.CastResponse
 import com.ardnn.flix.core.data.source.remote.response.TvShowDetailResponse
+import com.ardnn.flix.core.domain.moviedetail.model.Cast
 import com.ardnn.flix.core.domain.tvshowdetail.model.TvShowDetail
 import com.ardnn.flix.core.domain.tvshowdetail.repository.TvShowDetailRepository
 import com.ardnn.flix.core.util.AppExecutors
@@ -57,6 +59,28 @@ class TvShowDetailRepositoryImpl @Inject constructor(
                     }
                 }
             }
+        }.asFLow()
+    }
+
+    override fun getTvShowCasts(tvShowId: Int): Flow<Resource<List<Cast>>> {
+        return object : NetworkBoundResource<List<Cast>, List<CastResponse>>() {
+            override fun loadFromDB(): Flow<List<Cast>> =
+                localDataSource.getTvShowWithCasts(tvShowId).map {
+                    DataMapper.mapCastEntitiesToDomain(it.casts)
+                }
+
+            override fun shouldFetch(data: List<Cast>?): Boolean =
+                data.isNullOrEmpty()
+
+            override suspend fun createCall(): Flow<ApiResponse<List<CastResponse>>> =
+                remoteDataSource.getTvShowCredits(tvShowId)
+
+            override suspend fun saveCallResult(data: List<CastResponse>) {
+                // insert casts
+                val castsEntity = DataMapper.mapCastResponsesToEntities(data, tvShowId)
+                localDataSource.insertCasts(castsEntity)
+            }
+
         }.asFLow()
     }
 

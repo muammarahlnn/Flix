@@ -2,6 +2,7 @@ package com.ardnn.flix.tvshowdetail
 
 import androidx.lifecycle.*
 import com.ardnn.flix.core.data.Resource
+import com.ardnn.flix.core.domain.moviedetail.model.Cast
 import com.ardnn.flix.core.domain.tvshowdetail.model.TvShowDetail
 import com.ardnn.flix.core.domain.tvshowdetail.usecase.TvShowDetailUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -14,17 +15,23 @@ class TvShowDetailViewModel @Inject constructor(
 
     private val tvShowId = MutableLiveData<Int>()
 
+    fun setTvShowId(tvShowId: Int) {
+        this.tvShowId.value = tvShowId
+    }
+
     var tvShow: LiveData<Resource<TvShowDetail>> =
         Transformations.switchMap(tvShowId) {
             tvShowDetailUseCase.getTvShowDetail(it).asLiveData()
         }
 
-    private val _isSynopsisExtended = MutableLiveData(false)
-    val isSynopsisExtended: LiveData<Boolean> = _isSynopsisExtended
+    var tvShowCasts: LiveData<Resource<List<Cast>>> =
+        Transformations.switchMap(tvShowId) {
+            tvShowDetailUseCase.getTvShowCasts(it).asLiveData()
+        }
 
-    fun setTvShowId(tvShowId: Int) {
-        this.tvShowId.value = tvShowId
-    }
+    private val _isSynopsisExtended = MutableLiveData(false)
+
+    val isSynopsisExtended: LiveData<Boolean> = _isSynopsisExtended
 
     fun setIsSynopsisExtended(flag: Boolean) {
         _isSynopsisExtended.value = flag

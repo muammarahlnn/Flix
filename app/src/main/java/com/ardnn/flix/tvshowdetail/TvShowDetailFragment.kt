@@ -127,6 +127,16 @@ class TvShowDetailFragment : Fragment(), View.OnClickListener, SingleClickListen
             }
         })
 
+        viewModel.tvShowCasts.observe(viewLifecycleOwner, { tvShowCastsResource ->
+            if (tvShowCastsResource != null) {
+                tvShowCastsResource.data?.let {
+                    for (cast in it ) {
+                        Log.d("CAST", cast.character)
+                    }
+                }
+            }
+        })
+
         viewModel.isSynopsisExtended.observe(this, { isExtended ->
             if (isExtended) {
                 binding?.tvSynopsis?.maxLines = Int.MAX_VALUE

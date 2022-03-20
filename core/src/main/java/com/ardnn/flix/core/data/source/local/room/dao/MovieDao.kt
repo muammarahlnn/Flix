@@ -1,7 +1,8 @@
-package com.ardnn.flix.core.data.source.local.room
+package com.ardnn.flix.core.data.source.local.room.dao
 
 import androidx.room.*
 import com.ardnn.flix.core.data.source.local.entity.MovieEntity
+import com.ardnn.flix.core.data.source.local.entity.relation.MovieWithCasts
 import com.ardnn.flix.core.data.source.local.entity.relation.MovieGenreCrossRef
 import com.ardnn.flix.core.data.source.local.entity.relation.MovieWithGenres
 import kotlinx.coroutines.flow.Flow
@@ -12,6 +13,10 @@ interface MovieDao {
     @Transaction
     @Query("SELECT * FROM movie_entities WHERE movie_id = :movieId")
     fun getMovieWithGenres(movieId: Int): Flow<MovieWithGenres>
+
+    @Transaction
+    @Query("SELECT * FROM movie_entities WHERE movie_id = :movieId")
+    fun getMovieWithCasts(movieId: Int): Flow<MovieWithCasts>
 
     @Transaction
     @Query("SELECT * FROM movie_entities WHERE is_favorite = 1")
