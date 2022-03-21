@@ -6,10 +6,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.viewpager2.widget.ViewPager2
 import com.ardnn.flix.R
 import com.ardnn.flix.core.data.Resource
 import com.ardnn.flix.core.domain.genre.model.Genre
@@ -17,6 +19,8 @@ import com.ardnn.flix.core.domain.moviedetail.model.MovieDetail
 import com.ardnn.flix.core.util.Helper
 import com.ardnn.flix.core.util.SingleClickListener
 import com.ardnn.flix.databinding.FragmentMovieDetailBinding
+import com.google.android.material.tabs.TabLayout
+import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -61,8 +65,6 @@ class MovieDetailFragment : Fragment(), View.OnClickListener, SingleClickListene
             // click listener
             binding?.btnBack?.setOnClickListener(this)
             binding?.btnFavorite?.setOnClickListener(this)
-            binding?.clWrapperSynopsis?.setOnClickListener(this)
-
         }
     }
 
@@ -112,7 +114,8 @@ class MovieDetailFragment : Fragment(), View.OnClickListener, SingleClickListene
 
                         movieDetailResource.data?.let {
                             movie = it
-                            setMovieDetailToWidgets()
+                            setMovieDetailToWidgets(it)
+                            setPager(it)
                         }
                     }
                     is Resource.Error -> {
@@ -129,26 +132,22 @@ class MovieDetailFragment : Fragment(), View.OnClickListener, SingleClickListene
                 }
             }
         })
+    }
 
-        viewModel.movieCasts.observe(viewLifecycleOwner, { movieCastsResource ->
-            if (movieCastsResource != null) {
-                movieCastsResource.data?.let {
-                    for (cast in it) {
-                        Log.d("CAST", cast.character)
-                    }
-                }
-            }
-        })
+    private fun setPager(movie: MovieDetail) {
+        // set pager
+        val pagerAdapter = MovieDetailPagerAdapter(requireActivity())
+        pagerAdapter.setMovieDetail(movie)
 
-        viewModel.isSynopsisExtended.observe(viewLifecycleOwner, { isExtended ->
-            if (isExtended) {
-                binding?.tvSynopsis?.maxLines = Int.MAX_VALUE
-                binding?.tvMore?.text = getString(R.string.less)
-            } else {
-                binding?.tvSynopsis?.maxLines = 2
-                binding?.tvMore?.text = getString(R.string.more)
-            }
-        })
+        val viewPager = binding?.viewPager as ViewPager2
+        viewPager.adapter = pagerAdapter
+
+        // set tab layout
+        val tabLayout = binding?.tabLayout as TabLayout
+        TabLayoutMediator(tabLayout, viewPager) { tab, pos ->
+            tab.text = getString(TAB_TITLES[pos])
+        }.attach()
+        Helper.equalingEachTabWidth(tabLayout)
     }
 
     private fun showLoading(isLoading: Boolean) {
@@ -171,7 +170,7 @@ class MovieDetailFragment : Fragment(), View.OnClickListener, SingleClickListene
         }
     }
 
-    private fun setMovieDetailToWidgets() {
+    private fun setMovieDetailToWidgets(movie: MovieDetail) {
         binding?.run {
             // set images
             Helper.setImageGlide(
@@ -197,7 +196,7 @@ class MovieDetailFragment : Fragment(), View.OnClickListener, SingleClickListene
             tvReleaseDate.text = Helper.setTextDate(movie.releaseDate)
             tvRuntime.text = Helper.setTextRuntime(requireActivity(), movie.runtime)
             tvRating.text = Helper.setTextFloat(movie.rating)
-            tvSynopsis.text = Helper.setTextString(movie.overview)
+//            tvSynopsis.text = Helper.setTextString(movie.overview)
 
             // set recyclerview genre items
             val genreAdapter = GenreAdapter(movie.genres, this@MovieDetailFragment)
@@ -217,5 +216,11 @@ class MovieDetailFragment : Fragment(), View.OnClickListener, SingleClickListene
 
     companion object {
         private const val TAG = "MovieDetailFragment"
+
+        @StringRes
+        private val TAB_TITLES = intArrayOf(
+            R.string.about,
+            R.string.casts
+        )
     }
 }

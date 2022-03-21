@@ -37,11 +37,14 @@
         <entry key="..\:/coding/github/Flix/app/src/main/res/layout/fragment_favorites.xml" value="0.264" />
         <entry key="..\:/coding/github/Flix/app/src/main/res/layout/fragment_favorites_pager.xml" value="0.259375" />
         <entry key="..\:/coding/github/Flix/app/src/main/res/layout/fragment_film.xml" value="0.259375" />
+        <entry key="..\:/coding/github/Flix/app/src/main/res/layout/fragment_film_detail_casts.xml" value="0.371875" />
         <entry key="..\:/coding/github/Flix/app/src/main/res/layout/fragment_films.xml" value="0.371875" />
         <entry key="..\:/coding/github/Flix/app/src/main/res/layout/fragment_fullscreen.xml" value="0.20885416666666667" />
         <entry key="..\:/coding/github/Flix/app/src/main/res/layout/fragment_genre.xml" value="0.33" />
         <entry key="..\:/coding/github/Flix/app/src/main/res/layout/fragment_home.xml" value="0.371875" />
         <entry key="..\:/coding/github/Flix/app/src/main/res/layout/fragment_main.xml" value="0.15" />
+        <entry key="..\:/coding/github/Flix/app/src/main/res/layout/fragment_movie_about.xml" value="0.3578125" />
+        <entry key="..\:/coding/github/Flix/app/src/main/res/layout/fragment_movie_casts.xml" value="0.33" />
         <entry key="..\:/coding/github/Flix/app/src/main/res/layout/fragment_movie_detail.xml" value="0.371875" />
         <entry key="..\:/coding/github/Flix/app/src/main/res/layout/fragment_movies.xml" value="0.259375" />
         <entry key="..\:/coding/github/Flix/app/src/main/res/layout/fragment_movies_pager.xml" value="0.259375" />
@@ -49,6 +52,7 @@
         <entry key="..\:/coding/github/Flix/app/src/main/res/layout/fragment_tv_show_detail.xml" value="0.33" />
         <entry key="..\:/coding/github/Flix/app/src/main/res/layout/fragment_tv_shows.xml" value="0.259375" />
         <entry key="..\:/coding/github/Flix/app/src/main/res/layout/fragment_tv_shows_pager.xml" value="0.2453125" />
+        <entry key="..\:/coding/github/Flix/app/src/main/res/layout/item_cast.xml" value="0.371875" />
         <entry key="..\:/coding/github/Flix/app/src/main/res/layout/item_favorite.xml" value="0.4" />
         <entry key="..\:/coding/github/Flix/app/src/main/res/layout/item_film.xml" value="0.259375" />
         <entry key="..\:/coding/github/Flix/app/src/main/res/layout/item_genre.xml" value="0.259375" />

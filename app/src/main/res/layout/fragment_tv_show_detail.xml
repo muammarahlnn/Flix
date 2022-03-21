@@ -324,70 +324,26 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/llAiring" />
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/clWrapperSynopsis"
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tabLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_alignParentTop="true"
             android:background="@color/black_primary"
-            android:paddingHorizontal="16sp"
-            android:paddingVertical="12dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/space2">
+            app:layout_constraintTop_toBottomOf="@+id/space2"
+            app:tabGravity="fill"
+            app:tabIndicatorColor="@color/gray_primary"
+            app:tabMaxWidth="0dp"
+            app:tabMode="scrollable"
+            app:tabSelectedTextColor="@color/white_smoke"
+            app:tabTextAppearance="@style/TabLayoutText"
+            app:tabTextColor="@color/gray_primary" />
 
-            <View
-                android:id="@+id/view"
-                android:layout_width="6dp"
-                android:layout_height="0dp"
-                android:background="@color/yellow_primary"
-                app:layout_constraintBottom_toBottomOf="@+id/tvHeaderSynopsis"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/tvHeaderSynopsis" />
-
-            <TextView
-                android:id="@+id/tvHeaderSynopsis"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
-                android:fontFamily="@font/roboto_regular"
-                android:text="@string/synopsis"
-                android:textColor="@color/white"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                app:layout_constraintStart_toEndOf="@+id/view"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/tvSynopsis"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:ellipsize="end"
-                android:fontFamily="@font/roboto_regular"
-                android:lineSpacingExtra="5dp"
-                android:maxLines="2"
-                android:textColor="@color/white"
-                android:textSize="14sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvHeaderSynopsis"
-                tools:text="haha wkwk lol\nini synopsis\nlorem lorem lorem" />
-
-            <TextView
-                android:id="@+id/tvMore"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="@string/more"
-                android:textAlignment="textEnd"
-                android:textColor="@color/gray_primary"
-                android:textSize="14sp"
-                android:fontFamily="@font/roboto_light"
-                app:layout_constraintEnd_toEndOf="@+id/tvSynopsis"
-                app:layout_constraintStart_toStartOf="@+id/tvSynopsis"
-                app:layout_constraintTop_toBottomOf="@+id/tvSynopsis" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/viewPager"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/tabLayout" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/clAlert"

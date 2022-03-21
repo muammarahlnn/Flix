@@ -6,10 +6,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.viewpager2.widget.ViewPager2
 import com.ardnn.flix.R
 import com.ardnn.flix.core.data.Resource
 import com.ardnn.flix.core.domain.genre.model.Genre
@@ -18,6 +20,8 @@ import com.ardnn.flix.core.util.Helper
 import com.ardnn.flix.core.util.SingleClickListener
 import com.ardnn.flix.databinding.FragmentTvShowDetailBinding
 import com.ardnn.flix.moviedetail.GenreAdapter
+import com.google.android.material.tabs.TabLayout
+import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -62,7 +66,6 @@ class TvShowDetailFragment : Fragment(), View.OnClickListener, SingleClickListen
             // click listener
             binding?.btnBack?.setOnClickListener(this)
             binding?.btnFavorite?.setOnClickListener(this)
-            binding?.clWrapperSynopsis?.setOnClickListener(this)
         }
     }
 
@@ -112,7 +115,8 @@ class TvShowDetailFragment : Fragment(), View.OnClickListener, SingleClickListen
 
                         tvShowResource.data?.let {
                             tvShow = it
-                            setTvShowDetailToWidgets()
+                            setTvShowDetailToWidgets(it)
+                            setPager(it)
                         }
                     }
                     is Resource.Error -> {
@@ -126,27 +130,22 @@ class TvShowDetailFragment : Fragment(), View.OnClickListener, SingleClickListen
                 }
             }
         })
+    }
 
-        viewModel.tvShowCasts.observe(viewLifecycleOwner, { tvShowCastsResource ->
-            if (tvShowCastsResource != null) {
-                tvShowCastsResource.data?.let {
-                    for (cast in it ) {
-                        Log.d("CAST", cast.character)
-                    }
-                }
-            }
-        })
+    private fun setPager(tvShow: TvShowDetail) {
+        // set pager
+        val pagerAdapter = TvShowDetailPagerAdapter(requireActivity())
+        pagerAdapter.setTvShowDetail(tvShow)
 
-        viewModel.isSynopsisExtended.observe(this, { isExtended ->
-            if (isExtended) {
-                binding?.tvSynopsis?.maxLines = Int.MAX_VALUE
-                binding?.tvMore?.text = getString(R.string.less)
-            } else {
-                binding?.tvSynopsis?.maxLines = 2
-                binding?.tvMore?.text = getString(R.string.more)
-            }
+        val viewPager = binding?.viewPager as ViewPager2
+        viewPager.adapter = pagerAdapter
 
-        })
+        // set tab layout
+        val tabLayout = binding?.tabLayout as TabLayout
+        TabLayoutMediator(tabLayout, viewPager) { tab, pos ->
+            tab.text = getString(TAB_TITLES[pos])
+        }.attach()
+        Helper.equalingEachTabWidth(tabLayout)
     }
 
     private fun showLoading(isLoading: Boolean) {
@@ -169,7 +168,7 @@ class TvShowDetailFragment : Fragment(), View.OnClickListener, SingleClickListen
         }
     }
 
-    private fun setTvShowDetailToWidgets() {
+    private fun setTvShowDetailToWidgets(tvShow: TvShowDetail) {
         binding?.run {
             // set images
             Helper.setImageGlide(
@@ -198,7 +197,6 @@ class TvShowDetailFragment : Fragment(), View.OnClickListener, SingleClickListen
             tvRating.text = Helper.setTextFloat(tvShow.rating)
             tvFirstAiring.text = Helper.setTextDate(tvShow.firstAirDate)
             tvLastAiring.text = Helper.setTextDate(tvShow.lastAirDate)
-            tvSynopsis.text = Helper.setTextString(tvShow.overview)
 
             // set recyclerview genre items
             val genreAdapter = GenreAdapter(tvShow.genres, this@TvShowDetailFragment)
@@ -218,6 +216,12 @@ class TvShowDetailFragment : Fragment(), View.OnClickListener, SingleClickListen
 
     companion object {
         private const val TAG = "TvShowDetailFragment"
+
+        @StringRes
+        private val TAB_TITLES = intArrayOf(
+            R.string.about,
+            R.string.casts
+        )
     }
 
 }

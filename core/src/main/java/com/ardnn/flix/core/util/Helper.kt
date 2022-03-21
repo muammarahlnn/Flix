@@ -41,6 +41,9 @@ object Helper {
     fun getWallpaperTMDB(wallpaperUrl: String): String =
         "${IMG_URL}w780$wallpaperUrl"
 
+    fun getProfilePhotoTMDB(profileUrl: String): String =
+        "${IMG_URL}w342$profileUrl"
+
     fun setTextString(text: String): String =
         if (text.isEmpty()) "-" else text
 

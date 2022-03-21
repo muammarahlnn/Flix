@@ -13,15 +13,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Flix">
         <activity
-            android:name="com.ardnn.flix.genre.GenreActivity"
-            android:exported="false" />
-        <activity
-            android:name="com.ardnn.flix.tvshowdetail.TvShowDetailActivity"
-            android:exported="false" />
-        <activity
-            android:name="com.ardnn.flix.moviedetail.MovieDetailActivity"
-            android:exported="false" />
-        <activity
             android:name="com.ardnn.flix.splash.SplashActivity"
             android:exported="true"
             android:theme="@style/Theme.Splash">
