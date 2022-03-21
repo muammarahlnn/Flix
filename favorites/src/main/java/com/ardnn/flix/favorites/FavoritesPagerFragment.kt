@@ -1,14 +1,17 @@
 package com.ardnn.flix.favorites
 
 import android.os.Bundle
-import android.view.*
-import androidx.fragment.app.Fragment
+import android.view.LayoutInflater
+import android.view.Menu
+import android.view.View
+import android.view.ViewGroup
 import androidx.annotation.StringRes
 import androidx.core.view.iterator
+import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
 import com.ardnn.flix.R
-import com.ardnn.flix.databinding.FragmentFavoritesPagerBinding
 import com.ardnn.flix.core.util.Helper
+import com.ardnn.flix.favorites.databinding.FragmentFavoritesPagerBinding
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 

@@ -2,14 +2,12 @@ package com.ardnn.flix.favorites
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.navigation.findNavController
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.ardnn.flix.MainFragmentDirections
 import com.ardnn.flix.core.domain.tvshowdetail.model.TvShowDetail
 import com.ardnn.flix.core.util.Helper
-import com.ardnn.flix.databinding.ItemFavoriteBinding
+import com.ardnn.flix.favorites.databinding.ItemFavoriteBinding
 
 class FavoriteTvShowsAdapter : PagedListAdapter<TvShowDetail, FavoriteTvShowsAdapter.TvShowViewHolder>(DIFF_CALLBACK) {
 

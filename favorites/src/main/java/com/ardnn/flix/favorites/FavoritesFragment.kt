@@ -16,8 +16,8 @@ import com.ardnn.flix.R
 import com.ardnn.flix.core.domain.moviedetail.model.MovieDetail
 import com.ardnn.flix.core.domain.tvshowdetail.model.TvShowDetail
 import com.ardnn.flix.core.util.PagedListDataSources
-import com.ardnn.flix.databinding.FragmentFavoritesBinding
 import com.ardnn.flix.di.FavoritesModuleDependencies
+import com.ardnn.flix.favorites.databinding.FragmentFavoritesBinding
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.EntryPointAccessors
 import javax.inject.Inject
