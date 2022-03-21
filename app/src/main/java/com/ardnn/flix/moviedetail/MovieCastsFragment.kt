@@ -1,9 +1,11 @@
 package com.ardnn.flix.moviedetail
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -78,6 +80,9 @@ class MovieCastsFragment : Fragment() {
                     }
                     is Resource.Error -> {
                         showLoading(false)
+
+                        Log.d(TAG, movieCastsResource.message.toString())
+                        Toast.makeText(context, "An error occurred", Toast.LENGTH_SHORT).show()
                     }
                 }
             }
@@ -95,6 +100,7 @@ class MovieCastsFragment : Fragment() {
     }
 
     companion object {
+        private const val TAG = "MovieCastsFragment"
         const val ARG_MOVIE_ID = "movie_id"
     }
 }

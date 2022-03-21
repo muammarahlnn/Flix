@@ -1,12 +1,15 @@
 package com.ardnn.flix.tvshowdetail
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.ardnn.flix.core.data.Resource
 import com.ardnn.flix.core.util.PagedListDataSources
 import com.ardnn.flix.databinding.FragmentFilmDetailCastsBinding
 import com.ardnn.flix.moviedetail.CastAdapter
@@ -57,17 +60,43 @@ class TvShowCastsFragment : Fragment() {
     private fun subscribe() {
         viewModel.tvShowCasts.observe(viewLifecycleOwner, { tvShowCastsResource ->
             if (tvShowCastsResource != null) {
-                tvShowCastsResource.data?.let {  tvShowCasts ->
-                    val pagedTvShowCasts = PagedListDataSources.snapshot(tvShowCasts)
-                    val adapter = CastAdapter()
-                    adapter.submitList(pagedTvShowCasts)
-                    binding?.rvCast?.adapter = adapter
+                when (tvShowCastsResource) {
+                    is Resource.Loading -> {
+                        showLoading(true)
+                    }
+                    is Resource.Success -> {
+                        showLoading(false)
+
+                        tvShowCastsResource.data?.let {  tvShowCasts ->
+                            val pagedTvShowCasts = PagedListDataSources.snapshot(tvShowCasts)
+                            val adapter = CastAdapter()
+                            adapter.submitList(pagedTvShowCasts)
+                            binding?.rvCast?.adapter = adapter
+                        }
+                    }
+                    is Resource.Error -> {
+                        showLoading(false)
+
+                        Log.d(TAG, tvShowCastsResource.message.toString())
+                        Toast.makeText(context, "An error occurred", Toast.LENGTH_SHORT).show()
+                    }
                 }
             }
         })
     }
 
+    private fun showLoading(isLoading: Boolean) {
+        if (isLoading) {
+            binding?.progressBar?.visibility = View.VISIBLE
+            binding?.rvCast?.visibility = View.GONE
+        } else {
+            binding?.progressBar?.visibility = View.GONE
+            binding?.rvCast?.visibility = View.VISIBLE
+        }
+    }
+
     companion object {
+        private const val TAG = "TvShowCastsFragment"
         const val ARG_TV_SHOW_ID = "tv_show_id"
     }
 }
