@@ -51,7 +51,7 @@ class TvShowAboutFragment : Fragment(), View.OnClickListener {
 
     override fun onClick(v: View) {
         when (v.id) {
-            R.id.clWrapperSynopsis -> {
+            R.id.cl_wrapper_synopsis -> {
                 isSynopsisExtended = !isSynopsisExtended
                 if (isSynopsisExtended) {
                     binding?.tvSynopsis?.maxLines = Int.MAX_VALUE

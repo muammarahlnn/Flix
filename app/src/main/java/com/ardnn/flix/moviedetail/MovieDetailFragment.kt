@@ -75,10 +75,10 @@ class MovieDetailFragment : Fragment(), View.OnClickListener, SingleClickListene
 
     override fun onClick(v: View) {
         when (v.id) {
-            R.id.btnBack -> {
+            R.id.btn_back -> {
                 requireActivity().onBackPressed()
             }
-            R.id.btnFavorite -> {
+            R.id.btn_favorite -> {
                 viewModel.setIsFavorite()
                 if (!movie.isFavorite) {
                     Toast.makeText(
@@ -93,10 +93,6 @@ class MovieDetailFragment : Fragment(), View.OnClickListener, SingleClickListene
                         Toast.LENGTH_SHORT
                     ).show()
                 }
-            }
-            R.id.clWrapperSynopsis -> {
-                isSynopsisExtended = !isSynopsisExtended
-                viewModel.setIsSynopsisExtended(isSynopsisExtended)
             }
         }
     }

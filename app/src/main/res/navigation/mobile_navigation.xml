@@ -3,20 +3,20 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/navigationMovies">
+    app:startDestination="@+id/navigation_movies">
 
     <fragment
-        android:id="@+id/navigationMovies"
+        android:id="@+id/navigation_movies"
         android:name="com.ardnn.flix.movies.MoviesPagerFragment"
         android:label="@string/movies"
         tools:layout="@layout/fragment_movies_pager" />
     <fragment
-        android:id="@+id/navigationTvShows"
+        android:id="@+id/navigation_tv_shows"
         android:name="com.ardnn.flix.tvshows.TvShowsPagerFragment"
         android:label="@string/tv_shows"
         tools:layout="@layout/fragment_tv_shows_pager" />
     <fragment
-        android:id="@+id/navigationFavorites"
+        android:id="@+id/navigation_favorites"
         android:name="com.ardnn.flix.favorites.FavoritesPagerFragment"
         android:label="@string/favorites"
         tools:layout="@layout/fragment_favorites_pager" />

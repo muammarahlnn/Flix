@@ -8,7 +8,7 @@
     tools:context=".moviedetail.MovieAboutFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/clWrapperSynopsis"
+        android:id="@+id/cl_wrapper_synopsis"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/black_primary"
@@ -21,12 +21,12 @@
             android:layout_width="6dp"
             android:layout_height="0dp"
             android:background="@color/yellow_primary"
-            app:layout_constraintBottom_toBottomOf="@+id/tvHeaderSynopsis"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_header_synopsis"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/tvHeaderSynopsis" />
+            app:layout_constraintTop_toTopOf="@+id/tv_header_synopsis" />
 
         <TextView
-            android:id="@+id/tvHeaderSynopsis"
+            android:id="@+id/tv_header_synopsis"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
@@ -39,7 +39,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/tvSynopsis"
+            android:id="@+id/tv_synopsis"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
@@ -51,11 +51,11 @@
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvHeaderSynopsis"
+            app:layout_constraintTop_toBottomOf="@+id/tv_header_synopsis"
             tools:text="haha wkwk lol\nini synopsis\nlorem lorem lorem" />
 
         <TextView
-            android:id="@+id/tvMore"
+            android:id="@+id/tv_more"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:fontFamily="@font/roboto_light"
@@ -63,9 +63,9 @@
             android:textAlignment="textEnd"
             android:textColor="@color/gray_primary"
             android:textSize="14sp"
-            app:layout_constraintEnd_toEndOf="@+id/tvSynopsis"
-            app:layout_constraintStart_toStartOf="@+id/tvSynopsis"
-            app:layout_constraintTop_toBottomOf="@+id/tvSynopsis" />
+            app:layout_constraintEnd_toEndOf="@+id/tv_synopsis"
+            app:layout_constraintStart_toStartOf="@+id/tv_synopsis"
+            app:layout_constraintTop_toBottomOf="@+id/tv_synopsis" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

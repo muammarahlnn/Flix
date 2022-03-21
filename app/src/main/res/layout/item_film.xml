@@ -14,7 +14,7 @@
         android:layout_height="wrap_content">
 
         <ImageView
-            android:id="@+id/ivPoster"
+            android:id="@+id/iv_poster"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:scaleType="centerCrop"
@@ -43,7 +43,7 @@
                 android:contentDescription="@string/iv_rating_desc" />
 
             <TextView
-                android:id="@+id/tvRating"
+                android:id="@+id/tv_rating"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 tools:text="8.2"
@@ -64,10 +64,10 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ivPoster">
+            app:layout_constraintTop_toBottomOf="@+id/iv_poster">
 
             <TextView
-                android:id="@+id/tvTitle"
+                android:id="@+id/tv_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
@@ -80,7 +80,7 @@
                 tools:text="Title" />
 
             <TextView
-                android:id="@+id/tvYear"
+                android:id="@+id/tv_year"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="3dp"

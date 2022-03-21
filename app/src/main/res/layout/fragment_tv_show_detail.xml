@@ -13,7 +13,7 @@
         android:background="@color/black_background">
 
         <ImageView
-            android:id="@+id/ivWallpaper"
+            android:id="@+id/iv_wallpaper"
             android:layout_width="match_parent"
             android:layout_height="200dp"
             android:scaleType="centerCrop"
@@ -22,7 +22,7 @@
             android:contentDescription="@string/iv_wallpaper_desc" />
 
         <ImageView
-            android:id="@+id/btnBack"
+            android:id="@+id/btn_back"
             android:layout_width="36dp"
             android:layout_height="36dp"
             android:layout_marginTop="16dp"
@@ -36,7 +36,7 @@
             android:contentDescription="@string/btn_back_desc" />
 
         <ImageView
-            android:id="@+id/btnFavorite"
+            android:id="@+id/btn_favorite"
             android:layout_width="36dp"
             android:layout_height="36dp"
             android:layout_marginTop="16dp"
@@ -53,7 +53,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginBottom="25dp"
-            app:layout_constraintBottom_toBottomOf="@+id/ivWallpaper"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_wallpaper"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
@@ -65,10 +65,10 @@
             app:layout_constraintBottom_toBottomOf="@id/space2"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ivWallpaper" />
+            app:layout_constraintTop_toBottomOf="@+id/iv_wallpaper" />
 
         <androidx.cardview.widget.CardView
-            android:id="@+id/cvPoster"
+            android:id="@+id/cv_poster"
             android:layout_width="120dp"
             android:layout_height="175dp"
             android:layout_marginStart="16dp"
@@ -78,7 +78,7 @@
             app:layout_constraintTop_toBottomOf="@+id/space">
 
             <ImageView
-                android:id="@+id/ivPoster"
+                android:id="@+id/iv_poster"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop"
@@ -87,7 +87,7 @@
         </androidx.cardview.widget.CardView>
 
         <TextView
-            android:id="@+id/tvTitle"
+            android:id="@+id/tv_title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
@@ -100,22 +100,22 @@
             android:textColor="@color/yellow_primary"
             android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/cvPoster"
-            app:layout_constraintTop_toBottomOf="@+id/ivWallpaper"
+            app:layout_constraintStart_toEndOf="@+id/cv_poster"
+            app:layout_constraintTop_toBottomOf="@+id/iv_wallpaper"
             tools:text="Title\nTitle" />
 
         <LinearLayout
-            android:id="@+id/llEpisodes"
+            android:id="@+id/ll_episodes"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="7dp"
             android:gravity="center"
             android:orientation="vertical"
-            app:layout_constraintStart_toStartOf="@+id/tvTitle"
-            app:layout_constraintTop_toBottomOf="@+id/tvTitle">
+            app:layout_constraintStart_toStartOf="@+id/tv_title"
+            app:layout_constraintTop_toBottomOf="@+id/tv_title">
 
             <TextView
-                android:id="@+id/tvEpisodes"
+                android:id="@+id/tv_episodes"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/roboto_medium"
@@ -143,12 +143,12 @@
             android:text="@string/bullet"
             android:textColor="@color/white"
             android:textSize="15sp"
-            app:layout_constraintBottom_toBottomOf="@+id/llEpisodes"
-            app:layout_constraintStart_toEndOf="@+id/llEpisodes"
-            app:layout_constraintTop_toTopOf="@+id/llEpisodes" />
+            app:layout_constraintBottom_toBottomOf="@+id/ll_episodes"
+            app:layout_constraintStart_toEndOf="@+id/ll_episodes"
+            app:layout_constraintTop_toTopOf="@+id/ll_episodes" />
 
         <LinearLayout
-            android:id="@+id/llSeasons"
+            android:id="@+id/ll_seasons"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="6dp"
@@ -159,7 +159,7 @@
             app:layout_constraintTop_toTopOf="@+id/bullet">
 
             <TextView
-                android:id="@+id/tvSeasons"
+                android:id="@+id/tv_seasons"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/roboto_medium"
@@ -187,12 +187,12 @@
             android:text="@string/bullet"
             android:textColor="@color/white"
             android:textSize="15sp"
-            app:layout_constraintBottom_toBottomOf="@+id/llSeasons"
-            app:layout_constraintStart_toEndOf="@+id/llSeasons"
-            app:layout_constraintTop_toTopOf="@+id/llSeasons" />
+            app:layout_constraintBottom_toBottomOf="@+id/ll_seasons"
+            app:layout_constraintStart_toEndOf="@+id/ll_seasons"
+            app:layout_constraintTop_toTopOf="@+id/ll_seasons" />
 
         <TextView
-            android:id="@+id/tvRuntime"
+            android:id="@+id/tv_runtime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="6dp"
@@ -205,26 +205,26 @@
             tools:text="24 mins" />
 
         <ImageView
-            android:id="@+id/ivStar"
+            android:id="@+id/iv_star"
             android:layout_width="21dp"
             android:layout_height="21dp"
             android:layout_marginTop="12dp"
             android:src="@drawable/ic_star_yellow"
-            app:layout_constraintStart_toStartOf="@+id/tvTitle"
-            app:layout_constraintTop_toBottomOf="@+id/llEpisodes"
+            app:layout_constraintStart_toStartOf="@+id/tv_title"
+            app:layout_constraintTop_toBottomOf="@+id/ll_episodes"
             android:contentDescription="@string/iv_rating_desc" />
 
         <TextView
-            android:id="@+id/tvRating"
+            android:id="@+id/tv_rating"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
             android:textColor="@color/white"
             android:textSize="15sp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@+id/ivStar"
-            app:layout_constraintStart_toEndOf="@+id/ivStar"
-            app:layout_constraintTop_toTopOf="@+id/ivStar"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_star"
+            app:layout_constraintStart_toEndOf="@+id/iv_star"
+            app:layout_constraintTop_toTopOf="@+id/iv_star"
             tools:text="8.2" />
 
         <TextView
@@ -233,11 +233,11 @@
             android:text="@string/over_10"
             android:textColor="@color/gray_primary"
             android:textSize="13sp"
-            app:layout_constraintBottom_toBottomOf="@+id/tvRating"
-            app:layout_constraintStart_toEndOf="@+id/tvRating" />
+            app:layout_constraintBottom_toBottomOf="@+id/tv_rating"
+            app:layout_constraintStart_toEndOf="@+id/tv_rating" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvGenre"
+            android:id="@+id/rv_genre"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
@@ -245,13 +245,13 @@
             android:paddingStart="16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/cvPoster"
+            app:layout_constraintTop_toBottomOf="@+id/cv_poster"
             tools:itemCount="1"
             tools:listitem="@layout/item_genre"
             tools:ignore="RtlSymmetry" />
 
         <LinearLayout
-            android:id="@+id/llAiring"
+            android:id="@+id/ll_airing"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
@@ -260,7 +260,7 @@
             android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/rvGenre">
+            app:layout_constraintTop_toBottomOf="@+id/rv_genre">
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -270,7 +270,7 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/tvFirstAiring"
+                    android:id="@+id/tv_first_airing"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/roboto_medium"
@@ -295,7 +295,7 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/tvLastAiring"
+                    android:id="@+id/tv_last_airing"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/roboto_medium"
@@ -322,10 +322,10 @@
             android:layout_marginTop="12dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/llAiring" />
+            app:layout_constraintTop_toBottomOf="@+id/ll_airing" />
 
         <com.google.android.material.tabs.TabLayout
-            android:id="@+id/tabLayout"
+            android:id="@+id/tab_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
@@ -340,13 +340,13 @@
             app:tabTextColor="@color/gray_primary" />
 
         <androidx.viewpager2.widget.ViewPager2
-            android:id="@+id/viewPager"
+            android:id="@+id/view_pager"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@+id/tabLayout" />
+            app:layout_constraintTop_toBottomOf="@+id/tab_layout" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/clAlert"
+            android:id="@+id/cl_alert"
             android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -354,7 +354,7 @@
             android:background="@color/black_background">
 
             <ProgressBar
-                android:id="@+id/progressBar"
+                android:id="@+id/progress_bar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:indeterminate="true"
@@ -365,7 +365,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/tvAlert"
+                android:id="@+id/tv_alert"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="24dp"
