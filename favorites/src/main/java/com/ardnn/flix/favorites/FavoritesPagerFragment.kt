@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.annotation.StringRes
+import androidx.core.view.iterator
 import androidx.viewpager2.widget.ViewPager2
 import com.ardnn.flix.R
 import com.ardnn.flix.databinding.FragmentFavoritesPagerBinding
@@ -52,9 +53,11 @@ class FavoritesPagerFragment : Fragment() {
         _binding = null
     }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        super.onCreateOptionsMenu(menu, inflater)
-        menu.clear()
+    override fun onPrepareOptionsMenu(menu: Menu) {
+        // hide group sort menu in action bar
+        for (item in menu.iterator()) {
+            item.isVisible = false
+        }
     }
 
     companion object {
