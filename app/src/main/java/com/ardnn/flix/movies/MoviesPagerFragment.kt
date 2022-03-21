@@ -15,6 +15,7 @@ import com.google.android.material.tabs.TabLayoutMediator
 class MoviesPagerFragment : Fragment() {
 
     private var _binding: FragmentMoviesPagerBinding? = null
+
     private val binding get() = _binding
 
     override fun onCreateView(

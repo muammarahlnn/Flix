@@ -14,6 +14,7 @@ import com.google.android.material.tabs.TabLayoutMediator
 class TvShowsPagerFragment : Fragment() {
 
     private var _binding: FragmentTvShowsPagerBinding? = null
+
     private val binding get() = _binding
 
     override fun onCreateView(

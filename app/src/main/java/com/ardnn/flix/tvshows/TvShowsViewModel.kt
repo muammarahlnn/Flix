@@ -18,7 +18,9 @@ class TvShowsViewModel @Inject constructor(
     private var section = 0
 
     private var sortArr = arrayOf("", "", "", "")
+
     private val _tvShowsSort = MutableLiveData(sortArr)
+
     val tvShowsSort: LiveData<Array<String>> = _tvShowsSort
 
     fun getTvShows(page: Int, filter: String): LiveData<Resource<List<TvShow>>> =

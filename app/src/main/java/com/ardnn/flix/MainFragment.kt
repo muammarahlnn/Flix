@@ -14,6 +14,7 @@ import com.ardnn.flix.databinding.FragmentMainBinding
 class MainFragment : Fragment() {
 
     private var _binding: FragmentMainBinding? = null
+
     private val binding get() = _binding
 
     override fun onCreateView(

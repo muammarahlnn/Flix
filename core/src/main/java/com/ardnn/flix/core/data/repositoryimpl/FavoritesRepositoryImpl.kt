@@ -1,12 +1,9 @@
 package com.ardnn.flix.core.data.repositoryimpl
 
 import com.ardnn.flix.core.data.source.local.LocalDataSource
-import com.ardnn.flix.core.data.source.remote.datasource.RemoteDataSource
 import com.ardnn.flix.core.domain.favorites.repository.FavoritesRepository
 import com.ardnn.flix.core.domain.moviedetail.model.MovieDetail
-import com.ardnn.flix.core.domain.movies.model.Movie
 import com.ardnn.flix.core.domain.tvshowdetail.model.TvShowDetail
-import com.ardnn.flix.core.domain.tvshows.model.TvShow
 import com.ardnn.flix.core.util.AppExecutors
 import com.ardnn.flix.core.util.DataMapper
 import kotlinx.coroutines.flow.Flow

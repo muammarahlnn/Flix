@@ -4,7 +4,6 @@ import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.ardnn.flix.core.domain.moviedetail.model.Cast
 import com.ardnn.flix.core.domain.moviedetail.model.MovieDetail
 
 class MovieDetailPagerAdapter(

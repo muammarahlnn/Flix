@@ -18,7 +18,9 @@ class MoviesViewModel @Inject constructor(
     private var section = 0
 
     private val sortArr = arrayOf("", "", "", "")
+
     private val _moviesSort = MutableLiveData(sortArr)
+
     val moviesSort: LiveData<Array<String>> = _moviesSort
 
     fun getMovies(page: Int, filter: String): LiveData<Resource<List<Movie>>> =

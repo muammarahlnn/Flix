@@ -18,6 +18,7 @@ import com.google.android.material.tabs.TabLayoutMediator
 class FavoritesPagerFragment : Fragment() {
 
     private var _binding: FragmentFavoritesPagerBinding? = null
+
     private val binding get() = _binding
 
     override fun onCreate(savedInstanceState: Bundle?) {

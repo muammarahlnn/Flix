@@ -29,14 +29,6 @@ class TvShowDetailViewModel @Inject constructor(
             tvShowDetailUseCase.getTvShowCasts(it).asLiveData()
         }
 
-    private val _isSynopsisExtended = MutableLiveData(false)
-
-    val isSynopsisExtended: LiveData<Boolean> = _isSynopsisExtended
-
-    fun setIsSynopsisExtended(flag: Boolean) {
-        _isSynopsisExtended.value = flag
-    }
-
     fun setIsFavorite() {
         val tvShowResource = tvShow.value
         if (tvShowResource != null) {

@@ -9,9 +9,7 @@ import com.ardnn.flix.R
 import com.ardnn.flix.core.domain.moviedetail.model.MovieDetail
 import com.ardnn.flix.core.util.Helper
 import com.ardnn.flix.databinding.FragmentFilmDetailAboutBinding
-import dagger.hilt.android.AndroidEntryPoint
 
-@AndroidEntryPoint
 class MovieAboutFragment : Fragment(), View.OnClickListener {
 
     private var _binding: FragmentFilmDetailAboutBinding? = null

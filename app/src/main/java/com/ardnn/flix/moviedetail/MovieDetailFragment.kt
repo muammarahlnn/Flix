@@ -34,8 +34,6 @@ class MovieDetailFragment : Fragment(), View.OnClickListener, SingleClickListene
 
     private lateinit var movie: MovieDetail
 
-    private var isSynopsisExtended = false
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -192,7 +190,6 @@ class MovieDetailFragment : Fragment(), View.OnClickListener, SingleClickListene
             tvReleaseDate.text = Helper.setTextDate(movie.releaseDate)
             tvRuntime.text = Helper.setTextRuntime(requireActivity(), movie.runtime)
             tvRating.text = Helper.setTextFloat(movie.rating)
-//            tvSynopsis.text = Helper.setTextString(movie.overview)
 
             // set recyclerview genre items
             val genreAdapter = GenreAdapter(movie.genres, this@MovieDetailFragment)

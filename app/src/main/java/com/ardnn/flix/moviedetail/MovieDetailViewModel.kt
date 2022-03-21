@@ -14,6 +14,7 @@ class MovieDetailViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val movieId = MutableLiveData<Int>()
+
     fun setMovieId(movieId: Int) {
         this.movieId.value = movieId
     }
@@ -27,14 +28,6 @@ class MovieDetailViewModel @Inject constructor(
         Transformations.switchMap(movieId) {
             movieDetailUseCase.getMovieCasts(it).asLiveData()
         }
-
-    private val _isSynopsisExtended = MutableLiveData(false)
-
-    val isSynopsisExtended: LiveData<Boolean> = _isSynopsisExtended
-
-    fun setIsSynopsisExtended(flag: Boolean) {
-        _isSynopsisExtended.value = flag
-    }
 
     fun setIsFavorite() {
         val movieResource = movie.value

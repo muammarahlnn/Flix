@@ -32,9 +32,11 @@ class FavoritesFragment : Fragment() {
     }
 
     private var _binding: FragmentFavoritesBinding? = null
+
     private val binding get() = _binding
 
     private lateinit var favoriteMoviesAdapter: FavoriteMoviesAdapter
+
     private lateinit var favoriteTvShowsAdapter: FavoriteTvShowsAdapter
 
     private var section = 0

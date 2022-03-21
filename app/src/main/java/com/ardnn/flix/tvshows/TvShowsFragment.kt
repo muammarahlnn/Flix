@@ -23,9 +23,11 @@ class TvShowsFragment : Fragment(), SingleClickListener<TvShow> {
     private val viewModel: TvShowsViewModel by viewModels()
 
     private var _binding: FragmentFilmsBinding? = null
+
     private val binding get() = _binding
 
     private val page = 1 // default page to fetch movies
+
     private var section = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {

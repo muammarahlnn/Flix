@@ -35,8 +35,6 @@ class TvShowDetailFragment : Fragment(), View.OnClickListener, SingleClickListen
 
     private lateinit var tvShow: TvShowDetail
 
-    private var isSynopsisExtended = false
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
