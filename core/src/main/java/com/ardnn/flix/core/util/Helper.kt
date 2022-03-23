@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
+import com.ardnn.flix.core.BuildConfig
 import com.ardnn.flix.core.R
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -12,7 +13,7 @@ import com.google.android.material.tabs.TabLayout
 
 object Helper {
 
-    private const val IMG_URL = "https://image.tmdb.org/t/p/"
+    private const val IMG_URL = BuildConfig.IMG_URL_TMDB
 
     fun equalingEachTabWidth(tabLayout: TabLayout) {
         val slidingTab: ViewGroup = tabLayout.getChildAt(0) as ViewGroup

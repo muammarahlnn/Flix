@@ -1,5 +1,6 @@
 package com.ardnn.flix.core.di
 
+import com.ardnn.flix.core.BuildConfig
 import com.ardnn.flix.core.data.source.remote.service.MovieApiService
 import com.ardnn.flix.core.data.source.remote.service.PersonApiService
 import com.ardnn.flix.core.data.source.remote.service.TvShowApiService
@@ -42,7 +43,7 @@ class NetworkModule {
 
     private fun buildRetrofit(client: OkHttpClient): Retrofit {
         return Retrofit.Builder()
-            .baseUrl("https://api.themoviedb.org/")
+            .baseUrl(BuildConfig.BASE_URL_TMDB)
             .addConverterFactory(GsonConverterFactory.create())
             .client(client)
             .build()
