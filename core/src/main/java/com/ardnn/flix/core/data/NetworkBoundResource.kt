@@ -1,8 +1,8 @@
 package com.ardnn.flix.core.data
 
-import android.util.Log
 import com.ardnn.flix.core.data.source.remote.ApiResponse
 import kotlinx.coroutines.flow.*
+import timber.log.Timber
 
 abstract class NetworkBoundResource<ResultType, RequestType> {
 
@@ -38,7 +38,7 @@ abstract class NetworkBoundResource<ResultType, RequestType> {
 
 
     private fun onFetchFailed() {
-        Log.e("NetworkBoundResource", "onFetchFailed")
+        Timber.e("onFetchFailed")
     }
 
     protected abstract fun loadFromDB(): Flow<ResultType>

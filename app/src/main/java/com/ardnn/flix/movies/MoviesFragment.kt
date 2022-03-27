@@ -1,7 +1,6 @@
 package com.ardnn.flix.movies
 
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -16,6 +15,7 @@ import com.ardnn.flix.core.util.SingleClickListener
 import com.ardnn.flix.core.util.SortUtils
 import com.ardnn.flix.databinding.FragmentFilmsBinding
 import dagger.hilt.android.AndroidEntryPoint
+import timber.log.Timber
 
 @AndroidEntryPoint
 class MoviesFragment : Fragment(), SingleClickListener<Movie> {
@@ -134,7 +134,7 @@ class MoviesFragment : Fragment(), SingleClickListener<Movie> {
                 showLoading(false)
                 showAlert(true)
 
-                Log.d(TAG, moviesResource.message.toString())
+                Timber.d(moviesResource.message.toString())
                 Toast.makeText(context, "An error occurred", Toast.LENGTH_SHORT)
                     .show()
             }
@@ -170,7 +170,6 @@ class MoviesFragment : Fragment(), SingleClickListener<Movie> {
     }
 
     companion object {
-        private const val TAG = "MoviesFragment"
         const val ARG_SECTION_NUMBER = "section_number"
     }
 

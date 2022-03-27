@@ -1,6 +1,5 @@
 package com.ardnn.flix.core.data.source.remote.datasource
 
-import android.util.Log
 import com.ardnn.flix.core.BuildConfig
 import com.ardnn.flix.core.data.source.remote.ApiResponse
 import com.ardnn.flix.core.data.source.remote.response.CastResponse
@@ -12,6 +11,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
+import timber.log.Timber
 import javax.inject.Inject
 
 class TvShowDataSource @Inject constructor(
@@ -31,7 +31,7 @@ class TvShowDataSource @Inject constructor(
                 EspressoIdlingResource.decrement()
             } catch (e: Exception) {
                 emit(ApiResponse.Error(e.toString()))
-                Log.e("RemoteDataSource", e.toString())
+                Timber.e(e.toString())
 
                 EspressoIdlingResource.decrement()
             }
@@ -54,7 +54,7 @@ class TvShowDataSource @Inject constructor(
                 EspressoIdlingResource.decrement()
             } catch (e: Exception) {
                 emit(ApiResponse.Error(e.toString()))
-                Log.e("RemoteDataSource", e.toString())
+                Timber.e(e.toString())
 
                 EspressoIdlingResource.decrement()
             }
@@ -77,7 +77,7 @@ class TvShowDataSource @Inject constructor(
                 EspressoIdlingResource.decrement()
             } catch (e: Exception) {
                 emit(ApiResponse.Error(e.toString()))
-                Log.e("RemoteDataSource", e.toString())
+                Timber.e(e.toString())
 
                 EspressoIdlingResource.decrement()
             }
@@ -100,7 +100,7 @@ class TvShowDataSource @Inject constructor(
                 EspressoIdlingResource.decrement()
             } catch (e: Exception) {
                 emit(ApiResponse.Error(e.toString()))
-                Log.e("RemoteDataSource", e.toString())
+                Timber.e(e.toString())
 
                 EspressoIdlingResource.decrement()
             }
@@ -123,7 +123,7 @@ class TvShowDataSource @Inject constructor(
                 EspressoIdlingResource.decrement()
             } catch (e: Exception) {
                 emit(ApiResponse.Error(e.toString()))
-                Log.e("RemoteDataSource", e.toString())
+                Timber.e(e.toString())
 
                 EspressoIdlingResource.decrement()
             }
@@ -145,7 +145,7 @@ class TvShowDataSource @Inject constructor(
                 EspressoIdlingResource.decrement()
             } catch (e: Exception) {
                 emit(ApiResponse.Error(e.toString()))
-                Log.e("RemoteDataSource", e.toString())
+                Timber.e(e.toString())
 
                 EspressoIdlingResource.decrement()
             }

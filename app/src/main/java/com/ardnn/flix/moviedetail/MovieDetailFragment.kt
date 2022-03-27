@@ -1,7 +1,6 @@
 package com.ardnn.flix.moviedetail
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -22,6 +21,7 @@ import com.ardnn.flix.databinding.FragmentMovieDetailBinding
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
+import timber.log.Timber
 
 @AndroidEntryPoint
 class MovieDetailFragment : Fragment(), View.OnClickListener, SingleClickListener<Genre> {
@@ -116,7 +116,7 @@ class MovieDetailFragment : Fragment(), View.OnClickListener, SingleClickListene
                         showLoading(false)
                         showAlert(true)
 
-                        Log.d(TAG, movieDetailResource.message.toString())
+                        Timber.d(movieDetailResource.message.toString())
                         Toast.makeText(
                             requireActivity(),
                             "An error occurred",
@@ -208,8 +208,6 @@ class MovieDetailFragment : Fragment(), View.OnClickListener, SingleClickListene
     }
 
     companion object {
-        private const val TAG = "MovieDetailFragment"
-
         @StringRes
         private val TAB_TITLES = intArrayOf(
             R.string.about,
