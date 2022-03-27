@@ -70,6 +70,7 @@
         <entry key="..\:/coding/github/Flix/favorites/src/main/res/layout/fragment_favorites.xml" value="0.20729166666666668" />
         <entry key="..\:/coding/github/Flix/favorites/src/main/res/layout/fragment_favorites_pager.xml" value="0.15833333333333333" />
         <entry key="..\:/coding/github/Flix/favorites/src/main/res/layout/item_favorite.xml" value="0.371875" />
+        <entry key="..\:/coding/github/Flix/favorites/src/main/res/layout/view_empty.xml" value="0.371875" />
         <entry key="app/src/main/res/drawable-v24/ic_broken_image_black.xml" value="0.35833333333333334" />
         <entry key="app/src/main/res/drawable-v24/ic_error.xml" value="0.35833333333333334" />
         <entry key="app/src/main/res/drawable/bg_border_gray.xml" value="0.20052083333333334" />

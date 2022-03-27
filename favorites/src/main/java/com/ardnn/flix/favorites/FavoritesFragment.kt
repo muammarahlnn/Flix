@@ -143,12 +143,12 @@ class FavoritesFragment : Fragment() {
     private fun showAlert(flag: Boolean, type: String) {
         if (flag) {
             val alertText = getString(R.string.alert_favorite, type)
-            binding?.tvAlert?.text = alertText
+            binding?.viewEmpty?.tvEmpty?.text = alertText
 
-            binding?.tvAlert?.visibility = View.VISIBLE
+            binding?.viewEmpty?.root?.visibility = View.VISIBLE
             binding?.recyclerView?.visibility = View.GONE
         } else {
-            binding?.tvAlert?.visibility = View.GONE
+            binding?.viewEmpty?.root?.visibility = View.GONE
             binding?.recyclerView?.visibility = View.VISIBLE
         }
     }

@@ -79,4 +79,7 @@ dependencies {
 
     // timber
     api 'com.jakewharton.timber:timber:5.0.1'
+
+    // lottie
+    api 'com.airbnb.android:lottie:5.0.3'
 }
