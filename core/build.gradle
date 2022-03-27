@@ -22,6 +22,7 @@ android {
 
         buildConfigField("String", "API_KEY", '"ddd13ad36a890e5208e5bad8ac1cc614"')
         buildConfigField("String", "BASE_URL_TMDB", '"https://api.themoviedb.org/"')
+        buildConfigField("String", "HOSTNAME_TMDB", '"api.themoviedb.org"')
         buildConfigField("String", "IMG_URL_TMDB", '"https://image.tmdb.org/t/p/"')
         buildConfigField("String", "PASSWORD_DB", '"password_teramat_sangat_rahasia"')
     }
