@@ -2,6 +2,7 @@ package com.ardnn.flix.core.di
 
 import android.content.Context
 import androidx.room.Room
+import com.ardnn.flix.core.BuildConfig
 import com.ardnn.flix.core.data.source.local.room.*
 import com.ardnn.flix.core.data.source.local.room.dao.*
 import dagger.Module
@@ -9,6 +10,8 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import net.sqlcipher.database.SQLiteDatabase
+import net.sqlcipher.database.SupportFactory
 import javax.inject.Singleton
 
 @Module
@@ -17,12 +20,18 @@ class DatabaseModule {
 
     @Singleton
     @Provides
-    fun provideDatabase(@ApplicationContext context: Context): FlixDatabase =
-        Room.databaseBuilder(
+    fun provideDatabase(@ApplicationContext context: Context): FlixDatabase {
+        val passphrase: ByteArray = SQLiteDatabase.getBytes(BuildConfig.PASSWORD_DB.toCharArray())
+        val factory = SupportFactory(passphrase)
+
+        return Room.databaseBuilder(
             context,
             FlixDatabase::class.java,
             "Flix.db"
-        ).fallbackToDestructiveMigration().build()
+        ).fallbackToDestructiveMigration()
+            .openHelperFactory(factory)
+            .build()
+    }
 
     @Provides
     fun provideMovieDao(database: FlixDatabase): MovieDao =

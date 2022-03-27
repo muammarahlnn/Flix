@@ -19,9 +19,11 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
 
+
         buildConfigField("String", "API_KEY", '"ddd13ad36a890e5208e5bad8ac1cc614"')
         buildConfigField("String", "BASE_URL_TMDB", '"https://api.themoviedb.org/"')
         buildConfigField("String", "IMG_URL_TMDB", '"https://image.tmdb.org/t/p/"')
+        buildConfigField("String", "PASSWORD_DB", '"password_teramat_sangat_rahasia"')
     }
 
     buildTypes {
@@ -57,7 +59,7 @@ dependencies {
     api "androidx.paging:paging-runtime:2.1.1" // room is not compatible with paged list in latest version
 
     // coroutine
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.2"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.1"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.2"
     implementation "androidx.room:room-ktx:2.4.2"
 
@@ -65,4 +67,8 @@ dependencies {
     api "androidx.lifecycle:lifecycle-livedata-ktx:2.4.1"
     api "androidx.activity:activity-ktx:1.4.0"
     api "androidx.fragment:fragment-ktx:1.4.1"
+
+    // encryption
+    implementation "net.zetetic:android-database-sqlcipher:4.4.0"
+    implementation "androidx.sqlite:sqlite-ktx:2.2.0"
 }
