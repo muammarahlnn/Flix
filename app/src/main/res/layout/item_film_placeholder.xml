@@ -15,7 +15,7 @@
             android:id="@+id/iv_poster"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:background="#DDDDDD"
+            android:background="@color/gray_shimmer"
             android:contentDescription="@string/iv_poster_desc"
             android:scaleType="centerCrop"
             app:layout_constraintDimensionRatio="1:1.25"

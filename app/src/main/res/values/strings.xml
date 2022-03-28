@@ -23,7 +23,6 @@
     <string name="on_the_air">On The Air</string>
     <string name="popular">Popular</string>
     <string name="top_rated">Top Rated</string>
-    <string name="undo">Undo</string>
     <string name="message_remove_favorite">Item removed from favorites</string>
     <string name="alert_favorite">
         You haven\'t favorited\n
@@ -44,10 +43,4 @@
     <string name="about">About</string>
     <string name="casts">Casts</string>
     <string name="as_character">as %s</string>
-    <string name="sample_title">This is a sample of title text</string>
-    <string name="sample_year">Sample 2022</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="dummy_button">Dummy Button</string>
-    <string name="dummy_content">DUMMY\nCONTENT</string>
 </resources>

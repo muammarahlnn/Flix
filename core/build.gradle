@@ -61,7 +61,7 @@ dependencies {
     api "androidx.room:room-runtime:2.4.2"
     kapt "androidx.room:room-compiler:2.4.2"
     androidTestImplementation "androidx.room:room-testing:2.4.2"
-    api "androidx.paging:paging-runtime:2.1.1" // room is not compatible with paged list in latest version
+    api "androidx.paging:paging-runtime-ktx:2.1.1" // room is not compatible with paged list in latest version
 
     // coroutine
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.1"
