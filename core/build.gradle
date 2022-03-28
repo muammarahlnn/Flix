@@ -76,10 +76,4 @@ dependencies {
     // encryption
     implementation "net.zetetic:android-database-sqlcipher:4.4.0"
     implementation "androidx.sqlite:sqlite-ktx:2.2.0"
-
-    // timber
-    api 'com.jakewharton.timber:timber:5.0.1'
-
-    // lottie
-    api 'com.airbnb.android:lottie:5.0.3'
 }
